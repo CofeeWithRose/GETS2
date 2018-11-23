@@ -1,17 +1,23 @@
-import InitConfigInterface from "./InitConfigInterface";
-import AbstractComponentInterface from "./AbstractComponentInterface";
-import { ComponentNameSpace } from "./ComponentNameSpace";
+// import InitConfigInterface from "./InitConfigInterface";
+// import AbstractComponentInterface from "./AbstractComponentInterface";
+// import { ComponentNameSpace } from "../../util/enums/NameSpaces";
+// import { GEEvents } from "../../util/enums/GEEvent";
 
-export default interface GEInterface {
+// export default interface GEInterface {
   
-    start(): void;
+//     start(): void;
     
-    pause(): void;
+//     pause(): void;
 
-    init( managerConfigs: Array<InitConfigInterface> ): void;
+//     init( initConfig: InitConfigInterface ): void;
 
-    sendMessage( eventName: string, message: any ): void;
+//     sendMessage( eventName: GEEvents, ...message: Array<any> ): void;
 
-    instanceComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface;
+//     subscribeMssage( eventName: GEEvents, fun: Function ):void;
 
-};
+//     unsubscribeMssage( eventName: GEEvents, fun: Function ):void;
+    
+//     instanceComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface;
+
+    
+// };
