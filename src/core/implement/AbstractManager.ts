@@ -1,16 +1,16 @@
 import AbstractGEObject from "./AbstractGEObject";
 import AbstractManagerInterface from "../interface/AbstractManagerInterface";
-import { ManagerNameSpace } from "../interface/ManagerNameSpace";
 import AbstractManagerConfig from "../interface/AbstractManagerConfig";
+import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
 
 export default class AbstractMnager extends AbstractGEObject implements AbstractManagerInterface {
     
     constructor(config: AbstractManagerConfig){
         super();
-        this.managerNameSpace = ManagerNameSpace.Default;
+        this.managerNameSpace = ManagerNameSpaces.Default;
     }
 
-    private managerNameSpace: ManagerNameSpace;
+    private managerNameSpace: ManagerNameSpaces;
 
     get ManagerNameSpace(){
         return this.managerNameSpace;

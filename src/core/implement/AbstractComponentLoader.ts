@@ -2,7 +2,7 @@ import AbstractGEObject from "./AbstractGEObject";
 import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
 import AbstractComponentInterface from "../interface/AbstractComponentInterface";
 import MutiValueMap from "../../util/map/implement/MutiValueMap";
-import { ComponentNameSpace } from "../interface/ComponentNameSpace";
+import { ComponentNameSpace } from "../../util/enums/NameSpaces";
 
 export default class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface{
 

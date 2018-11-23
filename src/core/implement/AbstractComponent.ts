@@ -1,7 +1,7 @@
 import AbstractGEObject from "./AbstractGEObject";
 import AbstractComponentInterface from "../interface/AbstractComponentInterface";
-import { ComponentNameSpace } from "../interface/ComponentNameSpace";
 import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
+import { ComponentNameSpace } from "../../util/enums/NameSpaces";
 
 export default class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
   
