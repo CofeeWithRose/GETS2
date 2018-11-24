@@ -1,4 +1,4 @@
-import AbstractManagerInterface from "../../core/interface/AbstractManagerInterface";
+import AbstractManagerInterface from "../../../core/interface/AbstractManagerInterface";
 import GameObjectInterface from "./GameObjectInterface";
 
 
