@@ -5,6 +5,11 @@ import { ComponentNameSpace } from "../../util/enums/NameSpaces";
 export default interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {
 
     /**
+     * 是否被加入场景, 若没有被加入场景，component不起任何作用.
+     */
+    IsActive: boolean;
+
+    /**
      * 添加装载的 component.
      * @param component 
      */

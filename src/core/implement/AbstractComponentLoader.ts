@@ -10,18 +10,55 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
 
     constructor() {
         super();
-        GE.sendMessage(GEEvents.INSTANCE_COMPONENT_LOADER, this);
+    };
+
+    private isActive = false;
+
+    get IsActive() {
+        return this.isActive;
+    };
+
+    set IsActive(isActive: boolean) {
+        const isChange = this.isActive !== isActive;
+        this.isActive = isActive;
+        if (isChange) {
+            if (isActive) {
+                this.activeAllComponent();
+            } else {
+                this.disActiveAllComponent();
+            }
+        }
     };
 
     private componentMap = new MutiValueMap<ComponentNameSpace, AbstractComponentInterface>();
+
+    private activeAllComponent() {
+        const allComponents: Array<AbstractComponentInterface> = this.componentMap.values();
+        for( let i = 0; i< allComponents.length; i++){
+            GE.sendMessage(GEEvents.ADD_COMPONENT, this, allComponents[i]);
+        }
+    };
+
+    private disActiveAllComponent(){
+
+        const allComponents: Array<AbstractComponentInterface> = this.componentMap.values();
+        for( let i = 0; i< allComponents.length; i++){
+            GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponents[i]);
+        }
+    };
+
     /**
-   * 添加装载的 component.
-   * @param component 
-   */
+     * 添加装载的 component.
+     * @param component 
+     */
     addComponent(component: AbstractComponentInterface): AbstractComponentInterface {
         this.componentMap.add(component.ComponentNameSpace, component);
         component.ComponentLoader = this;
-        GE.sendMessage(GEEvents.ADD_COMPONENT, this, component);
+
+        if(this.isActive){
+            GE.sendMessage(GEEvents.ADD_COMPONENT, this, component);
+        }
+        
         return component;
     }
 

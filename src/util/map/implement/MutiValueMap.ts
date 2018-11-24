@@ -1,6 +1,9 @@
 import ArraySet from "../../ArraySet";
 import Map from './Map';
 
+/**
+ * 一对多的map，value 将自动去重.
+ */
 export default class MutiValueMap <K, V> {
 
     private map = new Map <K, ArraySet<V>>();
