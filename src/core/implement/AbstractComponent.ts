@@ -1,7 +1,8 @@
 import AbstractGEObject from "./AbstractGEObject";
 import AbstractComponentInterface from "../interface/AbstractComponentInterface";
 import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
-import { ComponentNameSpace } from "../../util/enums/NameSpaces";
+import { ComponentNameSpace, ManagerNameSpaces } from "../../util/enums/NameSpaces";
+import GE from "./GE";
 
 export default class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
   
@@ -19,6 +20,10 @@ export default class AbstractComponent extends AbstractGEObject implements Abstr
 
     set ComponentLoader(componentLoader: AbstractComponentLoaderInterface){
         this.componentLoader = componentLoader;
+    }
+
+    getManager(managerNameSpace: ManagerNameSpaces){
+        return GE.getManager( managerNameSpace);
     }
 
 };
