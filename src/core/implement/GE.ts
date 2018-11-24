@@ -17,12 +17,17 @@ export default class GE {
     private static componentMap = new SimpleMap<ComponentNameSpace, typeof AbstractComponent>();
 
     private static emitor = new EventEmitor();
+
+    private static INIT_ERROR = new Error( 'Init Error: Please init Before invoke start method !' ); 
+
+    private static hasStarted = false;
     
     /**
      *启动.
      */
     static start(){
         this.emitor.emit(GEEvents.START);
+        this.hasStarted = true;
     };
 
     /**
@@ -33,33 +38,58 @@ export default class GE {
     };
 
     /**
-     * 初始化配置的 manager.
+     * 根据配置注入 manager.
      * @param initConfigs 
      */
     static init( initConfigs: InitConfigInterface ) {
 
-        this.initManager(initConfigs.managerInfoArray);
+        this.checkStarted( this.INIT_ERROR );
 
-        this.initComponet( initConfigs.componentInfoArray);
+        this.initManagers(initConfigs.managerInfoArray);
+
+        this.initComponets( initConfigs.componentInfoArray);
      
     };
 
-    private static initComponet(componentInfoArray: Array<ComponentInfo>){
+    /**
+     * 注入一个 managerInfo.
+     * @param managerInfo 
+     */
+    static initManager( managerInfo: ManagerInfo){
+
+        this.checkStarted( this.INIT_ERROR );
+        const manager = new managerInfo.manager(managerInfo.config);
+
+        this.managerMap.set(managerInfo.managerNameSpace, manager);
+    };
+
+    /**
+     * 注入一个 component.
+     * @param componentInfo 
+     */
+    static initComponet( componentInfo: ComponentInfo) {
+        
+        this.checkStarted( this.INIT_ERROR );
+
+        this.componentMap.set(componentInfo.componentNameSpace, componentInfo.componentClass);
+    };
+
+    private static checkStarted(errorMessage: Error){
+        if( this.hasStarted){
+            throw errorMessage;
+        }
+    }
+
+    private static initComponets(componentInfoArray: Array<ComponentInfo>){
         componentInfoArray.map( componentInfo => {
-            this.componentMap.set(componentInfo.componentNameSpace, componentInfo.componentClass);
+            this.initComponet(componentInfo);
         } )
     };
 
-    private static initManager(managerInfos: Array<ManagerInfo>){
+    private static initManagers(managerInfos: Array<ManagerInfo>) {
 
         for(let i = 0; i <managerInfos.length; i++){
-
-            const cf = managerInfos[i];
-
-            const manager = new cf.manager(cf.config);
-
-            this.managerMap.set(cf.managerNameSpace, manager);
-
+            this.initManager( managerInfos[i] );
         }
     }
 
@@ -105,9 +135,7 @@ export default class GE {
      * @param componentNameSpace 
      */
     static instanceComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface {
-        const component = new (this.componentMap.get(componentNameSpace));
-        this.emitor.emit(GEEvents.INSTANCE_COMPONENT, component);
-        return component;
+        return new (this.componentMap.get(componentNameSpace));;
     }
 
     /**
@@ -115,9 +143,7 @@ export default class GE {
      * @param componentLoader 
      */
     static instanceComponentLoader(componentLoader: typeof AbstractComponentLoader): AbstractComponentLoader {
-        const instance = new componentLoader();
-        this.emitor.emit( GEEvents.INSTANCE_COMPONENT_LOADER, instance);
-        return instance;
+        return new componentLoader();
     } 
 
 }

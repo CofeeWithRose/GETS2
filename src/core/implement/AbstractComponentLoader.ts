@@ -3,16 +3,25 @@ import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoad
 import AbstractComponentInterface from "../interface/AbstractComponentInterface";
 import MutiValueMap from "../../util/map/implement/MutiValueMap";
 import { ComponentNameSpace } from "../../util/enums/NameSpaces";
+import GE from "./GE";
+import { GEEvents } from "../../util/enums/GEEvent";
 
-export default class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface{
+export default class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface {
+
+    constructor() {
+        super();
+        GE.sendMessage(GEEvents.INSTANCE_COMPONENT_LOADER, this);
+    };
 
     private componentMap = new MutiValueMap<ComponentNameSpace, AbstractComponentInterface>();
-      /**
-     * 添加装载的 component.
-     * @param component 
-     */
+    /**
+   * 添加装载的 component.
+   * @param component 
+   */
     addComponent(component: AbstractComponentInterface): AbstractComponentInterface {
         this.componentMap.add(component.ComponentNameSpace, component);
+        component.ComponentLoader = this;
+        GE.sendMessage(GEEvents.ADD_COMPONENT, this, component);
         return component;
     }
 
@@ -20,7 +29,7 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
      * 获取装载的 component.
      * @param componentNameSpace 
      */
-    getComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface{
+    getComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface {
         return this.componentMap.get(componentNameSpace).valus()[0];
     }
 
@@ -35,15 +44,16 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
     /**
      * 获取所有装载的 component.
      */
-    getAllComponents(): Array<AbstractComponentInterface>{
+    getAllComponents(): Array<AbstractComponentInterface> {
         return this.componentMap.values();
     }
 
-     /**
-     * 指定 component 的移除 components.
-     * @param component 
-     */
+    /**
+    * 指定 component 的移除 components.
+    * @param component 
+    */
     removeComponent(component: AbstractComponentInterface): void {
+        GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, component);
         this.componentMap.removeValue(component.ComponentNameSpace, component);
     }
 
@@ -52,6 +62,11 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
      * @param componentNameSpace 
      */
     removeComponents(componentNameSpace: ComponentNameSpace): void {
+
+        const components: Array<AbstractComponentInterface> = this.componentMap.get(componentNameSpace).valus();
+        for (let i = 0; i < components.length; i++) {
+            GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, components[i]);
+        }
         this.componentMap.removeValues(componentNameSpace);
     }
 
@@ -59,6 +74,10 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
      * 移除所有的 components.
      */
     removeAllComponents(): void {
+        const allComponentArray: Array<AbstractComponentInterface> = this.componentMap.values();
+        for (let i = 0; i < allComponentArray.length; i++) {
+            GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponentArray[i]);
+        }
         this.componentMap = new MutiValueMap<ComponentNameSpace, AbstractComponentInterface>();
     }
 }
