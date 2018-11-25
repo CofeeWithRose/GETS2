@@ -1,7 +1,7 @@
-import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
-import GameObjectInterface from "../interface/GameObjectInterface";
-import GE from "../../../core/implement/GE";
-import { GEEvents } from "../../../util/enums/GEEvent";
+import AbstractComponentLoader from "../../../../core/implement/AbstractComponentLoader";
+import GameObjectInterface from "../../interface/data/GameObjectInterface";
+import GE from "../../../../core/implement/GE";
+import { GEEvents } from "../../../../util/enums/GEEvent";
 
 export default class GameObject extends AbstractComponentLoader implements GameObjectInterface {
 

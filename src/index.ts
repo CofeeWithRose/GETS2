@@ -71,3 +71,31 @@
 
 
 // pengHao.kiss();
+function Dectrator(t){
+    
+    return function(target, p2, p3) {
+        const set = p3.set.bind(target);
+        p3.set = function(val){
+            console.log(t);
+            val=t;
+            set(val);
+        }
+    }
+};
+
+class A {
+
+    private a = 0;
+
+    @Dectrator(8)
+    @Dectrator(9)
+    set A(a:number){
+        this.a = a;
+    }
+    
+    getSome(   number: number){
+        console.log('getSome: '+ number);
+    }
+}
+
+new A().A=5;

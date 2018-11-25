@@ -6,7 +6,8 @@
         // "removeComments": true,
         // "preserveConstEnums": true,
         // "outFile": "../dist/index.js",
-        "sourceMap": true
+        "sourceMap": true,
+        "experimentalDecorators": true,
     },
     "include": [
         "src/**/*"
@@ -14,5 +15,6 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts"
-    ]
+    ],
+    
 }

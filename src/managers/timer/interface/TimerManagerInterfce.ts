@@ -2,9 +2,13 @@ import AbstractManagerInterface from "../../../core/interface/AbstractManagerInt
 
 export default interface TimerManagerInterfce extends AbstractManagerInterface {
 
-    NowFromStart: number;
+    readonly DealTime:number;
 
-    DealTime: number;
+    readonly StartFromeNow :number;
 
-    FrameCount: number;
+    readonly FrameCount: number;
+
+    init(): void;
+
+    willUpdate():void;
 }

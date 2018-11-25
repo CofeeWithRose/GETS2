@@ -1,5 +1,5 @@
 import AbstractManagerInterface from "../../../core/interface/AbstractManagerInterface";
-import GameObjectInterface from "./GameObjectInterface";
+import GameObjectInterface from "./data/GameObjectInterface";
 
 
 export default interface GameObjectManagerInterface extends AbstractManagerInterface {

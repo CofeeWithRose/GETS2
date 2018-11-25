@@ -10,7 +10,7 @@ export default class AbstractMnager extends AbstractGEObject implements Abstract
         this.managerNameSpace = ManagerNameSpaces.Default;
     }
 
-    private managerNameSpace: ManagerNameSpaces;
+    protected managerNameSpace: ManagerNameSpaces;
 
     get ManagerNameSpace(){
         return this.managerNameSpace;
