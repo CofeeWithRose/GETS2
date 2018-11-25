@@ -32,7 +32,7 @@ export default class Position2DComponent extends AbstractComponent implements Po
         this.oldX = this.x;
         this.oldTime = this.time;
 
-        this.time = this.timer.NowFromStart;
+        this.time = this.timer.StartFromeNow;
         this.x = x;
     };
 
@@ -45,7 +45,7 @@ export default class Position2DComponent extends AbstractComponent implements Po
         this.oldY = this.y;
         this.oldTime = this.time;
 
-        this.time = this.timer.NowFromStart;
+        this.time = this.timer.StartFromeNow;
         this.y = y;
 
     };
