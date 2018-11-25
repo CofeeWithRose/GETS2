@@ -23,7 +23,7 @@ export class TaskFlow implements TaskFolwInterface{
 
     private taskId: number = 1;
 
-    private idTaskMap: SimpleMap<string, TaskRecord> = new SimpleMap<string, TaskRecord>();
+    private idTaskMap: SimpleMap<number, TaskRecord> = new SimpleMap<number, TaskRecord>();
 
     private tasks: Array<Array<Function>> = new Array<Array<Function>>();
 
@@ -35,7 +35,7 @@ export class TaskFlow implements TaskFolwInterface{
      * @param task 执行的方法.
      * @returns 任务的ID.
      */
-    public addTask (priority: number, task: Function): string{
+    public addTask (priority: number, task: Function): number{
 
         let taskArray = this.tasks[priority];
 
@@ -43,7 +43,7 @@ export class TaskFlow implements TaskFolwInterface{
             taskArray = new Array<Function>();
             this.tasks[priority] = taskArray;
         }
-        const taskId =  `${this.flowName}_${this.taskId++}`;
+        const taskId =  this.taskId++;
         this.idTaskMap.set(taskId, new TaskRecord(priority, task));
         taskArray.push(task);
         return taskId;
@@ -53,7 +53,7 @@ export class TaskFlow implements TaskFolwInterface{
      * 总任务队列中删除任务.
      * @param taskId 被删除的任务的 taskId.
      */
-    public deleteTask (taskId:string): void{
+    public deleteTask (taskId:number): void{
         const taskRecord = this.idTaskMap.get(taskId);
         if(taskRecord){
             const taskArray: Array<Function>  = this.tasks[taskRecord.priority];
@@ -88,7 +88,7 @@ export class TaskFlow implements TaskFolwInterface{
 
     public clearAll(): void {
 
-        this.idTaskMap = new SimpleMap<string, TaskRecord>();
+        this.idTaskMap = new SimpleMap<number, TaskRecord>();
 
         this.tasks = new Array<Array<Function>>();
     }
