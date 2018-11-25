@@ -6,4 +6,5 @@ export enum ManagerNameSpaces {
     TimerManager = 1,
     GameObjectManager =2,
     InputManager = 3,
+    TaskManager = 4,
 }

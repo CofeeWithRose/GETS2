@@ -4,12 +4,13 @@ import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig
 import { KeyBoard, InputType } from "../interface/data/enum";
 import InputEvent from "../interface/data/InputEvent";
 import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
+import { injectManagerNameSpace } from "../../../util/decorators/NameSpace";
 
+@injectManagerNameSpace(ManagerNameSpaces.InputManager)
 export default class InputManager extends AbstractMnager implements InputManagerInterface {
 
     constructor(config: AbstractManagerConfig){
         super(config);
-        this.managerNameSpace = ManagerNameSpaces.InputManager;
         window.addEventListener('keydown', event => {
           this.handleKeyDown(<KeyBoard>event.key);
         });

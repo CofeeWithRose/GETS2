@@ -12,7 +12,7 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
         super();
     };
 
-    private isActive = false;
+    private isActive = true;
 
     get IsActive() {
         return this.isActive;
