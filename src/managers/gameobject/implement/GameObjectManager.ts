@@ -5,11 +5,13 @@ import GameObjectInterface from "../interface/data/GameObjectInterface";
 import GE from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
+import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
 
 export default class GameObjectManager extends AbstractMnager implements GameObjectManagerInterface {
 
     constructor(config: AbstractManagerConfig){
         super(config);
+        this.managerNameSpace = ManagerNameSpaces.GameObjectManager;
         GE.subscribeMssage( GEEvents.ADD_GAMEOBJECT, this.addGameObject );
         GE.subscribeMssage( GEEvents.REMOVE_GAMEOBJECT, this.removeGameObject);
     };

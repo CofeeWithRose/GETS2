@@ -6,7 +6,7 @@ import GE from "./GE";
 
 export default class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
   
-    private componentNameSpace: ComponentNameSpace;
+    protected componentNameSpace: ComponentNameSpace;
 
     private componentLoader: AbstractComponentLoaderInterface;
 

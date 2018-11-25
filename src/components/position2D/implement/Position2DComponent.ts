@@ -1,9 +1,16 @@
 import AbstractComponent from "../../../core/implement/AbstractComponent";
 import Position2DComponentInterface from "../interface/Position2DComponentInterface";
 import TimerManagerInterfce from "../../../managers/timer/interface/TimerManagerInterfce";
-import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
+import { ManagerNameSpaces, ComponentNameSpace } from "../../../util/enums/NameSpaces";
+import { injectComponentNameSpace } from "../../../util/decorators/NameSpace";
 
+@injectComponentNameSpace(ComponentNameSpace.POSITION_2D)
 export default class Position2DComponent extends AbstractComponent implements Position2DComponentInterface {
+
+    constructor(){
+        super();
+        // this.componentNameSpace = ComponentNameSpace.POSITION_2D;
+    }
 
     private x = 0;
 
@@ -20,7 +27,7 @@ export default class Position2DComponent extends AbstractComponent implements Po
     private timer: TimerManagerInterfce;
 
     awake(){
-        this.timer = <TimerManagerInterfce>this.getManager( ManagerNameSpaces.Timer );
+        this.timer = <TimerManagerInterfce>this.getManager( ManagerNameSpaces.TimerManager );
     };
 
     get X(){

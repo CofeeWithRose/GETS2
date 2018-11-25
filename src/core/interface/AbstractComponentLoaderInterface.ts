@@ -13,7 +13,7 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
      * 添加装载的 component.
      * @param component 
      */
-    addComponent(component: AbstractComponentInterface): AbstractComponentInterface;
+    addComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface;
 
     /**
      * 获取装载的 component.

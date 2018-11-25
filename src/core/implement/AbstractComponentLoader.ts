@@ -51,9 +51,10 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
      * 添加装载的 component.
      * @param component 
      */
-    addComponent(component: AbstractComponentInterface): AbstractComponentInterface {
+    addComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface {
+        const component = GE.instanceComponent(componentNameSpace);
         this.componentMap.add(component.ComponentNameSpace, component);
-        component.ComponentLoader = this;
+        component.ComponentLoader = <any>this;
 
         if(this.isActive){
             GE.sendMessage(GEEvents.ADD_COMPONENT, this, component);

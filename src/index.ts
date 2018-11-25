@@ -1,101 +1,41 @@
-// interface PeopleInterface {
+import GE from "./core/implement/GE";
+import { ManagerNameSpaces, ComponentNameSpace } from "./util/enums/NameSpaces";
+import TimerManager from "./managers/timer/implement/TimerManager";
+import Position2DComponent from "./components/position2D/implement/Position2DComponent";
+import GameObject from "./managers/gameobject/implement/data/GameObject";
+import InputManager from "./managers/input/implement/InputManager";
+import GameObjectManager from "./managers/gameobject/implement/GameObjectManager";
 
-//     sex: string;
+const config = {
+    managerInfoArray:[
+        {
+            managerNameSpace: ManagerNameSpaces.TimerManager,
+            manager: TimerManager,
+            config: {},
+        },
+        {
+            managerNameSpace: ManagerNameSpaces.InputManager,
+            manager: InputManager,
+            config: {},
+        },
+        {
+            managerNameSpace: ManagerNameSpaces.GameObjectManager,
+            manager: GameObjectManager,
+            config: {},
+        },
+    ],
+    componentInfoArray:[
+        {
+            componentNameSpace: ComponentNameSpace.POSITION_2D,
 
-//     run(): void;
-
-//     kiss(): void;
-// };
-
-// interface ManInterface extends PeopleInterface {
-//     drink():void;
-// }
-
-// interface Animal {
-
-//     bite(people: PeopleInterface): void;
-// }
-
-
-
-// /**
-//  *  1
-//  */
-// class Animal {
-
-//     bite(people: PeopleInterface){
-
-//         const ph = <ManInterface>people;
-//         ph.drink();
-//         ph.run();
-//         //....
-//     }
-// }
-// /**
-//  * 2
-//  */
-// class People implements PeopleInterface{
-
-//     name = "pp";
-//     sex = "man";
-    
-//     kiss():void {
-//         console.log("kiss...");
-//     };
-
-//     run(){
-//         console.log("run ....");
-//     };
-// };
-
-// class Man extends People {
-    
-//     drink():void{
-//         console.log("drink....");
-//     };
-// }
-
-// /**
-//  * 3
-//  */
-// const pengHao = new Man();
-
-// const hhm = new People();
-
-// const dog = new Animal();
-// dog.bite(pengHao);
-// //?
-// // dog.bite(hhm);
-
-// hhm.sex = "female";
-
-
-// pengHao.kiss();
-function Dectrator(t){
-    
-    return function(target, p2, p3) {
-        const set = p3.set.bind(target);
-        p3.set = function(val){
-            console.log(t);
-            val=t;
-            set(val);
+            componentClass: Position2DComponent,
         }
-    }
-};
-
-class A {
-
-    private a = 0;
-
-    @Dectrator(8)
-    @Dectrator(9)
-    set A(a:number){
-        this.a = a;
-    }
-    
-    getSome(   number: number){
-        console.log('getSome: '+ number);
-    }
+    ],
 }
 
-new A().A=5;
+GE.init(config);
+// GE.getManager()
+const gO = new GameObject();
+gO.addComponent(ComponentNameSpace.POSITION_2D);
+console.log(  gO.getComponent(ComponentNameSpace.POSITION_2D).ComponentNameSpace);
+// GE.instanceComponentLoader(gO);

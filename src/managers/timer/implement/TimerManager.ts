@@ -8,7 +8,7 @@ export default class TimerManager extends AbstractMnager implements TimerManager
 
     constructor(config: AbstractManagerConfig){
         super(config);
-        this.managerNameSpace = ManagerNameSpaces.Timer;
+        this.managerNameSpace = ManagerNameSpaces.TimerManager;
     }
 
     private nowFromStart = 0;
