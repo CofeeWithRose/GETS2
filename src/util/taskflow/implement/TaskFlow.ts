@@ -27,6 +27,9 @@ export class TaskFlow implements TaskFolwInterface{
 
     private tasks: Array<Array<Function>> = new Array<Array<Function>>();
 
+    private isRunning = false;
+
+    private deadTempTaskIdArray = new Array<number>();
 
      /**
      * 
@@ -50,10 +53,20 @@ export class TaskFlow implements TaskFolwInterface{
     }
 
     /**
-     * 总任务队列中删除任务.
+     * 总任务队列中删除任务, 若在runTask 时删除，则等到runTask结束后删除.
      * @param taskId 被删除的任务的 taskId.
      */
     public deleteTask (taskId:number): void{
+
+        if(this.isRunning){
+            this.deadTempTaskIdArray.push(taskId);
+        }else{
+            this.deleteTaskRightNow(taskId);
+        }
+    
+    }
+
+    private deleteTaskRightNow (taskId:number): void{
         const taskRecord = this.idTaskMap.get(taskId);
         if(taskRecord){
             const taskArray: Array<Function>  = this.tasks[taskRecord.priority];
@@ -67,22 +80,26 @@ export class TaskFlow implements TaskFolwInterface{
         }
     }
 
+    private flushDeadTaskArray (){
+        for(let i = 0; i< this.deadTempTaskIdArray.length; i++){
+            this.deleteTaskRightNow(this.deadTempTaskIdArray[i]);
+        }
+        this.deadTempTaskIdArray.splice(0, this.deadTempTaskIdArray.length);
+    }
+
     /**
      * 按照优先级执行task.
      */
     public runTask(): void{
+        this.isRunning = true;
         for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
             const taskArry = this.tasks[currentPriority]||[];
             for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
-               
                 taskArry[taskInd]();
-                // try{
-                //     taskArry[taskInd]();
-                // }catch(e){
-                //     console.error(e);
-                // }
             }
         }
+        this.isRunning = false;
+        this.flushDeadTaskArray();
     };
 
 
