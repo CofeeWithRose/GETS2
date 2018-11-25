@@ -36,8 +36,8 @@ export default class ConfigParser {
             const configUnit = configUnitArray[i];
             const unitScopes = configUnit.scope;
             for(let j = 0; j< unitScopes.length; j++){
-                this.classTypeArray.add(unitScopes[i]);
-                this.classTypeTasksMap.add( unitScopes[i], 
+                this.classTypeArray.add(unitScopes[j]);
+                this.classTypeTasksMap.add( unitScopes[j], 
                     new TaskInfo(configUnit.methodName, i, type));
             }
         }
