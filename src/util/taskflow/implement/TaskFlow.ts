@@ -84,7 +84,8 @@ export class TaskFlow implements TaskFolwInterface{
         for(let i = 0; i< this.deadTempTaskIdArray.length; i++){
             this.deleteTaskRightNow(this.deadTempTaskIdArray[i]);
         }
-        this.deadTempTaskIdArray.splice(0, this.deadTempTaskIdArray.length);
+        //清空.
+        this.deadTempTaskIdArray.splice(0);
     }
 
     /**
