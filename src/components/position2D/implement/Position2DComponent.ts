@@ -9,7 +9,6 @@ export default class Position2DComponent extends AbstractComponent implements Po
 
     constructor(){
         super();
-        // this.componentNameSpace = ComponentNameSpace.POSITION_2D;
     }
 
     private x = 0;

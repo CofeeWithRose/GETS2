@@ -5,7 +5,7 @@ import config from './configs';
 
 GE.init(config);
 // GE.getManager()
-const gO = new GameObject();
-gO.addComponent(ComponentNameSpace.POSITION_2D);
-console.log(  gO.getComponent(ComponentNameSpace.POSITION_2D).ComponentNameSpace);
+const obj = new GameObject();
+obj.addComponent(ComponentNameSpace.POSITION_2D);
+console.log( obj.getComponent(ComponentNameSpace.POSITION_2D).ComponentNameSpace);
 // GE.instanceComponentLoader(gO);
