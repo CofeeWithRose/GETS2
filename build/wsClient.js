@@ -6,12 +6,12 @@
     };
     ws.onopen = () => {
     
-        ws.onclose =  () => {
-        };
+        // ws.onclose =  () => {
+        // };
 
         ws.onmessage = message => {
            const react =  reactMap[message.data];
            react && react();
         };
     };
-})()
+})();
