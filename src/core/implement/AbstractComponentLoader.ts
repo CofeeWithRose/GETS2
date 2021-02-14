@@ -3,7 +3,7 @@ import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoad
 import AbstractComponentInterface from "../interface/AbstractComponentInterface";
 import MutiValueMap from "../../util/map/implement/MutiValueMap";
 import { ComponentNameSpace } from "../../util/enums/NameSpaces";
-import GE from "./GE";
+import {GE} from "./GE";
 import { GEEvents } from "../../util/enums/GEEvent";
 
 export default class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface {

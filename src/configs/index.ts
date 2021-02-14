@@ -6,7 +6,7 @@ import TimerManager from "../managers/timer/implement/TimerManager";
 import TaskManager from "../managers/task/implemet/TaskManager";
 import TaskConig from "./TaskConig";
 
-export default  {
+export const config =   {
 
     managerInfoArray:[
         {

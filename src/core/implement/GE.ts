@@ -10,7 +10,7 @@ import AbstractComponent from "./AbstractComponent";
 import AbstractComponentLoader from "./AbstractComponentLoader";
 
 
-export default class GE {
+export  class GE {
 
     private static managerMap = new SimpleMap<ManagerNameSpaces, AbstractManagerInterface>();
     

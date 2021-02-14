@@ -3,7 +3,7 @@ import AbstractManagerInterface from "../interface/AbstractManagerInterface";
 import AbstractManagerConfig from "../interface/AbstractManagerConfig";
 import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import { GEEvents } from "../../util/enums/GEEvent";
-import GE from "./GE";
+import {GE} from "./GE";
 
 export default class AbstractMnager extends AbstractGEObject implements AbstractManagerInterface {
     

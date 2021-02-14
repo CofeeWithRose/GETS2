@@ -1,13 +1,17 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        // "noImplicitAny": true,
-        // "removeComments": true,
-        // "preserveConstEnums": true,
-        // "outFile": "../dist/index.js",
+        "target": "ES6",
+        "module": "ESNext",
+        "outDir": "./lib",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports":true,
+        "jsx": "react-jsx",
         "sourceMap": true,
         "experimentalDecorators": true,
+        "declaration": true,
+        "paths": {
+            "ge": ["./src/index.ts"]
+        }
     },
     "include": [
         "src/**/*"
