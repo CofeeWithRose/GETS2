@@ -103,6 +103,20 @@ export class TaskFlow implements TaskFolwInterface{
         this.flushDeadTaskArray();
     };
 
+     /**
+     * 按照优先级执行task.
+     */
+    public runTasks(taskIdList: number[]): void{
+        this.isRunning = true;
+        const taskRecordList = taskIdList.map( taskId => {
+            return this.idTaskMap.get(taskId);
+        })
+        taskRecordList.sort(({priority: p1}, {priority: p2}) => p1-p2 )
+        .forEach(({task}) => task() )
+        this.isRunning = false;
+        this.flushDeadTaskArray();
+    };
+
 
     public clearAll(): void {
 

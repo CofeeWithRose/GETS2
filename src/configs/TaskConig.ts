@@ -44,7 +44,7 @@ import Position2DComponent from "../components/position2D/implement/Position2DCo
     ],
     end: [
         {
-            methodName: 'destroy',
+            methodName: 'destory',
             scope: [ AbstractComponent ],
         },
         {

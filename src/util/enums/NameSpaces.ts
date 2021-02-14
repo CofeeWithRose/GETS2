@@ -1,5 +1,7 @@
 export enum ComponentNameSpace{
     POSITION_2D = 1,
+
+    RENDERER_2D = 2,
 }
 export enum ManagerNameSpaces {
     Default = 0,

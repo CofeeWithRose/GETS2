@@ -21,4 +21,6 @@ export default  interface TaskFolwInterface {
 
 
    clearAll(): void ;
+
+   runTasks(taskIdList: number[]): void
 }

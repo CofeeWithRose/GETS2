@@ -11,6 +11,7 @@ export  class GameObject extends AbstractComponentLoader implements GameObjectIn
     }
 
     destory(){
+        this.removeAllComponents()
         GE.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
     };
 }

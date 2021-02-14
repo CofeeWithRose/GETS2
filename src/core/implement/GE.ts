@@ -4,7 +4,7 @@ import AbstractComponentInterface from "../interface/AbstractComponentInterface"
 import AbstractManagerInterface from "../interface/AbstractManagerInterface";
 import SimpleMap from "../../util/map/implement/SimpleMap";
 import EventEmitor from "../../util/event/EventEmitor";
-import { GEEvents } from "../../util/enums/GEEvent";
+import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import { ManagerNameSpaces, ComponentNameSpace } from "../../util/enums/NameSpaces";
 import AbstractComponent from "./AbstractComponent";
 import AbstractComponentLoader from "./AbstractComponentLoader";
@@ -107,7 +107,7 @@ export  class GE {
      * @param eventName 
      * @param message 
      */
-    static sendMessage( eventName: GEEvents, ...message: Array<any> ) {
+    static sendMessage <T extends keyof GEEventsMap>( eventName: T, ...message: Parameters<GEEventsMap[T]> ) {
         this.emitor.emit(eventName, ...message);
     };
 
@@ -116,7 +116,7 @@ export  class GE {
      * @param eventName 
      * @param fun 
      */
-    static subscribeMssage (eventName: GEEvents, fun : Function) {
+    static subscribeMssage <T extends keyof GEEventsMap> (eventName: T, fun : GEEventsMap[T]) {
         this.emitor.addEventListener(eventName, fun);
     };
 
