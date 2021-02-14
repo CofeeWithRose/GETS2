@@ -13,7 +13,9 @@ import { GE, ManagerNameSpaces, ComponentNameSpace, GameObject, config } from 'g
 GE.init(config);
 const obj = new GameObject();
 obj.addComponent(ComponentNameSpace.POSITION_2D);
-console.log( obj.getComponent(ComponentNameSpace.POSITION_2D).ComponentNameSpace);
+obj.getComponent( ComponentNameSpace.POSITION_2D )
+// console.log( obj.getComponent(ComponentNameSpace.POSITION_2D).ComponentNameSpace);
+GE.start()
 
 export function Run() {
     return <div>run</div>

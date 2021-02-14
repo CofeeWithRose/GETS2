@@ -40,22 +40,27 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private isRunning = false;
 
-    private onAddComponnet = (component: AbstractComponentInterface) => {
+    private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
     };
 
-    private addInstanceTask(instance: AbstractGEObjectInterface) {
-        const taskInfoArray = this.configParser.getTaskInfoArray(instance);
+    private addInstanceTask( component: AbstractComponentInterface) {
+        
+        const taskInfoArray = this.configParser.getTaskInfoArray(component);
         const componentTaskIdMap = new MutiValueMap<TaskType, number>();
-        this.instanceTaskId.set(instance.Id, componentTaskIdMap);
+        this.instanceTaskId.set(component.Id, componentTaskIdMap);
         for (let i = 0; i < taskInfoArray.length; i++) {
             const taskInfo = taskInfoArray[i];
-            const taskId = this[taskInfo.taskType].addTask(
-                taskInfo.taskPriority,
-                instance[taskInfo.taskNames].bind(instance)
-            );
-            componentTaskIdMap.add(taskInfo.taskType, taskId);
+            const task = component[taskInfo.taskNames]
+            if(task){
+                const taskId = this[taskInfo.taskType].addTask(
+                    taskInfo.taskPriority,
+                    task.bind(component),
+                );
+                componentTaskIdMap.add(taskInfo.taskType, taskId);
+            }
+           
         }
     };
 

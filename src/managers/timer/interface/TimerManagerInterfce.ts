@@ -4,7 +4,7 @@ export default interface TimerManagerInterfce extends AbstractManagerInterface {
 
     readonly DealTime:number;
 
-    readonly StartFromeNow :number;
+    readonly StartFromNow :number;
 
     readonly FrameCount: number;
 

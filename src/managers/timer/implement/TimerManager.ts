@@ -44,7 +44,7 @@ export default class TimerManager extends AbstractMnager implements TimerManager
         return this.dealTime
     };
 
-    get StartFromeNow (){
+    get StartFromNow (){
         return this.startFromeNow;
     };
 
