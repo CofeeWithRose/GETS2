@@ -4,7 +4,7 @@ import { injectManagerNameSpace } from "../../../util/decorators/NameSpace";
 import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
 import TaskMnagerConfigInterface from "../interface/config/TaskMnagerConfigInterface";
 import { GEEvents } from "../../../util/enums/GEEvent";
-import AbstractComponentInterface from "../../../core/interface/AbstractComponentInterface";
+import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 import ConfigParser from "./ConfigParser";
 import { TaskFlow } from "../../../util/taskflow/implement/TaskFlow";

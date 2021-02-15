@@ -1,6 +1,6 @@
 import AbstractComponent from "../core/implement/AbstractComponent";
 import AbstractMnager from "../core/implement/AbstractManager";
-import Position2DComponent from "../components/position2D/implement/Position2DComponent";
+import {Position2DComponent} from "../components/position2D/implement/Position2DComponent";
 
  export default{
     start: [

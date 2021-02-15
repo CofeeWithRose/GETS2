@@ -1,12 +1,10 @@
 // import GEInterface from "../interface/GEInterface";
-import InitConfigInterface, { ManagerInfo, ComponentInfo } from "../interface/InitConfigInterface";
-import AbstractComponentInterface from "../interface/AbstractComponentInterface";
+import InitConfigInterface, { ManagerInfo } from "../interface/InitConfigInterface";
 import AbstractManagerInterface from "../interface/AbstractManagerInterface";
 import SimpleMap from "../../util/map/implement/SimpleMap";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { ManagerNameSpaces, ComponentNameSpace } from "../../util/enums/NameSpaces";
-import AbstractComponent from "./AbstractComponent";
+import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import AbstractComponentLoader from "./AbstractComponentLoader";
 
 
@@ -14,7 +12,7 @@ export  class GE {
 
     private static managerMap = new SimpleMap<ManagerNameSpaces, AbstractManagerInterface>();
     
-    private static componentMap = new SimpleMap<ComponentNameSpace, typeof AbstractComponent>();
+    // private static componentMap = new SimpleMap<ComponentNameSpace, typeof AbstractComponent>();
 
     private static emitor = new EventEmitor();
 
@@ -47,7 +45,6 @@ export  class GE {
 
         this.initManagers(initConfigs.managerInfoArray);
 
-        this.initComponets( initConfigs.componentInfoArray);
      
     };
 
@@ -63,28 +60,11 @@ export  class GE {
         this.managerMap.set(managerInfo.managerNameSpace, manager);
     };
 
-    /**
-     * 注入一个 component.
-     * @param componentInfo 
-     */
-    static initComponet( componentInfo: ComponentInfo) {
-        
-        this.checkStarted( this.INIT_ERROR );
-
-        this.componentMap.set(componentInfo.componentNameSpace, componentInfo.componentClass);
-    };
-
     private static checkStarted(errorMessage: Error){
         if( this.hasStarted){
             throw errorMessage;
         }
     }
-
-    private static initComponets(componentInfoArray: Array<ComponentInfo>){
-        componentInfoArray.map( componentInfo => {
-            this.initComponet(componentInfo);
-        } )
-    };
 
     private static initManagers(managerInfos: Array<ManagerInfo>) {
 
@@ -130,13 +110,6 @@ export  class GE {
         this.emitor.removeEventListener(eventName, fun);
     };
 
-    /**
-     * 实例化组件.
-     * @param componentNameSpace 
-     */
-    static instanceComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface {
-        return new (this.componentMap.get(componentNameSpace));;
-    }
 
     /**
      * 实例化组件容器.

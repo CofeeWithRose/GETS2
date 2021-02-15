@@ -1,5 +1,5 @@
 import AbstractGEObject from "./AbstractGEObject";
-import AbstractComponentInterface from "../interface/AbstractComponentInterface";
+import {AbstractComponentInterface} from "../interface/AbstractComponentInterface";
 import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
 import { ComponentNameSpace, ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import {GE} from "./GE";

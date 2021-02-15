@@ -1,4 +1,4 @@
-import AbstractComponentInterface from "../../../core/interface/AbstractComponentInterface";
+import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
 
 export interface Render2DCompInfer extends AbstractComponentInterface {
 

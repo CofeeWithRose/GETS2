@@ -1,6 +1,5 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
-import AbstractComponentInterface from "./AbstractComponentInterface";
-import { ComponentNameSpace } from "../../util/enums/NameSpaces";
+import {AbstractComponentConstructor, AbstractComponentInterface} from "./AbstractComponentInterface";
 
 export default interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {
 
@@ -13,20 +12,25 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
      * 添加装载的 component.
      * @param component 
      */
-    addComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface;
-
+    addComponent<C extends AbstractComponentConstructor<any[]>>(
+        componentConstructor: C, ...params: ConstructorParameters<C>
+    ): AbstractComponentInterface
     /**
      * 获取装载的 component.
-     * @param componentNameSpace 
+     * @param componentConstructor 
      */
-    getComponent(componentNameSpace: ComponentNameSpace): AbstractComponentInterface;
+    getComponent<C extends AbstractComponentConstructor<any[]>>(
+        componentConstructor: C
+    ): AbstractComponentInterface;
 
     /**
      * 获取该类型的所有 component.
-     * @param componentNameSpace 
+     * @param componentConstructor 
      */
-    getComponents(componentNameSpace: ComponentNameSpace): Array<AbstractComponentInterface>;
-
+    getComponents<C extends AbstractComponentConstructor<any[]>>(
+        componentConstructor: C
+    ): Array<AbstractComponentInterface>;
+    
     /**
      * 获取所有装载的 component.
      */
@@ -42,7 +46,9 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
      * 指定 namespace 的移除 components.
      * @param componentNameSpace 
      */
-    removeComponents(componentNameSpace: ComponentNameSpace): void;
+    removeComponents<C extends AbstractComponentConstructor<any[]>>(
+        componentConstructor: C
+    ): void;
 
     /**
      * 移除所有的 components.

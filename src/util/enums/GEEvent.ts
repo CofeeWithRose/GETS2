@@ -1,5 +1,5 @@
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
-import AbstractComponentInterface from "../../core/interface/AbstractComponentInterface";
+import {AbstractComponentInterface} from "../../core/interface/AbstractComponentInterface";
 import GameObjectInterface from "../../managers/gameobject/interface/data/GameObjectInterface";
 
 export enum GEEvents {
