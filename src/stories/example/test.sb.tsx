@@ -1,4 +1,4 @@
-import { GE, GameObject, config, Position2DComponent, Render2DComp } from 'ge'
+import { GE, GameObject, config, Position2DComponent, Render2DComp, InitConfigInterface } from 'ge'
 import React from 'react'
 
 export default {
@@ -7,12 +7,33 @@ export default {
 }
 
 
-GE.init(config);
-const obj = new GameObject();
-obj.addComponent(Position2DComponent);
-obj.addComponent(Render2DComp, 1)
+enum ComponentType {
+    PositionComp,
+    RendererComp,
+}
 
-GE.start()
+const cfg: InitConfigInterface<ComponentType> = {
+    ...config,
+    componentInfoArray: [
+        {
+            componentNameSpace: ComponentType.PositionComp,
+            componentClass: Position2DComponent
+        },
+        {
+            componentNameSpace: ComponentType.RendererComp,
+            componentClass: Render2DComp,
+        }
+    ]
+}
+
+
+const game = new GE<ComponentType>()
+game.init(cfg);
+const obj = game.craeteObj()
+obj.addComponent(ComponentType.PositionComp);
+obj.addComponent(ComponentType.RendererComp)
+
+game.start()
 
 obj.destory()
 

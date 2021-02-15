@@ -5,12 +5,13 @@ import { KeyBoard, InputType } from "../interface/data/enum";
 import InputEvent from "../interface/data/InputEvent";
 import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
 import { injectManagerNameSpace } from "../../../util/decorators/NameSpace";
+import { GE } from "../../../core/implement/GE";
 
 @injectManagerNameSpace(ManagerNameSpaces.InputManager)
-export default class InputManager extends AbstractMnager implements InputManagerInterface {
+export default class InputManager<ComponentType> extends AbstractMnager<ComponentType> implements InputManagerInterface {
 
-    constructor(config: AbstractManagerConfig){
-        super(config);
+    constructor(game: GE<ComponentType>,config: AbstractManagerConfig){
+        super(game, config);
         window.addEventListener('keydown', event => {
           this.handleKeyDown(<KeyBoard>event.key);
         });

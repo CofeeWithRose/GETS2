@@ -4,11 +4,20 @@ import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoad
 import { ComponentNameSpace, ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import {GE} from "./GE";
 
-export default class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
+export default class AbstractComponent<ComponentType> extends AbstractGEObject implements AbstractComponentInterface<ComponentType> {
   
     protected componentNameSpace: ComponentNameSpace;
 
-    private componentLoader: AbstractComponentLoaderInterface;
+    private componentLoader: AbstractComponentLoaderInterface<ComponentType>;
+
+    protected game: GE<ComponentType>
+
+    constructor(game: GE<ComponentType>){
+        super()
+        this.game = game
+    }
+
+    reset(){}
 
     get ComponentNameSpace() {
         return this.componentNameSpace;
@@ -18,12 +27,12 @@ export default class AbstractComponent extends AbstractGEObject implements Abstr
         return this.componentLoader;
     };
 
-    set ComponentLoader(componentLoader: AbstractComponentLoaderInterface){
+    set ComponentLoader(componentLoader: AbstractComponentLoaderInterface<ComponentType>){
         this.componentLoader = componentLoader;
     }
 
     getManager(managerNameSpace: ManagerNameSpaces){
-        return GE.getManager( managerNameSpace);
+        return this.game.getManager( managerNameSpace);
     }
 
 };

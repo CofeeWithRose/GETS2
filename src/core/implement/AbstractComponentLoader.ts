@@ -2,13 +2,18 @@ import AbstractGEObject from "./AbstractGEObject";
 import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
 import {AbstractComponentConstructor, AbstractComponentInterface} from "../interface/AbstractComponentInterface";
 import MutiValueMap from "../../util/map/implement/MutiValueMap";
-import {GE} from "./GE";
 import { GEEvents } from "../../util/enums/GEEvent";
+import { Position2DComponent } from "../../components/position2D/implement/Position2DComponent";
+import { GE } from "./GE";
+import { ComponentInfo, ResetParams } from "../interface/InitConfigInterface";
 
-export default class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface {
 
-    constructor() {
+export default class AbstractComponentLoader<ComponentType> extends AbstractGEObject implements AbstractComponentLoaderInterface<ComponentType> {
+
+    protected game: GE<any>
+    constructor(game: GE<any>) {
         super();
+        this.game = game
     };
 
     private isActive = true;
@@ -29,12 +34,12 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
         }
     };
 
-    private componentMap = new MutiValueMap<AbstractComponentConstructor<any>, AbstractComponentInterface>();
+    private componentMap = new MutiValueMap<ComponentType, AbstractComponentInterface>();
 
     private activeAllComponent() {
         const allComponents: Array<AbstractComponentInterface> = this.componentMap.values();
         for( let i = 0; i< allComponents.length; i++){
-            GE.sendMessage(GEEvents.ADD_COMPONENT, this, allComponents[i]);
+            this.game.sendMessage(GEEvents.ADD_COMPONENT, this, allComponents[i]);
         }
     };
 
@@ -42,7 +47,7 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
 
         const allComponents: Array<AbstractComponentInterface> = this.componentMap.values();
         for( let i = 0; i< allComponents.length; i++){
-            GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponents[i]);
+            this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponents[i]);
         }
     };
 
@@ -50,13 +55,15 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
      * 添加装载的 component.
      * @param component 
      */
-    addComponent<C extends AbstractComponentConstructor<any[]>>(componentConstructor: C, ...params: ConstructorParameters<C>): AbstractComponentInterface {
-        const component = new componentConstructor(...params)
-        this.componentMap.add(componentConstructor, component);
+    addComponent<T extends ComponentType> (
+        componentNameSpace: T, ...params: ResetParams<T>
+    ): AbstractComponentInterface<T> {
+        const component = this.game.instanceComponent(componentNameSpace, params )
+        this.componentMap.add(componentNameSpace, component);
         component.ComponentLoader = <any>this;
 
         if(this.isActive){
-            GE.sendMessage(GEEvents.ADD_COMPONENT, this, component);
+            this.game.sendMessage(GEEvents.ADD_COMPONENT, this, component);
         }
         
         return component;
@@ -90,7 +97,7 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
     * @param component 
     */
     removeComponent(component: AbstractComponentInterface): void {
-        GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, component);
+        this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, component);
         const constructor: AbstractComponentConstructor<any> = Object.getPrototypeOf(component).constructor
         this.componentMap.removeValue(constructor, component);
     }
@@ -103,7 +110,7 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
 
         const components: Array<AbstractComponentInterface> = this.componentMap.get(componentConstructor).valus();
         for (let i = 0; i < components.length; i++) {
-            GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, components[i]);
+            this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, components[i]);
         }
         this.componentMap.removeValues(componentConstructor);
     }
@@ -114,7 +121,7 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
     removeAllComponents(): void {
         const allComponentArray: Array<AbstractComponentInterface> = this.componentMap.values();
         for (let i = 0; i < allComponentArray.length; i++) {
-            GE.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponentArray[i]);
+            this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponentArray[i]);
         }
         this.componentMap = new MutiValueMap<AbstractComponentConstructor<any>, AbstractComponentInterface>();
     }

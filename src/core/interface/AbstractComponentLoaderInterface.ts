@@ -1,7 +1,7 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import {AbstractComponentConstructor, AbstractComponentInterface} from "./AbstractComponentInterface";
 
-export default interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {
+export default interface AbstractComponentLoaderInterface<ComponentType> extends AbstractGEObjectInterface {
 
     /**
      * 是否被加入场景, 若没有被加入场景，component不起任何作用.
@@ -12,8 +12,8 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
      * 添加装载的 component.
      * @param component 
      */
-    addComponent<C extends AbstractComponentConstructor<any[]>>(
-        componentConstructor: C, ...params: ConstructorParameters<C>
+    addComponent<T extends  ComponentType>(
+        type: T, ...params: ConstructorParameters<C>
     ): AbstractComponentInterface
     /**
      * 获取装载的 component.

@@ -1,6 +1,6 @@
 import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
 
-export default interface Position2DComponentInterface extends AbstractComponentInterface {
+export interface Position2DComponentInterface extends AbstractComponentInterface {
 
     X:number;
 

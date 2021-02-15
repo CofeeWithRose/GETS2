@@ -1,13 +1,10 @@
 import AbstractComponent from "../../../core/implement/AbstractComponent";
-import Position2DComponentInterface from "../interface/Position2DComponentInterface";
+import {Position2DComponentInterface} from "../interface/Position2DComponentInterface";
 import TimerManagerInterfce from "../../../managers/timer/interface/TimerManagerInterfce";
 import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
 
-export class Position2DComponent extends AbstractComponent implements Position2DComponentInterface {
+export class Position2DComponent<ComponentType> extends AbstractComponent<ComponentType> implements Position2DComponentInterface {
 
-    constructor(){
-        super();
-    }
 
     private x = 0;
 

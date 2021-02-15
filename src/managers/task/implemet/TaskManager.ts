@@ -12,12 +12,13 @@ import { TaskType } from "../interface/data/enum";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
 import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
+import { GE } from "../../../core/implement/GE";
 
 @injectManagerNameSpace(ManagerNameSpaces.TaskManager)
-export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
+export default class TaskManager<ComponentType> extends AbstractMnager<ComponentType> implements TaskManagerInterface {
 
-    constructor(config: TaskMnagerConfigInterface) {
-        super(config);
+    constructor(game: GE<ComponentType>, config: TaskMnagerConfigInterface) {
+        super(game, config);
         this.configParser = new ConfigParser(config);
         this.addGEEvemtListener(GEEvents.START, this.onStart);
         this.addGEEvemtListener(GEEvents.PAUSE, this.onPause);
@@ -39,12 +40,12 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private isRunning = false;
 
-    private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface) => {
+    private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface<ComponentType>) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
     };
 
-    private addInstanceTask( component: AbstractComponentInterface) {
+    private addInstanceTask( component: AbstractComponentInterface<ComponentType>) {
         
         const taskInfoArray = this.configParser.getTaskInfoArray(component);
         const componentTaskIdMap = new MutiValueMap<TaskType, number>();
@@ -81,7 +82,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         };
     }
 
-    private onRemoveComponent = (_: AbstractComponentLoaderInterface,  component: AbstractComponentInterface) => {
+    private onRemoveComponent = (_: AbstractComponentLoaderInterface<ComponentType>,  component: AbstractComponentInterface<ComponentType>) => {
         const idInfo = this.instanceTaskId.get(component.Id);
         const endIdList  = idInfo.get(TaskType.END)
         this.end.runTasks(endIdList.valus())

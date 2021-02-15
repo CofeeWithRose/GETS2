@@ -1,29 +1,30 @@
-// import GEInterface from "../interface/GEInterface";
-import InitConfigInterface, { ManagerInfo } from "../interface/InitConfigInterface";
+import  { InitConfigInterface,  ManagerInfo, ComponentInfo, ResetParams } from "../interface/InitConfigInterface";
+import {AbstractComponentConstructor, AbstractComponentInterface} from "../interface/AbstractComponentInterface";
 import AbstractManagerInterface from "../interface/AbstractManagerInterface";
 import SimpleMap from "../../util/map/implement/SimpleMap";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import AbstractComponentLoader from "./AbstractComponentLoader";
+import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
 
 
-export  class GE {
+export  class GE<ComponentType> {
 
-    private static managerMap = new SimpleMap<ManagerNameSpaces, AbstractManagerInterface>();
+    private  managerMap = new SimpleMap<ManagerNameSpaces, AbstractManagerInterface>();
     
-    // private static componentMap = new SimpleMap<ComponentNameSpace, typeof AbstractComponent>();
+    private  componentMap = new Map<ComponentType, AbstractComponentConstructor<ComponentType>>();
 
-    private static emitor = new EventEmitor();
+    private  emitor = new EventEmitor();
 
-    private static INIT_ERROR = new Error( 'Init Error: Please init Before invoke start method !' ); 
+    private  INIT_ERROR = new Error( 'Init Error: Please init Before invoke start method !' ); 
 
-    private static hasStarted = false;
+    private  hasStarted = false;
     
     /**
      *启动.
      */
-    static start(){
+     start(){
         this.emitor.emit(GEEvents.START);
         this.hasStarted = true;
     };
@@ -31,7 +32,7 @@ export  class GE {
     /**
      * 暂停.
      */
-    static pause(){
+     pause(){
         this.emitor.emit(GEEvents.PAUSE);
     };
 
@@ -39,12 +40,13 @@ export  class GE {
      * 根据配置注入 manager.
      * @param initConfigs 
      */
-    static init( initConfigs: InitConfigInterface ) {
+     init( initConfigs: InitConfigInterface<ComponentType> ) {
 
         this.checkStarted( this.INIT_ERROR );
 
         this.initManagers(initConfigs.managerInfoArray);
 
+        this.initComponets( initConfigs.componentInfoArray);
      
     };
 
@@ -52,21 +54,38 @@ export  class GE {
      * 注入一个 managerInfo.
      * @param managerInfo 
      */
-    static initManager( managerInfo: ManagerInfo){
+     initManager( managerInfo: ManagerInfo){
 
         this.checkStarted( this.INIT_ERROR );
-        const manager = new managerInfo.manager(managerInfo.config);
+        const manager = new managerInfo.manager(this, managerInfo.config);
 
-        this.managerMap.set(managerInfo.managerNameSpace, manager);
+        // this.managerMap.set(managerInfo.managerNameSpace, manager);
     };
 
-    private static checkStarted(errorMessage: Error){
+    /**
+     * 注入一个 component.
+     * @param componentInfo 
+     */
+     initComponet( componentInfo: ComponentInfo<ComponentType>) {
+        
+        this.checkStarted( this.INIT_ERROR );
+
+        this.componentMap.set(componentInfo.componentNameSpace, componentInfo.componentClass);
+    };
+
+    private  checkStarted(errorMessage: Error){
         if( this.hasStarted){
             throw errorMessage;
         }
     }
 
-    private static initManagers(managerInfos: Array<ManagerInfo>) {
+    private  initComponets(componentInfoArray: Array<ComponentInfo<ComponentType>>){
+        componentInfoArray.map( componentInfo => {
+            this.initComponet(componentInfo);
+        } )
+    };
+
+    private  initManagers(managerInfos: Array<ManagerInfo>) {
 
         for(let i = 0; i <managerInfos.length; i++){
             this.initManager( managerInfos[i] );
@@ -77,7 +96,7 @@ export  class GE {
      * 获取实例化的 manager.
      * @param managerNameSpace 
      */
-    static getManager(managerNameSpace: ManagerNameSpaces): AbstractManagerInterface {
+     getManager(managerNameSpace: ManagerNameSpaces): AbstractManagerInterface {
 
        return this.managerMap.get(managerNameSpace);
     };
@@ -87,7 +106,7 @@ export  class GE {
      * @param eventName 
      * @param message 
      */
-    static sendMessage <T extends keyof GEEventsMap>( eventName: T, ...message: Parameters<GEEventsMap[T]> ) {
+     sendMessage <T extends keyof GEEventsMap>( eventName: T, ...message: Parameters<GEEventsMap[T]> ) {
         this.emitor.emit(eventName, ...message);
     };
 
@@ -96,7 +115,7 @@ export  class GE {
      * @param eventName 
      * @param fun 
      */
-    static subscribeMssage <T extends keyof GEEventsMap> (eventName: T, fun : GEEventsMap[T]) {
+     subscribeMssage <T extends keyof GEEventsMap> (eventName: T, fun : GEEventsMap[T]) {
         this.emitor.addEventListener(eventName, fun);
     };
 
@@ -106,17 +125,33 @@ export  class GE {
      * @param eventName 
      * @param fun 
      */
-    static unsubscribeMssage (eventName: GEEvents, fun : Function) {
+     unsubscribeMssage (eventName: GEEvents, fun : Function) {
         this.emitor.removeEventListener(eventName, fun);
     };
 
+    /**
+     * 实例化组件.
+     * @param componentNameSpace 
+     */
+     instanceComponent<T extends ComponentType> (
+         componentNameSpace: T, ...params: ResetParams<T>
+    ): AbstractComponentInterface<T> {
+        const constructor = this.componentMap.get(componentNameSpace)
+        const component =  new constructor(this);
+        component.reset(...params)
+        return component
+    }
 
     /**
      * 实例化组件容器.
      * @param componentLoader 
      */
-    static instanceComponentLoader(componentLoader: typeof AbstractComponentLoader): AbstractComponentLoader {
-        return new componentLoader();
+     instanceComponentLoader(componentLoader: typeof AbstractComponentLoader): AbstractComponentLoader<ComponentType> {
+        return new componentLoader(this);
     } 
+
+    craeteObj(): GameObject<ComponentType>{
+        return new GameObject(this)
+    }
 
 }

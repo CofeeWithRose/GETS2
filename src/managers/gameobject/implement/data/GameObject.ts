@@ -3,15 +3,15 @@ import GameObjectInterface from "../../interface/data/GameObjectInterface";
 import {GE} from "../../../../core/implement/GE";
 import { GEEvents } from "../../../../util/enums/GEEvent";
 
-export  class GameObject extends AbstractComponentLoader implements GameObjectInterface {
+export  class GameObject<ComponentType> extends AbstractComponentLoader<ComponentType> implements GameObjectInterface<ComponentType> {
 
-    constructor() {
-        super();
-        GE.sendMessage( GEEvents.ADD_GAMEOBJECT, this);
+    constructor(game: GE<ComponentType>) {
+        super(game);
+        game.sendMessage( GEEvents.ADD_GAMEOBJECT, this);
     }
 
     destory(){
         this.removeAllComponents()
-        GE.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
+        this.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
     };
 }

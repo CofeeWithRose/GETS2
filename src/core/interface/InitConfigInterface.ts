@@ -1,12 +1,14 @@
 import AbstractManager from "./../implement/AbstractManager";
 import AbstractManagerConfig from "./AbstractManagerConfig";
 import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
+import { AbstractComponentConstructor } from "./AbstractComponentInterface";
 
 
-export default interface InitConfigInterface {
+export interface InitConfigInterface<ComponentType> {
     
     readonly managerInfoArray: Array<ManagerInfo>;
 
+    readonly componentInfoArray: ComponentInfo<ComponentType>[];
 }
 
 export interface ManagerInfo {
@@ -20,10 +22,13 @@ export interface ManagerInfo {
 }
 
 
-// export interface ComponentInfo {
+export interface ComponentInfo<T> {
 
-//     readonly componentNameSpace: ComponentNameSpace;
+    readonly componentNameSpace: T;
 
-//     readonly componentClass: typeof AbstractComponent;
+    readonly componentClass: AbstractComponentConstructor<T>;
 
-// }
+}
+
+export type ResetParams<T> = Parameters<InstanceType<ComponentInfo<T>['componentClass']>['reset']>
+

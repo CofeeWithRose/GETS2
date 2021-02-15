@@ -2,8 +2,8 @@ import AbstractManagerInterface from "../../../core/interface/AbstractManagerInt
 import GameObjectInterface from "./data/GameObjectInterface";
 
 
-export default interface GameObjectManagerInterface extends AbstractManagerInterface {
+export default interface GameObjectManagerInterface<ComponentType> extends AbstractManagerInterface {
 
-    findGameObjectById(gameObjectId: number): GameObjectInterface;
+    findGameObjectById(gameObjectId: number): GameObjectInterface<ComponentType>;
     
 }
