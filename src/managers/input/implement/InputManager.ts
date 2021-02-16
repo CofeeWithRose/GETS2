@@ -52,27 +52,40 @@ export default class InputManager extends AbstractMnager implements InputManager
         }
     }
 
-    keyDown(keyBoard: KeyBoard): boolean{
-        return this.hasKeysDown[keyBoard];
+    keyDown(...keyBoard: KeyBoard[]): boolean {
+        for(let i =0; i< keyBoard.length; i++ ){
+          if(this.hasKeysDown[keyBoard[i]]) return true
+        }
+        return false;
     }
 
-    keyUp(keyBoard: KeyBoard): boolean{
-        return this.hasKeysUp[keyBoard];
+    keyUp(...keyBoard: KeyBoard[]): boolean{
+      for(let i =0; i< keyBoard.length; i++ ){
+        if(!this.hasKeysDown[keyBoard[i]]) return true
+      }
+      return false;
     }
 
-    isKeyDown(keyBoard: KeyBoard): boolean{
-        return this.isKeysDown[keyBoard];
+    isKeyDown(...keyBoard: KeyBoard[]): boolean{
+
+      for(let i =0; i< keyBoard.length; i++ ){
+        if(this.isKeysDown[keyBoard[i]]) return true
+      }
+      return false;
     };
 
-    isKeyUp(keyBoard: KeyBoard): boolean{
-        return !this.isKeysDown[keyBoard];
+    isKeyUp(...keyBoard: KeyBoard[]): boolean{
+      for(let i =0; i< keyBoard.length; i++ ){
+        if(!this.isKeysDown[keyBoard[i]]) return true
+      }
+      return false;
     };
 
-    onKeyDown(keyBoard: KeyBoard, fun: Function): void{
+    onKeyDown(fun: Function, ...keyBoard: KeyBoard[]): void{
         fun();
     };
 
-    onKeyUp( keyBoard: KeyBoard, fun: Function): void{
+    onKeyUp( fun: Function, ...keyBoard: KeyBoard[]): void{
         fun();
     };
 

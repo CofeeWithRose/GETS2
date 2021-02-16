@@ -28,6 +28,11 @@ export class Position2DComponent extends AbstractComponent implements Position2D
        this.timer = this.getManager( TimerManager );
     };
 
+    reset(position?: Vec2){
+      this.value = position
+      this.oldValue = position
+    }
+
 
     get Value(){
        return this.value
@@ -35,9 +40,9 @@ export class Position2DComponent extends AbstractComponent implements Position2D
 
 
     set Value( newValue: Vec2 ){
+
         this.oldValue = this.value 
         this.oldTime = this.time;
-        this.time = this.timer.StartFromNow;
         this.value = newValue
         this.GameObject.Children.forEach( c => {
             const position = c.getComponent(Position2DComponent)
@@ -46,9 +51,14 @@ export class Position2DComponent extends AbstractComponent implements Position2D
                 y: position.Value.y + this.value.y - this.oldValue.y,
             }
         })
-        this.eventEnitor.emit('positionChange', this.oldValue, this.value)
-        console.log( 'this.value', this.value )
+        if(this.timer) this.time = this.timer.StartFromNow;
 
+        const deltaValue = {
+          x: this.value.x - this.oldValue.x, 
+          y: this.value.y - this.oldValue.y,
+       }
+
+        this.eventEnitor.emit('positionChange', this.value, deltaValue )
     };
 
     get OldValue(){

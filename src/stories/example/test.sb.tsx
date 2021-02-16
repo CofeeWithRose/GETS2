@@ -1,5 +1,7 @@
-import { GE, GameObject, createConfig, Position2DComponent, Render2DComp, InitConfigInterface } from 'ge'
-import React, { useEffect, useRef } from 'react'
+import { GE, createConfig, Position2DComponent, Render2DComp, InitConfigInterface } from 'ge'
+import { useEffect, useRef } from 'react'
+import stand1 from '../assets/player2/stand1.png'
+import { MoveController } from './componnet/MoveComp'
 
 export default {
     title: 'Run RENDER',
@@ -21,23 +23,23 @@ export function Run() {
         game.start()
 
         const obj1 = game.craeteObj()
-        obj1.addComponent(Position2DComponent);
-        obj1.addComponent(Render2DComp)
-
+        obj1.addComponent(Position2DComponent, { x: 100, y: 100 });
+        obj1.addComponent(Render2DComp, stand1)
+        obj1.addComponent(MoveController)
 
         const obj1_1 = game.craeteObj()
-        obj1_1.addComponent(Position2DComponent);
-        obj1_1.addComponent(Render2DComp)
+        obj1_1.addComponent(Position2DComponent, { x: 250, y: 100 });
+        obj1_1.addComponent(Render2DComp, stand1)
         obj1.addChildren(obj1_1)
-
-
-
-        obj1.destory()
+        // obj1.removeChildren(obj1_1)
+        // obj1.destory()
 
     }, [])
     return <div>
         <canvas 
             ref={canvasRef}
+            width={800}
+            height={600}
         />
     </div>
 }

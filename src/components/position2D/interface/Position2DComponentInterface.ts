@@ -1,7 +1,7 @@
 import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
 
 export interface PositionEvent {
-    positionChange: ( old: Vec2, newValue: Vec2) => void
+    positionChange: (newValue: Vec2, deltaValue: Vec2) => void
 }
 
 export interface Vec2 {

@@ -16,7 +16,7 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
         this.game = game
     }
 
-    reset(){}
+    reset(...params: any[]){}
 
 
     get GameObject(){
