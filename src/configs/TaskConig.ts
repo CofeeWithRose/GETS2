@@ -29,10 +29,6 @@ import {Position2DComponent} from "../components/position2D/implement/Position2D
             methodName: 'update',
             scope: [ AbstractMnager, AbstractComponent ],
         },
-        // {
-        //     methodName: 'render',
-        //     scope: [ Render2DComponent ],
-        // },
         {
             methodName: 'updated',
             scope: [ AbstractComponent, AbstractMnager ],

@@ -24,11 +24,11 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
   protected spiritId: string
 
 
-  reset(sourceUrl: string) {
+  init = (sourceUrl: string) => {
     this.sourceUrl = sourceUrl
   }
 
-  async awake(){
+  start = async () => {
     this.position = this.GameObject.getComponent(Position2DComponent)
     // setTimeout( () => console.log('getComponent..', this.GameObject), 1000)
 
@@ -43,7 +43,6 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
       if(this.sourceUrl) {
         this.sourceId = await this.renderer.loadSource(this.sourceUrl)
         this.spiritId =  this.renderer.craeteSpirit(this.sourceId, this.position.Value)
-        console.log('spiritId....')
       }
       
     }

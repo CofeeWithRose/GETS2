@@ -74,7 +74,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject i
         componentClass: C, ...params:  ResetParams<C>
     ): InstanceType<C> {
         const component = new componentClass(this.game)
-        component.reset(...params)
+        component.init(...params)
         this.componentList.push( component);
         component.GameObject = <any>this;
         if(this.isActive){

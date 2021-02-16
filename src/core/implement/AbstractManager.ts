@@ -3,6 +3,7 @@ import {AbstractManagerInterface} from "../interface/AbstractManagerInterface";
 import AbstractManagerConfig from "../interface/AbstractManagerConfig";
 import { GEEventsMap } from "../../util/enums/GEEvent";
 import {GE} from "./GE";
+import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
 
 export class AbstractMnager extends AbstractGEObject implements AbstractManagerInterface {
 
@@ -17,4 +18,12 @@ export class AbstractMnager extends AbstractGEObject implements AbstractManagerI
     addGEEvemtListener <T extends keyof GEEventsMap>(eventName: T, fun: GEEventsMap[T]) {
         this.game.subscribeMssage(eventName, fun);
     };
+
+    init = EMPTY_TASK
+
+    willUpdate = EMPTY_TASK
+
+    update = EMPTY_TASK
+
+    updated = EMPTY_TASK
 }

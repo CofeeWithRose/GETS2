@@ -1,5 +1,5 @@
 import {AbstractMnager} from "../../../core/implement/AbstractManager";
-import TaskManagerInterface from "../interface/TaskManagerInterface";
+import TaskManagerInterface, { EMPTY_TASK } from "../interface/TaskManagerInterface";
 import TaskMnagerConfigInterface from "../interface/config/TaskMnagerConfigInterface";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
@@ -56,10 +56,10 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         for (let i = 0; i < taskInfoArray.length; i++) {
             const taskInfo = taskInfoArray[i];
             const task = component[taskInfo.taskNames]
-            if(task){
+            if(task && task !== EMPTY_TASK){
                 const taskId = this[taskInfo.taskType].addTask(
                     taskInfo.taskPriority,
-                    task.bind(component),
+                    task,
                 );
                 componentTaskIdMap.add(taskInfo.taskType, taskId);
             }

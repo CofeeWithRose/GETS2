@@ -11,7 +11,21 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
     destory(): void
 
-    reset(...params: any[]): void
+    init(...params: any[]): void
+
+    awake(): void
+
+    start(): void
+
+    update(): void
+
+    willUpdate(): void
+
+    update(): void
+
+    updated(): void
+
+    afterUpdated(): void
 };
 
 
@@ -19,5 +33,5 @@ export interface AbstractComponentConstructor {
     new (game: GE): AbstractComponentInterface
 }
 
-export type ResetParams<C extends AbstractComponentConstructor> = Parameters<InstanceType<C>['reset']>
+export type ResetParams<C extends AbstractComponentConstructor> = Parameters<InstanceType<C>['init']>
 

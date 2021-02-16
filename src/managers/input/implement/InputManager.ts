@@ -40,7 +40,7 @@ export default class InputManager extends AbstractMnager implements InputManager
         this.hasKeysUp[key] = false;
     };
     
-    updated(){
+    updated = () => {
         const downKeys = Object.keys(this.hasKeysDown);
         for(let i = 0; i< downKeys.length; i++){
             this.hasKeysDown[downKeys[i]] = false;

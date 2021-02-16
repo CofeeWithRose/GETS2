@@ -7,6 +7,15 @@ export interface AbstractManagerInterface extends AbstractGEObjectInterface {
 
     addGEEvemtListener(ventName: GEEvents, fun : Function): void;
 
+    init(): void
+
+    willUpdate(): void
+
+    update(): void
+
+    updated(): void
+
+
 }
 
 export interface AbstractManagerConstructor<P extends any[]> {

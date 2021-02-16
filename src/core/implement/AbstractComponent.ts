@@ -2,7 +2,9 @@ import AbstractGEObject from "./AbstractGEObject";
 import {AbstractComponentInterface} from "../interface/AbstractComponentInterface";
 import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
 import {GE} from "./GE";
-import { AbstractManagerConstructor, AbstractManagerInterface } from "../interface/AbstractManagerInterface";
+import { AbstractManagerConstructor } from "../interface/AbstractManagerInterface";
+import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
+
 
 export class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
   
@@ -16,8 +18,20 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
         this.game = game
     }
 
-    reset(...params: any[]){}
+    // init(...params: any[]){}
 
+    init = EMPTY_TASK
+
+    awake = EMPTY_TASK
+
+    start = EMPTY_TASK
+
+    willUpdate = EMPTY_TASK
+
+    update = EMPTY_TASK
+    updated = EMPTY_TASK
+
+    afterUpdated = EMPTY_TASK
 
     get GameObject(){
         return this.componentLoader;

@@ -24,15 +24,14 @@ export class Position2DComponent extends AbstractComponent implements Position2D
 
     protected parentPosition: Position2DComponent
 
-    awake(){
+    awake = () =>{
        this.timer = this.getManager( TimerManager );
     };
 
-    reset(position?: Vec2){
+    init = (position?: Vec2) => {
       this.value = position
       this.oldValue = position
     }
-
 
     get Value(){
        return this.value
