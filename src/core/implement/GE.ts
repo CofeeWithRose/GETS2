@@ -53,6 +53,7 @@ export  class GE {
         this.checkStarted( this.INIT_ERROR );
         const manager = new managerInfo.manager(this, managerInfo.config);
         this.managerList.push(manager)
+        this.emitor.emit(GEEvents.ADD_MANAGER, manager)
     };
 
 

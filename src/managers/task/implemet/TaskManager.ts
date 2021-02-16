@@ -11,12 +11,14 @@ import SimpleMap from "../../../util/map/implement/SimpleMap";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
 import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
 import { GE } from "../../../core/implement/GE";
+import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 
 export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
 
     constructor(game: GE, config: TaskMnagerConfigInterface) {
         super(game, config);
         this.configParser = new ConfigParser(config);
+        this.addGEEvemtListener(GEEvents.ADD_MANAGER, this.addInstanceTask)
         this.addGEEvemtListener(GEEvents.START, this.onStart);
         this.addGEEvemtListener(GEEvents.PAUSE, this.onPause);
         this.addGEEvemtListener(GEEvents.ADD_COMPONENT, this.onAddComponnet);
@@ -39,12 +41,14 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private removingComponentList: AbstractComponentInterface[] = []
 
-    private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface) => {
+    private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponentInterface) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
     };
 
-    private addInstanceTask( component: AbstractComponentInterface) {
+
+
+    private addInstanceTask = ( component: AbstractGEObjectInterface) => {
         
         const taskInfoArray = this.configParser.getTaskInfoArray(component);
         const componentTaskIdMap = new MutiValueMap<TaskType, number>();

@@ -24,7 +24,7 @@ export default class TimerManager extends AbstractMnager implements TimerManager
     private  startTime = 0;
 
     //时间的缩放 单位 ms=> s, ( 0 ~ 1 ) * 0.001;
-    private sacle = 1 * 0.001;
+    private sacle = 1;
 
     private fpsDom: HTMLDivElement;
 
@@ -44,15 +44,14 @@ export default class TimerManager extends AbstractMnager implements TimerManager
     };
 
     get StartFromNow (){
-        return this.startFromeNow;
+        return this.startFromeNow * 0.001;
     };
 
     get Scale(){
-        return this.sacle * 1000;
+        return this.sacle;
     }
 
     @Ranger(0,1)
-    @Scale(0.001)
     set Scale(scale: number){
         this.sacle = scale;
     }

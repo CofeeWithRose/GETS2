@@ -5,7 +5,7 @@ import { AbstractManagerConstructor } from "./AbstractManagerInterface";
 
 export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
-    ComponentLoader: AbstractComponentLoaderInterface;
+    GameObject: AbstractComponentLoaderInterface;
 
     getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C ): InstanceType<C>
 

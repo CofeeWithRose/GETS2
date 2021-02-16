@@ -9,7 +9,7 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
   protected position: Position2DComponentInterface
 
   awake(){
-      this.position = this.ComponentLoader.getComponent(Position2DComponent)
+      this.position = this.GameObject.getComponent(Position2DComponent)
       if(this.position) this.position.on('positionChange', this.handlePositionChange)
       // this.getManager(Render)
       console.log('awake')

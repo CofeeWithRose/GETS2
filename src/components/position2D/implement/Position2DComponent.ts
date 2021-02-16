@@ -29,9 +29,6 @@ export class Position2DComponent extends AbstractComponent implements Position2D
        this.timer = this.getManager( TimerManager );
     };
 
-    update(){
-        console.log('up[date')
-    }
 
     get Value(){
        return this.value
@@ -43,7 +40,7 @@ export class Position2DComponent extends AbstractComponent implements Position2D
         this.oldTime = this.time;
         this.time = this.timer.StartFromNow;
         this.value = newValue
-        this.ComponentLoader.Children.forEach( c => {
+        this.GameObject.Children.forEach( c => {
             const position = c.getComponent(Position2DComponent)
             if(position) position.Value = { 
                 x: position.Value.x + this.value.x - this.oldValue.x,
@@ -51,6 +48,8 @@ export class Position2DComponent extends AbstractComponent implements Position2D
             }
         })
         this.eventEnitor.emit('positionChange', this.oldValue, this.value)
+        console.log( 'this.value', this.value )
+
     };
 
     get OldValue(){

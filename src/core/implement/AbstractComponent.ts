@@ -19,11 +19,11 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
     reset(){}
 
 
-    get ComponentLoader(){
+    get GameObject(){
         return this.componentLoader;
     };
 
-    set ComponentLoader(componentLoader: AbstractComponentLoaderInterface){
+    set GameObject(componentLoader: AbstractComponentLoaderInterface){
         this.componentLoader = componentLoader;
     }
 
