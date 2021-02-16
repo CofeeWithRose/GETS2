@@ -37,6 +37,8 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private isRunning = false;
 
+    private removingComponentList: AbstractComponentInterface[] = []
+
     private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
@@ -79,13 +81,17 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         };
     }
 
-    private onRemoveComponent = (_: AbstractComponentLoaderInterface,  component: AbstractComponentInterface) => {
+    private onRemoveComponent = (_: AbstractComponentLoaderInterface, component: AbstractComponentInterface) => {
+      this.removingComponentList.push(component)
+    };
+
+    private removeComponent = (component: AbstractComponentInterface) => {
         const idInfo = this.instanceTaskId.get(component.Id);
         const endIdList  = idInfo.get(TaskType.END)
         this.end.runTasks(endIdList.valus())
         this.removeInstanceTask(idInfo);
         this.instanceTaskId.remove(component.Id);
-    };
+    }
 
     private onStart = () => {
         if(!this.isRunning){
@@ -118,6 +124,10 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
             this.hasNewComponent = false;
         }
         this.loop.runTask();
+        this.removingComponentList.forEach(c => {
+            this.removeComponent(c)
+        })
+        this.removingComponentList = []
     }
 
 

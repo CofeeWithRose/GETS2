@@ -1,5 +1,10 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import {AbstractComponentConstructor, AbstractComponentInterface, ResetParams} from "./AbstractComponentInterface";
+import { GE } from "../implement/GE";
+
+export interface AbstractComponentLoaderEvent {
+    parentChange: ( newParent: AbstractComponentLoaderInterface) => void
+}
 
 export default interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {
 
@@ -8,6 +13,14 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
      */
     IsActive: boolean;
 
+    Parent: AbstractComponentLoaderInterface
+
+    Children: AbstractComponentLoaderInterface[]
+
+    on<E extends keyof AbstractComponentLoaderEvent >(
+        eventName: E, cb: AbstractComponentLoaderEvent[E]
+    ) :void
+    
     /**
      * 添加装载的 component.
      * @param component 
@@ -58,3 +71,7 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
      */
     removeAllComponents(): void;
 };
+
+export interface AbstractComponentLoaderConstructor {
+    new (game: GE): AbstractComponentLoaderInterface
+}

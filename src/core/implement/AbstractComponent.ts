@@ -4,7 +4,7 @@ import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoad
 import {GE} from "./GE";
 import { AbstractManagerConstructor, AbstractManagerInterface } from "../interface/AbstractManagerInterface";
 
-export default class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
+export class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
   
 
     private componentLoader: AbstractComponentLoaderInterface;
@@ -30,5 +30,7 @@ export default class AbstractComponent extends AbstractGEObject implements Abstr
     getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C): InstanceType<C>{
         return this.game.getManager( managerConstructor);
     }
+
+    destory(){}
 
 };

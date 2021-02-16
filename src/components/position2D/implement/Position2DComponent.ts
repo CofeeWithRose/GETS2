@@ -1,18 +1,18 @@
-import AbstractComponent from "../../../core/implement/AbstractComponent";
-import {Position2DComponentInterface} from "../interface/Position2DComponentInterface";
+import {AbstractComponent} from "../../../core/implement/AbstractComponent";
+import {Position2DComponentInterface, PositionEvent, Vec2} from "../interface/Position2DComponentInterface";
 import TimerManagerInterfce from "../../../managers/timer/interface/TimerManagerInterfce";
 import TimerManager from "../../../managers/timer/implement/TimerManager";
+import EventEmitor from "../../../util/event/EventEmitor";
+import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
 
 export class Position2DComponent extends AbstractComponent implements Position2DComponentInterface {
 
 
-    private x = 0;
 
-    private y = 0;
+    private value: Vec2 = { x: 0, y:0 }
 
-    private oldX = 0;
 
-    private oldY =0;
+    private oldValue: Vec2 = { x: 0, y: 0}
 
     private time = 0;
 
@@ -20,36 +20,44 @@ export class Position2DComponent extends AbstractComponent implements Position2D
 
     private timer: TimerManagerInterfce;
 
+    private eventEnitor: EventEmitor = new EventEmitor()
+
+
+    protected parentPosition: Position2DComponent
+
     awake(){
        this.timer = this.getManager( TimerManager );
     };
 
-    get X(){
-        return this.x;
+    update(){
+        console.log('up[date')
+    }
+
+    get Value(){
+       return this.value
     };
 
-    set X( x: number ){
-        
-        this.oldX = this.x;
+
+    set Value( newValue: Vec2 ){
+        this.oldValue = this.value 
         this.oldTime = this.time;
-
         this.time = this.timer.StartFromNow;
-        this.x = x;
+        this.value = newValue
+        this.ComponentLoader.Children.forEach( c => {
+            const position = c.getComponent(Position2DComponent)
+            if(position) position.Value = { 
+                x: position.Value.x + this.value.x - this.oldValue.x,
+                y: position.Value.y + this.value.y - this.oldValue.y,
+            }
+        })
+        this.eventEnitor.emit('positionChange', this.oldValue, this.value)
     };
 
-    get Y(){
-        return this.y;
-    };
+    get OldValue(){
+        return this.oldValue
+    }
 
-    set Y( y:number ){
-        
-        this.oldY = this.y;
-        this.oldTime = this.time;
 
-        this.time = this.timer.StartFromNow;
-        this.y = y;
-
-    };
 
     get Time() {
         return this.time;
@@ -59,11 +67,12 @@ export class Position2DComponent extends AbstractComponent implements Position2D
         return this.oldTime;
     }
 
-    get OldX(){
-        return this.oldX;
+
+    on<E extends keyof PositionEvent>(eventName: E, cb: PositionEvent[E]): void {
+        this.eventEnitor.addEventListener(eventName, cb)
     }
 
-    get OldY(){
-        return this.oldY;
+    off<E extends keyof PositionEvent>(eventName: E, cb: PositionEvent[E]): void {
+        this.eventEnitor.removeEventListener(eventName, cb)
     }
 };

@@ -9,6 +9,8 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
     getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C ): InstanceType<C>
 
+    destory(): void
+
     reset(...params: any[]): void
 };
 

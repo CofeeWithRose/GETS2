@@ -4,6 +4,7 @@ import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import AbstractComponentLoader from "./AbstractComponentLoader";
 import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
+import AbstractComponentLoaderInterface, { AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 
 
 export  class GE {
@@ -114,7 +115,7 @@ export  class GE {
      * 实例化组件容器.
      * @param componentLoader 
      */
-    instanceComponentLoader(componentLoader: typeof AbstractComponentLoader): AbstractComponentLoader {
+    instanceComponentLoader(componentLoader: AbstractComponentLoaderConstructor): AbstractComponentLoaderInterface {
         return new componentLoader(this);
     } 
 

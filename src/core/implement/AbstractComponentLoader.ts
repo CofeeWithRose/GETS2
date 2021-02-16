@@ -1,24 +1,37 @@
 import AbstractGEObject from "./AbstractGEObject";
-import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
+import AbstractComponentLoaderInterface, { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import {AbstractComponentConstructor, AbstractComponentInterface, ResetParams} from "../interface/AbstractComponentInterface";
-import MutiValueMap from "../../util/map/implement/MutiValueMap";
 import { GEEvents } from "../../util/enums/GEEvent";
 import { GE } from "./GE";
 
 
-export default class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface {
+export default abstract class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface {
 
     protected game: GE
+
     constructor(game: GE) {
         super();
         this.game = game
     };
+
+    protected parent: AbstractComponentLoaderInterface
+
+    protected children:AbstractComponentLoaderInterface[] = []
+
 
     private isActive = true;
 
     get IsActive() {
         return this.isActive;
     };
+
+    get Parent(): AbstractComponentLoaderInterface {
+        return this.parent
+    }
+
+    get Children(): AbstractComponentLoaderInterface[] {
+        return this.children
+    }
 
     set IsActive(isActive: boolean) {
         const isChange = this.isActive !== isActive;
@@ -49,6 +62,10 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
         }
     };
 
+    on<E extends keyof AbstractComponentLoaderEvent>(eventName: E, cb: AbstractComponentLoaderEvent[E]): void {
+
+    }
+
     /**
      * 添加装载的 component.
      * @param component 
@@ -60,7 +77,6 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
         component.reset(...params)
         this.componentList.push( component);
         component.ComponentLoader = <any>this;
-
         if(this.isActive){
             this.game.sendMessage(GEEvents.ADD_COMPONENT, this, component);
         }
@@ -144,3 +160,4 @@ export default class AbstractComponentLoader extends AbstractGEObject implements
         this.componentList = []
     }
 }
+

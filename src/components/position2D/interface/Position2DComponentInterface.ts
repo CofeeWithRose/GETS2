@@ -1,16 +1,28 @@
 import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
 
+export interface PositionEvent {
+    positionChange: ( old: Vec2, newValue: Vec2) => void
+}
+
+export interface Vec2 {
+    readonly x: number
+    readonly y: number
+}
+
 export interface Position2DComponentInterface extends AbstractComponentInterface {
 
-    X:number;
 
-    Y: number;
+    Value: Vec2
 
-    readonly OldX: number;
-
-    readonly OldY: number;
+    readonly  OldValue: Vec2
 
     readonly Time: number;
 
     readonly OldTime: number;
+
+    on<E extends keyof PositionEvent>(eventName: E, cb: PositionEvent[E]): void
+
+    off<E extends keyof PositionEvent>(eventName: E, cb: PositionEvent[E]): void
+
+
 }

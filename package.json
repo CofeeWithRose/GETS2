@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "i-render": "0.0.15"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@storybook/addon-actions": "^6.1.17",

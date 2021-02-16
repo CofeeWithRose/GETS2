@@ -1,6 +1,6 @@
 import { Uuid } from "../../util/uuid";
 
-export default class AbstractGEObject implements AbstractGEObject {
+export default class AbstractGEObject {
     
     private id = Uuid.getUuid();
 

@@ -19,13 +19,22 @@ const cfg: InitConfigInterface = {
 
 const game = new GE()
 game.init(cfg);
-const obj = game.craeteObj()
-obj.addComponent(Position2DComponent);
-obj.addComponent(Render2DComp)
+
+const obj1 = game.craeteObj()
+obj1.addComponent(Position2DComponent);
+obj1.addComponent(Render2DComp)
+
+
+const obj1_1 = game.craeteObj()
+obj1_1.addComponent(Position2DComponent);
+obj1_1.addComponent(Render2DComp)
+obj1.addChildren(obj1_1)
+
+// obj1.destory()
 
 game.start()
 
-obj.destory()
+
 
 export function Run() {
     return <div>run</div>
