@@ -1,21 +1,21 @@
 import {AbstractMnager} from "./../implement/AbstractManager";
 import AbstractManagerConfig from "./AbstractManagerConfig";
-import { AbstractComponentConstructor } from "./AbstractComponentInterface";
+import { AbstractManagerConstructor } from "./AbstractManagerInterface";
 
 
 export interface InitConfigInterface {
     
 
-    readonly managerInfoArray: Array<ManagerInfo>;
+    readonly managerInfoArray: ManagerInfo<AbstractManagerConstructor<any>>[];
 
 }
 
-export interface ManagerInfo {
+export interface ManagerInfo<M extends AbstractManagerConstructor<any>> {
 
 
-    readonly manager: typeof AbstractMnager;
+    readonly manager: M;
 
-    readonly config: AbstractManagerConfig;
+    readonly config: ConstructorParameters<M>[1];
 
 }
 

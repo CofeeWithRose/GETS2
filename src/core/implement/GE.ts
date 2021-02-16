@@ -36,7 +36,7 @@ export  class GE {
      * 根据配置注入 manager.
      * @param initConfigs 
      */
-    init( initConfigs: InitConfigInterface) {
+    constructor( initConfigs: InitConfigInterface) {
 
         this.checkStarted( this.INIT_ERROR );
 

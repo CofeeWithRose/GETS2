@@ -7,7 +7,7 @@ export class Renderer extends AbstractMnager implements RendererInfer {
 
     private irender: IRender
 
-    constructor(game:GE,config: RendererCfg) {
+    constructor(game:GE, config: RendererCfg) {
         super(game, config);
         this.irender = new IRender(config.canvas, { maxNumber:  config.maxSize })
     }

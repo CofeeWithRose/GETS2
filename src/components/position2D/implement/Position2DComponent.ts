@@ -3,7 +3,6 @@ import {Position2DComponentInterface, PositionEvent, Vec2} from "../interface/Po
 import TimerManagerInterfce from "../../../managers/timer/interface/TimerManagerInterfce";
 import TimerManager from "../../../managers/timer/implement/TimerManager";
 import EventEmitor from "../../../util/event/EventEmitor";
-import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
 
 export class Position2DComponent extends AbstractComponent implements Position2DComponentInterface {
 
