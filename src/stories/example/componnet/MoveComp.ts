@@ -11,12 +11,12 @@ export class MoveController extends AbstractComponent {
 
   protected position: Position2DComponentInterface
 
-  awake(){
+  awake = () => {
     this.input = this.getManager(InputManager)
     this.position = this.GameObject.getComponent(Position2DComponent)
   }
 
-  update() {
+  update = () => {
     if(this.position && this.input.isKeyDown(KeyBoard.d, KeyBoard.D)){
       this.position.Value = { x: this.position.Value.x +1, y: this.position.Value.y }
     }

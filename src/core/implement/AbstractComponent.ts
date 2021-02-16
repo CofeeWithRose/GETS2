@@ -29,10 +29,13 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
     willUpdate = EMPTY_TASK
 
     update = EMPTY_TASK
+
     updated = EMPTY_TASK
 
     afterUpdated = EMPTY_TASK
 
+    destory = EMPTY_TASK
+    
     get GameObject(){
         return this.componentLoader;
     };
@@ -45,6 +48,5 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
         return this.game.getManager( managerConstructor);
     }
 
-    destory(){}
 
 };

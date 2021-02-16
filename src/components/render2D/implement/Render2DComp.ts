@@ -52,7 +52,7 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
     if(this.spiritId) this.renderer.updateSpirit(this.spiritId, newV)
   }
   
-  destory(){
+  destory = () => {
     if(this.renderer) this.renderer.destroySpirit(this.spiritId)
     if(this.position) this.position.off('positionChange', this.handlePositionChange)
   }

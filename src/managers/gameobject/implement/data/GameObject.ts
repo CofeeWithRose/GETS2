@@ -37,7 +37,7 @@ export  class GameObject extends AbstractComponentLoader implements GameObjectIn
         return this.children.find( ({Id}) => Id === id )
     }
 
-    destory(){
+    destory = () => {
         this.children.forEach( c => c.destory() )
         this.removeAllComponents()
         this.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
