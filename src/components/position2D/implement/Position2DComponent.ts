@@ -56,8 +56,6 @@ export class Position2DComponent extends AbstractComponent implements Position2D
         return this.oldValue
     }
 
-
-
     get Time() {
         return this.time;
     };

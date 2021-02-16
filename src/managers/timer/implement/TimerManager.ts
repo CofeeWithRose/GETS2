@@ -26,14 +26,10 @@ export default class TimerManager extends AbstractMnager implements TimerManager
     //时间的缩放 单位 ms=> s, ( 0 ~ 1 ) * 0.001;
     private sacle = 1;
 
-    private fpsDom: HTMLDivElement;
+    // private fpsDom: HTMLDivElement;
 
     private frameCount = 0;
 
-    private lastFpsFromNOw = 0;
-
-    //刷新fps时间间隔
-    private fpsFrequence = 2;
 
     get FrameCount(){
         return this.frameCount;
@@ -58,15 +54,6 @@ export default class TimerManager extends AbstractMnager implements TimerManager
 
     public init(){
         this.startTime = Date.now();
-
-        this.fpsDom = <HTMLDivElement>document.createElement('dv');
-        this.fpsDom.style.width = '100 px';
-        this.fpsDom.style.height = '20 px';
-        this.fpsDom.style.position = 'fixed';
-        this.fpsDom.style.top = '0';
-        this.fpsDom.style.right = '0';
-        this.fpsDom.style.color = 'white'; 
-        document.body.appendChild(this.fpsDom);
     };
     
 
@@ -77,10 +64,5 @@ export default class TimerManager extends AbstractMnager implements TimerManager
         this.dealTime = (newStartFromeNow - this.startFromeNow);
         this.startFromeNow = newStartFromeNow;
 
-        if( this.startFromeNow - this.lastFpsFromNOw > this.fpsFrequence){
-            this.fpsDom.innerHTML = `FPS： ${ (1/this.dealTime).toFixed(2) }`;
-            this.lastFpsFromNOw = this.startFromeNow;
-        }
-        
     };
 }
