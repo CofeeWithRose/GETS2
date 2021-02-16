@@ -1,18 +1,21 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import AbstractComponentLoaderInterface from "./AbstractComponentLoaderInterface";
-import { ComponentNameSpace } from "../../util/enums/NameSpaces";
 import { GE } from "../implement/GE";
+import { AbstractManagerConstructor } from "./AbstractManagerInterface";
 
-export interface AbstractComponentInterface<ComponentType> extends AbstractGEObjectInterface {
+export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
-    readonly ComponentNameSpace: ComponentNameSpace;
+    ComponentLoader: AbstractComponentLoaderInterface;
 
-    ComponentLoader: AbstractComponentLoaderInterface<ComponentType>;
+    getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C ): InstanceType<C>
 
-    reset(...values: any[]): void
+    reset(...params: any[]): void
 };
 
-export interface AbstractComponentConstructor<ComponentType> {
-    new (game: GE<ComponentType>): AbstractComponentInterface<ComponentType>
+
+export interface AbstractComponentConstructor {
+    new (game: GE): AbstractComponentInterface
 }
+
+export type ResetParams<C extends AbstractComponentConstructor> = Parameters<InstanceType<C>['reset']>
 

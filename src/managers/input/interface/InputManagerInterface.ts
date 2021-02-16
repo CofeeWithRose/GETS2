@@ -1,4 +1,4 @@
-import AbstractManagerInterface from "../../../core/interface/AbstractManagerInterface";
+import {AbstractManagerInterface} from "../../../core/interface/AbstractManagerInterface";
 import { KeyBoard, InputType } from "./data/enum";
 import InputEvent from "./data/InputEvent";
 

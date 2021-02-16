@@ -1,20 +1,15 @@
-import  { InitConfigInterface,  ManagerInfo, ComponentInfo, ResetParams } from "../interface/InitConfigInterface";
-import {AbstractComponentConstructor, AbstractComponentInterface} from "../interface/AbstractComponentInterface";
-import AbstractManagerInterface from "../interface/AbstractManagerInterface";
-import SimpleMap from "../../util/map/implement/SimpleMap";
+import  { InitConfigInterface,  ManagerInfo} from "../interface/InitConfigInterface";
+import {AbstractManagerConstructor, AbstractManagerInterface} from "../interface/AbstractManagerInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import AbstractComponentLoader from "./AbstractComponentLoader";
 import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
 
 
-export  class GE<ComponentType> {
+export  class GE {
 
-    private  managerMap = new SimpleMap<ManagerNameSpaces, AbstractManagerInterface>();
+    private  managerList: AbstractManagerInterface[] = [];
     
-    private  componentMap = new Map<ComponentType, AbstractComponentConstructor<ComponentType>>();
-
     private  emitor = new EventEmitor();
 
     private  INIT_ERROR = new Error( 'Init Error: Please init Before invoke start method !' ); 
@@ -24,7 +19,7 @@ export  class GE<ComponentType> {
     /**
      *启动.
      */
-     start(){
+    start(){
         this.emitor.emit(GEEvents.START);
         this.hasStarted = true;
     };
@@ -32,7 +27,7 @@ export  class GE<ComponentType> {
     /**
      * 暂停.
      */
-     pause(){
+    pause(){
         this.emitor.emit(GEEvents.PAUSE);
     };
 
@@ -40,50 +35,31 @@ export  class GE<ComponentType> {
      * 根据配置注入 manager.
      * @param initConfigs 
      */
-     init( initConfigs: InitConfigInterface<ComponentType> ) {
+    init( initConfigs: InitConfigInterface) {
 
         this.checkStarted( this.INIT_ERROR );
 
         this.initManagers(initConfigs.managerInfoArray);
 
-        this.initComponets( initConfigs.componentInfoArray);
-     
     };
 
     /**
      * 注入一个 managerInfo.
      * @param managerInfo 
      */
-     initManager( managerInfo: ManagerInfo){
+    initManager( managerInfo: ManagerInfo){
 
         this.checkStarted( this.INIT_ERROR );
         const manager = new managerInfo.manager(this, managerInfo.config);
-
-        // this.managerMap.set(managerInfo.managerNameSpace, manager);
+        this.managerList.push(manager)
     };
 
-    /**
-     * 注入一个 component.
-     * @param componentInfo 
-     */
-     initComponet( componentInfo: ComponentInfo<ComponentType>) {
-        
-        this.checkStarted( this.INIT_ERROR );
-
-        this.componentMap.set(componentInfo.componentNameSpace, componentInfo.componentClass);
-    };
 
     private  checkStarted(errorMessage: Error){
         if( this.hasStarted){
             throw errorMessage;
         }
     }
-
-    private  initComponets(componentInfoArray: Array<ComponentInfo<ComponentType>>){
-        componentInfoArray.map( componentInfo => {
-            this.initComponet(componentInfo);
-        } )
-    };
 
     private  initManagers(managerInfos: Array<ManagerInfo>) {
 
@@ -96,9 +72,13 @@ export  class GE<ComponentType> {
      * 获取实例化的 manager.
      * @param managerNameSpace 
      */
-     getManager(managerNameSpace: ManagerNameSpaces): AbstractManagerInterface {
+    getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C): InstanceType<C> {
 
-       return this.managerMap.get(managerNameSpace);
+        for(let i=0; i<this.managerList.length; i++){
+            if(this.managerList[i] instanceof managerConstructor){
+                return this.managerList[i] as InstanceType<C>
+            }
+        }
     };
 
     /**
@@ -106,7 +86,7 @@ export  class GE<ComponentType> {
      * @param eventName 
      * @param message 
      */
-     sendMessage <T extends keyof GEEventsMap>( eventName: T, ...message: Parameters<GEEventsMap[T]> ) {
+    sendMessage <T extends keyof GEEventsMap>( eventName: T, ...message: Parameters<GEEventsMap[T]> ) {
         this.emitor.emit(eventName, ...message);
     };
 
@@ -115,7 +95,7 @@ export  class GE<ComponentType> {
      * @param eventName 
      * @param fun 
      */
-     subscribeMssage <T extends keyof GEEventsMap> (eventName: T, fun : GEEventsMap[T]) {
+    subscribeMssage <T extends keyof GEEventsMap> (eventName: T, fun : GEEventsMap[T]) {
         this.emitor.addEventListener(eventName, fun);
     };
 
@@ -125,32 +105,20 @@ export  class GE<ComponentType> {
      * @param eventName 
      * @param fun 
      */
-     unsubscribeMssage (eventName: GEEvents, fun : Function) {
+    unsubscribeMssage (eventName: GEEvents, fun : Function) {
         this.emitor.removeEventListener(eventName, fun);
     };
-
-    /**
-     * 实例化组件.
-     * @param componentNameSpace 
-     */
-     instanceComponent<T extends ComponentType> (
-         componentNameSpace: T, ...params: ResetParams<T>
-    ): AbstractComponentInterface<T> {
-        const constructor = this.componentMap.get(componentNameSpace)
-        const component =  new constructor(this);
-        component.reset(...params)
-        return component
-    }
+    
 
     /**
      * 实例化组件容器.
      * @param componentLoader 
      */
-     instanceComponentLoader(componentLoader: typeof AbstractComponentLoader): AbstractComponentLoader<ComponentType> {
+    instanceComponentLoader(componentLoader: typeof AbstractComponentLoader): AbstractComponentLoader {
         return new componentLoader(this);
     } 
 
-    craeteObj(): GameObject<ComponentType>{
+    craeteObj(): GameObject{
         return new GameObject(this)
     }
 

@@ -1,6 +1,6 @@
 import AbstractComponentLoaderInterface from "../../../../core/interface/AbstractComponentLoaderInterface";
 
-export default interface GameObjectInterface<ComponentType> extends AbstractComponentLoaderInterface<ComponentType> {
+export default interface GameObjectInterface extends AbstractComponentLoaderInterface {
 
     destory():void;
 };

@@ -1,7 +1,5 @@
-import AbstractMnager from "../../../core/implement/AbstractManager";
+import {AbstractMnager} from "../../../core/implement/AbstractManager";
 import TaskManagerInterface from "../interface/TaskManagerInterface";
-import { injectManagerNameSpace } from "../../../util/decorators/NameSpace";
-import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
 import TaskMnagerConfigInterface from "../interface/config/TaskMnagerConfigInterface";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
@@ -14,10 +12,9 @@ import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectI
 import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
 import { GE } from "../../../core/implement/GE";
 
-@injectManagerNameSpace(ManagerNameSpaces.TaskManager)
-export default class TaskManager<ComponentType> extends AbstractMnager<ComponentType> implements TaskManagerInterface {
+export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
 
-    constructor(game: GE<ComponentType>, config: TaskMnagerConfigInterface) {
+    constructor(game: GE, config: TaskMnagerConfigInterface) {
         super(game, config);
         this.configParser = new ConfigParser(config);
         this.addGEEvemtListener(GEEvents.START, this.onStart);
@@ -40,12 +37,12 @@ export default class TaskManager<ComponentType> extends AbstractMnager<Component
 
     private isRunning = false;
 
-    private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface<ComponentType>) => {
+    private onAddComponnet = ( gamObject:AbstractGEObjectInterface,  component: AbstractComponentInterface) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
     };
 
-    private addInstanceTask( component: AbstractComponentInterface<ComponentType>) {
+    private addInstanceTask( component: AbstractComponentInterface) {
         
         const taskInfoArray = this.configParser.getTaskInfoArray(component);
         const componentTaskIdMap = new MutiValueMap<TaskType, number>();
@@ -82,7 +79,7 @@ export default class TaskManager<ComponentType> extends AbstractMnager<Component
         };
     }
 
-    private onRemoveComponent = (_: AbstractComponentLoaderInterface<ComponentType>,  component: AbstractComponentInterface<ComponentType>) => {
+    private onRemoveComponent = (_: AbstractComponentLoaderInterface,  component: AbstractComponentInterface) => {
         const idInfo = this.instanceTaskId.get(component.Id);
         const endIdList  = idInfo.get(TaskType.END)
         this.end.runTasks(endIdList.valus())

@@ -1,15 +1,13 @@
-import AbstractMnager from "../../../core/implement/AbstractManager";
+import {AbstractMnager} from "../../../core/implement/AbstractManager";
 import TimerManagerInterfce from "../interface/TimerManagerInterfce";
 import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig";
-import { ManagerNameSpaces } from "../../../util/enums/NameSpaces";
 import { Ranger, Scale } from "../../../util/decorators/Number";
 import { GE } from "../../../core/implement/GE";
 
-export default class TimerManager<ComponentType> extends AbstractMnager<ComponentType> implements TimerManagerInterfce {
+export default class TimerManager extends AbstractMnager implements TimerManagerInterfce {
 
-    constructor(game: GE<ComponentType> ,config: AbstractManagerConfig){
+    constructor(game: GE ,config: AbstractManagerConfig){
         super(game, config);
-        this.managerNameSpace = ManagerNameSpaces.TimerManager;
     }
 
     private nowFromStart = 0;

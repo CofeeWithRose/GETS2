@@ -12,26 +12,16 @@ enum ComponentType {
     RendererComp,
 }
 
-const cfg: InitConfigInterface<ComponentType> = {
+const cfg: InitConfigInterface = {
     ...config,
-    componentInfoArray: [
-        {
-            componentNameSpace: ComponentType.PositionComp,
-            componentClass: Position2DComponent
-        },
-        {
-            componentNameSpace: ComponentType.RendererComp,
-            componentClass: Render2DComp,
-        }
-    ]
 }
 
 
-const game = new GE<ComponentType>()
+const game = new GE()
 game.init(cfg);
 const obj = game.craeteObj()
-obj.addComponent(ComponentType.PositionComp);
-obj.addComponent(ComponentType.RendererComp)
+obj.addComponent(Position2DComponent);
+obj.addComponent(Render2DComp)
 
 game.start()
 

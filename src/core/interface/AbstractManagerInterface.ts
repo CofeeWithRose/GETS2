@@ -1,11 +1,14 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
-import { ManagerNameSpaces } from "../../util/enums/NameSpaces";
 import { GEEvents } from "../../util/enums/GEEvent";
+import { GE } from "../implement/GE";
 
-export default interface AbstractManagerInterface extends AbstractGEObjectInterface {
+export interface AbstractManagerInterface extends AbstractGEObjectInterface {
     
-    readonly ManagerNameSpace: ManagerNameSpaces;
 
     addGEEvemtListener(ventName: GEEvents, fun : Function): void;
 
+}
+
+export interface AbstractManagerConstructor<P extends any[]> {
+    new ( game: GE, ...params:P): AbstractManagerInterface
 }
