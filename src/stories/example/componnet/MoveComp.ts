@@ -1,18 +1,16 @@
-import { Animation } from "../../../components/animation2D/Animation";
-import { Position2DComponent } from "../../../components/position2D/implement/Position2DComponent";
-import { Position2DComponentInterface } from "../../../components/position2D/interface/Position2DComponentInterface";
-import { AbstractComponent } from "../../../core/implement/AbstractComponent";
-import InputManager from "../../../managers/input/implement/InputManager";
-import { KeyBoard } from "../../../managers/input/interface/data/enum";
-import InputManagerInterface from "../../../managers/input/interface/InputManagerInterface";
-
+import {
+  Animation, Position2DComponent, Render2DComp,
+  AbstractComponent, InputManager, KeyBoard 
+} from 'ge'
 export class MoveController extends AbstractComponent {
   
-  protected input: InputManagerInterface
+  protected input: InputManager
 
-  protected position: Position2DComponentInterface
+  protected position: Position2DComponent
 
   protected anim: Animation
+
+  protected render: Render2DComp
 
   awake = () => {
     this.input = this.getManager(InputManager)
@@ -35,7 +33,6 @@ export class MoveController extends AbstractComponent {
 
     if(this.input.keyUp(KeyBoard.D, KeyBoard.d, KeyBoard.a, KeyBoard.A)){
       this.anim.play('stand')
-
     }
 
 

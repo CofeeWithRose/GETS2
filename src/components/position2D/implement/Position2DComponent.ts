@@ -21,7 +21,6 @@ export class Position2DComponent extends AbstractComponent implements Position2D
 
     private eventEnitor: EventEmitor = new EventEmitor()
 
-
     protected parentPosition: Position2DComponent
 
     awake = () =>{

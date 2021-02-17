@@ -41,7 +41,7 @@ export class Renderer extends AbstractMnager implements RendererInfer {
       const spirite = this.spiriteMap.get(spiriteId)
       if(spirite) {
         if(position) spirite.setPosition(position.x, position.y)
-        if(sourceId) spirite.setImgId(sourceId)
+        if(sourceId !==undefined ) spirite.setImgId(sourceId)
       }
     }
 

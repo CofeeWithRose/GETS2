@@ -107,8 +107,8 @@ export class Animation extends AbstractComponent {
     if(this.lastIndex !==index || this.lastAnimationName !==animationName) {
       this.lastIndex = index
       this.lastAnimationName = animationName
-      this.render.setSourceId(sourceList[index])
       // console.log('animationName',animationName, index)
+      this.render.setSourceId(sourceList[index])
     }
 
     if(index === sourceList.length -1&& !isLoop) {

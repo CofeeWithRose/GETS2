@@ -38,12 +38,11 @@ export function Run() {
         const anims: AnimConfig = {
           'stand': { duration: 1, sourceList: [ {url: stand1} ] },
           'run': { duration: 1, sourceList: [
-            {url: run1Url},{url: run2Url},
+            {url: run1Url}, {url: run2Url},
             {url: run3Url}, {url: run4Url},
-            {url: run5Url},{url: run6Url},
+            {url: run5Url}, {url: run6Url},
             {url: run7Url}, 
-
-          ] },
+          ]},
         }
         obj1.addComponent(Animation, anims)
         obj1.addComponent(MoveController)

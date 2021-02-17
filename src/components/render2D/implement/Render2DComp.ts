@@ -24,7 +24,8 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
   protected spiritId: string
 
   setSourceId(sourceId: number){
-    this.renderer.updateSpirit(this.spiritId,null, sourceId )
+    this.sourceId = sourceId
+    this.renderer.updateSpirit(this.spiritId, null, sourceId )
   }
 
   init = (sourceUrl: string) => {
@@ -33,7 +34,6 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
 
   start = async () => {
     this.position = this.GameObject.getComponent(Position2DComponent)
-    // setTimeout( () => console.log('getComponent..', this.GameObject), 1000)
 
     if(this.position) {
 

@@ -5,7 +5,7 @@ import { KeyBoard, InputType } from "../interface/data/enum";
 import InputEvent from "../interface/data/InputEvent";
 import { GE } from "../../../core/implement/GE";
 
-export default class InputManager extends AbstractMnager implements InputManagerInterface {
+export class InputManager extends AbstractMnager implements InputManagerInterface {
 
     constructor(game: GE,config: AbstractManagerConfig){
         super(game, config);
