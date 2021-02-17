@@ -108,7 +108,6 @@ export class Transform extends AbstractComponent {
         const distY = childPosition.y - this.position.y
         // const angle = this.rotation/
        
-        console.log('scaledX', newScale.x, distX)
         transform.setPosition({
           x: this.position.x + distX * scaledX,
           y: this.position.y + distY * scaledY,

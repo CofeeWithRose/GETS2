@@ -55,7 +55,7 @@ export function Run() {
         const obj1_1 = game.craeteObj()
         const t = obj1_1.addComponent(
           Transform, 
-          { x: 450, y: 250 }, 
+          { x: 450, y: 200 }, 
           { x: -1, y: 1 }
         );
         obj1_1.addComponent(Render2DComp, stand1)
