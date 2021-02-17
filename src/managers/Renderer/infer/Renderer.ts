@@ -1,13 +1,21 @@
-import { Vec2 } from "../../../components/position2D/interface/Position2DComponentInterface";
+import { Vec2 } from "../../../components/Transform";
 import { AbstractManagerInterface } from "../../../core/interface/AbstractManagerInterface";
+
+
+export interface SpiritAttr {
+  position?: Vec2
+  sourceId?: number
+  scale?: Vec2
+  rotation?: number
+}
 
 export interface RendererInfer extends AbstractManagerInterface {
 
-  craeteSpirit(sourceId: number, position: Vec2 ): string
+  craeteSpirit(sourceId: number, attr: SpiritAttr ): string
 
   destroySpirit(spiriteId: string): void
 
-  updateSpirit(spiriteId: string, position?: Vec2, sourceId?: number ): void
+  updateSpirit(spiriteId: string, attr: SpiritAttr): void
 
   /**
    * 

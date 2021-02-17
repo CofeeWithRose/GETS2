@@ -1,12 +1,12 @@
 import {
-  Animation, Position2DComponent, Render2DComp,
+  Animation, Render2DComp, Transform,
   AbstractComponent, InputManager, KeyBoard 
 } from 'ge'
 export class MoveController extends AbstractComponent {
   
   protected input: InputManager
 
-  protected position: Position2DComponent
+  protected transform: Transform
 
   protected anim: Animation
 
@@ -14,27 +14,43 @@ export class MoveController extends AbstractComponent {
 
   awake = () => {
     this.input = this.getManager(InputManager)
-    this.position = this.GameObject.getComponent(Position2DComponent)
+    this.transform = this.GameObject.getComponent(Transform)
     this.anim = this.GameObject.getComponent(Animation)
   }
 
   update = () => {
-   
-    if(this.position && this.input.isKeyDown(KeyBoard.d, KeyBoard.D)){
-      this.position.Value = { x: this.position.Value.x +1, y: this.position.Value.y }
-    }
-    if(this.position && this.input.isKeyDown(KeyBoard.a, KeyBoard.A)) {
-      this.position.Value = { x: this.position.Value.x - 1, y: this.position.Value.y }
-    }
+    const position = this.transform?.getPosition()
+    const rotation = this.transform?.getRotation()
+    const scale = this.transform?.getScale()
+    if(position && this.input.isKeyDown(KeyBoard.d, KeyBoard.D)){
+      // this.transform.setPosition({
+      //    x: position.x + 3, y: position.y 
+      // })
+      console.log('d')
+      this.transform.setRotation(rotation+1)
 
-    if(this.input.isKeyDown(KeyBoard.D, KeyBoard.d, KeyBoard.a, KeyBoard.A)){
+      this.transform.setScale({ x: scale.x + 0.01, y: 1 })
+      
+      
+
+      this.anim.play('run')
+    }
+    if(this.transform && this.input.isKeyDown(KeyBoard.a, KeyBoard.A)) {
+      // this.transform.setPosition ({
+      //    x: position.x - 3, y: position.y 
+      // })
+      console.log('a')
+      this.transform.setRotation(rotation - 1)
+
+      this.transform.setScale({ x: scale.x - 0.01, y: 1})
+
+
       this.anim.play('run')
     }
 
     if(this.input.keyUp(KeyBoard.D, KeyBoard.d, KeyBoard.a, KeyBoard.A)){
       this.anim.play('stand')
     }
-
 
   }
 

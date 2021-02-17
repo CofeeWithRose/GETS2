@@ -1,4 +1,4 @@
-import { GE, createConfig, Position2DComponent, Render2DComp, Animation, AnimConfig } from 'ge'
+import { GE, createConfig, Transform, Render2DComp, Animation, AnimConfig } from 'ge'
 import { useEffect, useRef } from 'react'
 
 import { MoveController } from './componnet/MoveComp'
@@ -33,7 +33,12 @@ export function Run() {
         game.start()
 
         const obj1 = game.craeteObj()
-        obj1.addComponent(Position2DComponent, { x: 100, y: 100 });
+        obj1.addComponent(
+          Transform, 
+          { x: 300, y: 200 }, 
+          { x: 1, y: 1 },
+          0 ,
+        );
         obj1.addComponent(Render2DComp, stand1)
         const anims: AnimConfig = {
           'stand': { duration: 1, sourceList: [ {url: stand1} ] },
@@ -48,7 +53,11 @@ export function Run() {
         obj1.addComponent(MoveController)
 
         const obj1_1 = game.craeteObj()
-        obj1_1.addComponent(Position2DComponent, { x: 250, y: 100 });
+        const t = obj1_1.addComponent(
+          Transform, 
+          { x: 450, y: 250 }, 
+          { x: -1, y: 1 }
+        );
         obj1_1.addComponent(Render2DComp, stand1)
         obj1.addChildren(obj1_1)
         // obj1.removeChildren(obj1_1)

@@ -1,21 +1,18 @@
+import { Vec2 } from "_i-render@0.0.15@i-render";
 import {AbstractComponent} from "../../../core/implement/AbstractComponent";
 import { Renderer } from "../../../managers/Renderer/implement/Renderer";
 import { RendererInfer } from "../../../managers/Renderer/infer/Renderer";
 import Vector2D from "../../../util/data/Vector2D";
-import { Position2DComponent } from "../../position2D/implement/Position2DComponent";
-import { Position2DComponentInterface, Vec2 } from "../../position2D/interface/Position2DComponentInterface";
+import { Transform } from "../../Transform";
 import { Render2DCompInfer } from "../interface/render2DCompInfer";
 
 export class Render2DComp extends AbstractComponent implements Render2DCompInfer {
 
 
-  protected position: Position2DComponentInterface
+  protected tansform: Transform
 
-  protected rotation: number = 0
 
-  protected scale: Vector2D = new Vector2D(1, 1)
-
-  protected renderer: RendererInfer
+  protected renderer: Renderer
 
   protected sourceUrl: string
 
@@ -23,38 +20,75 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
 
   protected spiritId: string
 
-  setSourceId(sourceId: number){
-    this.sourceId = sourceId
-    this.renderer.updateSpirit(this.spiritId, null, sourceId )
-  }
+  protected isShowBorder = false
+
 
   init = (sourceUrl: string) => {
     this.sourceUrl = sourceUrl
   }
 
   start = async () => {
-    this.position = this.GameObject.getComponent(Position2DComponent)
+    this.tansform = this.GameObject.getComponent(Transform)
 
-    if(this.position) {
+    if(this.tansform) {
 
-      this.position.on('positionChange', this.handlePositionChange)
+      this.tansform.on('positionChange', this.handlePositionChange)
+
+      this.tansform.on('rotationChange', this.handleRotationChange)
+
+      this.tansform.on('scaleChange', this.handleScaleChange)
 
       this.renderer = this.getManager(Renderer)
 
       if(this.sourceUrl) {
         this.sourceId = await this.renderer.loadSource(this.sourceUrl)
-        this.spiritId =  this.renderer.craeteSpirit(this.sourceId, this.position.Value)
+        this.spiritId =  this.renderer.craeteSpirit(this.sourceId, {
+          position: this.tansform.getPosition(),
+          scale: this.tansform.getScale(),
+          rotation: this.tansform.getRotation(),
+        })
       }
       
     }
   }
 
   protected handlePositionChange = (newV: Vec2) => {
-    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, newV)
+    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, {position: newV})
   }
+
+  protected handleScaleChange = (scale: Vec2) => {
+    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, {scale})
+  }
+
+  protected handleRotationChange = (rotation: number) => {
+    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, {rotation})
+  }
+
+  setSourceId(sourceId: number){
+    this.sourceId = sourceId
+    this.renderer.updateSpirit(this.spiritId, {sourceId} )
+  }
+
+  getsize(){
+    this.renderer.getSize(this.spiritId)
+  }
+
+  // showBorder(isShowBorder: boolean){
+  //   if(this.isShowBorder === isShowBorder) return
+  //   this.isShowBorder = isShowBorder
+  //   if(isShowBorder){
+  //     // this.renderer.craeteSpirit
+  //   } else {
+
+  //   }
+  // }
   
   destory = () => {
     if(this.renderer) this.renderer.destroySpirit(this.spiritId)
-    if(this.position) this.position.off('positionChange', this.handlePositionChange)
+    if(this.tansform) {
+      this.tansform.off('positionChange', this.handlePositionChange)
+      this.tansform.off('rotationChange', this.handleRotationChange)
+      this.tansform.off('scaleChange', this.handleScaleChange)
+    }
   }
 }

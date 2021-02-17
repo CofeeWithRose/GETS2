@@ -1,11 +1,12 @@
 import AbstractGEObject from "./AbstractGEObject";
-import AbstractComponentLoaderInterface, { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import {AbstractComponentConstructor, AbstractComponentInterface, ResetParams} from "../interface/AbstractComponentInterface";
 import { GEEvents } from "../../util/enums/GEEvent";
 import { GE } from "./GE";
+import EventEmitor from "../../util/event/EventEmitor";
+import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 
 
-export default abstract class AbstractComponentLoader extends AbstractGEObject implements AbstractComponentLoaderInterface {
+export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected game: GE
 
@@ -14,22 +15,23 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject i
         this.game = game
     };
 
-    protected parent: AbstractComponentLoaderInterface
+    protected parent: AbstractComponentLoader
 
-    protected children:AbstractComponentLoaderInterface[] = []
+    protected children:AbstractComponentLoader[] = []
 
+    protected eventEmiter = new EventEmitor()
 
-    private isActive = true;
+    protected isActive = true;
 
     get IsActive() {
         return this.isActive;
     };
 
-    get Parent(): AbstractComponentLoaderInterface {
+    get Parent(): AbstractComponentLoader {
         return this.parent
     }
 
-    get Children(): AbstractComponentLoaderInterface[] {
+    get Children(): AbstractComponentLoader[] {
         return this.children
     }
 
@@ -62,9 +64,15 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject i
         }
     };
 
-    on<E extends keyof AbstractComponentLoaderEvent>(eventName: E, cb: AbstractComponentLoaderEvent[E]): void {
+    
 
-    }
+    abstract addChildren(obj: AbstractComponentLoader): void
+
+    abstract removeChildren(obj: AbstractComponentLoader): void
+
+    abstract findChildren(id: number): AbstractComponentLoader
+
+    abstract destory(): void
 
     /**
      * 添加装载的 component.
@@ -159,5 +167,25 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject i
         }
         this.componentList = []
     }
+
+
+    on<E extends keyof AbstractComponentLoaderEvent >(
+      eventName: E, cb: AbstractComponentLoaderEvent[E]
+    ) :void {
+        this.eventEmiter.addEventListener(eventName as string, cb)
+    };
+
+
+    off<E extends keyof AbstractComponentLoaderEvent >(
+      eventName: E, cb: AbstractComponentLoaderEvent[E]
+    ) :void {
+        this.eventEmiter.removeEventListener(eventName as string, cb)
+    };
+
+    protected emit<E extends keyof AbstractComponentLoaderEvent >(
+      eventName: E, ...params: Parameters<AbstractComponentLoaderEvent[E]>
+    ) :void {
+        this.eventEmiter.emit(eventName as string, ...params)
+    };
 }
 

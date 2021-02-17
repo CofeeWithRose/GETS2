@@ -1,8 +1,9 @@
 import { AbstractMnager } from "../../../core/implement/AbstractManager";
-import { RendererCfg, RendererInfer } from "../infer/Renderer";
+import { RendererCfg, RendererInfer, SpiritAttr } from "../infer/Renderer";
 import {IRender, Vec2} from 'i-render'
 import { GE } from "../../../core/implement/GE";
 import { Ielement } from "_i-render@0.0.15@i-render/lib/src/Ielement/IElement";
+
 
 export class Renderer extends AbstractMnager implements RendererInfer {
 
@@ -15,19 +16,56 @@ export class Renderer extends AbstractMnager implements RendererInfer {
 
     private spiriteId = 0
 
+    protected pixiSourceId: number
+
     constructor(game:GE, config: RendererCfg) {
         super(game, config);
         this.irender = new IRender(config.canvas, { maxNumber:  config.maxSize })
+        this.loadAPixi()
     }
 
-    craeteSpirit(sourceId: number, position: Vec2 ): string {
+    protected loadAPixi(){
+      const canvas = document.createElement('canvas')
+      canvas.width = 1
+      canvas.height = 1
+      const ctx = canvas.getContext('2d')
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0,0, 1,1)
+      this.pixiSourceId = this.irender.loadImg(canvas)
+      canvas.width = 0
+      canvas.height = 0
+    }
+
+    craeteSpirit(sourceId: number, {position, ...rest}: SpiritAttr ): string {
       const spirit =  this.irender.createElement({
         imgId: sourceId,
         position,
       })
+      this.updateS(spirit, rest)
       const id = `spirit_${++this.spiriteId}`
       this.spiriteMap.set(id, spirit)
       return id
+    }
+
+    // createReact({x, y}: Vec2, {position, scale, ...rest}: SpiritAttr): string {
+    //   const spirit = this.irender.createElement({
+    //     imgId: this.pixiSourceId,
+    //     position,
+    //   })
+    //   const id = `spirit_${++this.spiriteId}`
+    //   this.spiriteMap.set(id, spirit)
+    //   spirit.setScale(x * scale.x, y * scale.y)
+    //   this.updateS(spirit, rest)
+    //   return id
+    // }
+
+    // updateRect(spiriteId: string): void{
+
+    // }
+
+    getSize(spiritId: string): Vec2{
+      const spirit = this.spiriteMap.get(spiritId)
+      return spirit.size
     }
 
     destroySpirit(spiritId: string) {
@@ -37,13 +75,18 @@ export class Renderer extends AbstractMnager implements RendererInfer {
       // TODO handle clean source.
     }
 
-    updateSpirit(spiriteId: string, position?: Vec2, sourceId?: number ){
+    updateSpirit(spiriteId: string, attr: SpiritAttr ){
       const spirite = this.spiriteMap.get(spiriteId)
-      if(spirite) {
-        if(position) spirite.setPosition(position.x, position.y)
-        if(sourceId !==undefined ) spirite.setImgId(sourceId)
-      }
+      if(spirite) this.updateS(spirite, attr)
     }
+
+    protected updateS(spirite: Ielement, {position, rotation, scale, sourceId}: SpiritAttr) {
+      if(position) spirite.setPosition(position.x, position.y)
+      if(sourceId !== undefined ) spirite.setImgId(sourceId)
+      if(rotation !== undefined) spirite.setRotation(rotation)
+      if(scale) spirite.setScale(scale.x, scale.y)
+    }
+    
 
     async loadSource(url: string): Promise<number>{
      let promise = this.loadedSourceRecord.get(url)

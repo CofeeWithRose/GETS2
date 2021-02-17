@@ -1,7 +1,6 @@
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import { Renderer } from "../../managers/Renderer/implement/Renderer";
 import TimerManager from "../../managers/timer/implement/TimerManager";
-import { Vec2 } from "../position2D/interface/Position2DComponentInterface";
 import { Render2DComp } from "../render2D/implement/Render2DComp";
 
 

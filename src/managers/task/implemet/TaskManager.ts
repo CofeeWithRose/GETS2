@@ -122,7 +122,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     private emptyRun = (time: number) => {
-        const now = performance.timeOrigin+ time
+        const now = Date.now()
         window.requestAnimationFrame(this.run);
         if(this.hasNewComponent){
             this.start.runTask(now);

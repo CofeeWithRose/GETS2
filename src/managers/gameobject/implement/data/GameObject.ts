@@ -1,39 +1,31 @@
 import AbstractComponentLoader from "../../../../core/implement/AbstractComponentLoader";
-import GameObjectInterface from "../../interface/data/GameObjectInterface";
 import {GE} from "../../../../core/implement/GE";
 import { GEEvents } from "../../../../util/enums/GEEvent";
-import { AbstractComponentLoaderEvent } from "../../../../core/interface/AbstractComponentLoaderInterface";
-import EventEmitor from "../../../../util/event/EventEmitor";
 
-export  class GameObject extends AbstractComponentLoader implements GameObjectInterface {
+export  class GameObject extends AbstractComponentLoader {
 
     constructor(game: GE) {
         super(game);
         game.sendMessage( GEEvents.ADD_GAMEOBJECT, this);
     }
 
-    protected eventEmiter = new EventEmitor()
-
-    protected parent: GameObject
-
-    protected children: GameObjectInterface[] = []
-    
-    get Parent(): GameObjectInterface{
+    get Parent(): GameObject{
         return this.parent
     }
 
     addChildren(obj: GameObject): void {
         this.children.push(obj)
         obj.parent = this
+        this.emit('addChild', obj)
     }
 
-    
-    removeChildren(obj: GameObjectInterface): void {
+    removeChildren(obj: GameObject): void {
         const ind = this.children.indexOf(obj)
         if(ind > -1) this.children.splice(ind, 1)
+        this.emit('removeChild', obj)
     }
 
-    findChildren(id: number): GameObjectInterface {
+    findChildren(id: number): GameObject {
         return this.children.find( ({Id}) => Id === id )
     }
 
@@ -43,12 +35,7 @@ export  class GameObject extends AbstractComponentLoader implements GameObjectIn
         this.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
     };
 
-   
-    on<E extends keyof AbstractComponentLoaderEvent >(
-        eventName: E, cb: AbstractComponentLoaderEvent[E]
-    ) :void {
-        this.eventEmiter.addEventListener(eventName, cb)
-    }
-
 
 }
+
+
