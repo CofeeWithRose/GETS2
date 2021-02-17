@@ -103,7 +103,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
             const tempRun = this.run;
             this.run = this.emptyRun;
             this.emptyRun = tempRun;
-            this.run();
+            this.run(performance.now() + performance.timeOrigin);
             this.isRunning = true;
         }
        
@@ -117,18 +117,19 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
             this.isRunning = false;
         }
     };
-    private run = () => {
+    private run = (time: number) => {
 
     }
 
-    private emptyRun = () => {
+    private emptyRun = (time: number) => {
+        const now = performance.timeOrigin+ time
         window.requestAnimationFrame(this.run);
         if(this.hasNewComponent){
-            this.start.runTask();
+            this.start.runTask(now);
             this.start.clearAll();
             this.hasNewComponent = false;
         }
-        this.loop.runTask();
+        this.loop.runTask(now);
         this.removingComponentList.forEach(c => {
             this.removeComponent(c)
         })

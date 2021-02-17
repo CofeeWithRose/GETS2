@@ -25,7 +25,6 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
     updated(): void
 
-    afterUpdated(): void
 };
 
 

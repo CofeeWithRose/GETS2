@@ -6,7 +6,7 @@ import { AbstractManagerConstructor } from "../interface/AbstractManagerInterfac
 import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
 
 
-export class AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
+export abstract class  AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
   
 
     private componentLoader: AbstractComponentLoaderInterface;
@@ -17,8 +17,6 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
         super()
         this.game = game
     }
-
-    // init(...params: any[]){}
 
     init = EMPTY_TASK
 
@@ -31,8 +29,6 @@ export class AbstractComponent extends AbstractGEObject implements AbstractCompo
     update = EMPTY_TASK
 
     updated = EMPTY_TASK
-
-    afterUpdated = EMPTY_TASK
 
     destory = EMPTY_TASK
     

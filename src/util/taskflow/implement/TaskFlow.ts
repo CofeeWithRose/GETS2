@@ -91,12 +91,12 @@ export class TaskFlow implements TaskFolwInterface{
     /**
      * 按照优先级执行task.
      */
-    public runTask(): void{
+    public runTask(time: number): void{
         this.isRunning = true;
         for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
             const taskArry = this.tasks[currentPriority]||[];
             for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
-                taskArry[taskInd]();
+                taskArry[taskInd](time);
             }
         }
         this.isRunning = false;

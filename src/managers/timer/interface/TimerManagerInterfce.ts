@@ -13,5 +13,5 @@ export default interface TimerManagerInterfce extends AbstractManagerInterface {
 
     init(): void;
 
-    willUpdate():void;
+    willUpdate(now?: number):void;
 }

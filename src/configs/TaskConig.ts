@@ -35,7 +35,7 @@ import {Position2DComponent} from "../components/position2D/implement/Position2D
         },
         {
             methodName: 'afterUpdated',
-            scope: [ Position2DComponent ],
+            scope: [ AbstractMnager ],
         },
     ],
     end: [

@@ -17,7 +17,7 @@ export default  interface TaskFolwInterface {
    /**
     * 按照优先级执行task.
     */
-   runTask(): void;
+   runTask(time: number): void;
 
 
    clearAll(): void ;

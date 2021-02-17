@@ -37,10 +37,11 @@ export class Renderer extends AbstractMnager implements RendererInfer {
       // TODO handle clean source.
     }
 
-    updateSpirit(spiriteId: string, position?: Vec2 ){
+    updateSpirit(spiriteId: string, position?: Vec2, sourceId?: number ){
       const spirite = this.spiriteMap.get(spiriteId)
       if(spirite) {
         if(position) spirite.setPosition(position.x, position.y)
+        if(sourceId) spirite.setImgId(sourceId)
       }
     }
 

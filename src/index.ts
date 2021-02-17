@@ -5,3 +5,4 @@ export { createConfig } from './configs'
 export {InitConfigInterface} from "./core/interface/InitConfigInterface";
 export { Position2DComponent } from './components/position2D/implement/Position2DComponent';
 export { Render2DComp } from './components/render2D/implement/Render2DComp'
+export * from './components/animation2D/Animation'

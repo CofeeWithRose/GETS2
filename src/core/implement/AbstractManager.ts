@@ -26,4 +26,7 @@ export class AbstractMnager extends AbstractGEObject implements AbstractManagerI
     update = EMPTY_TASK
 
     updated = EMPTY_TASK
+
+    afterUpdated = EMPTY_TASK
+
 }

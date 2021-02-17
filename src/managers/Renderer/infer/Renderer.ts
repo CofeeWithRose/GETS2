@@ -7,7 +7,7 @@ export interface RendererInfer extends AbstractManagerInterface {
 
   destroySpirit(spiriteId: string): void
 
-  updateSpirit(spiriteId: string, position?: Vec2 ): void
+  updateSpirit(spiriteId: string, position?: Vec2, sourceId?: number ): void
 
   /**
    * 

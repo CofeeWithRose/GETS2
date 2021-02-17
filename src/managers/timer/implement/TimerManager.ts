@@ -10,12 +10,6 @@ export default class TimerManager extends AbstractMnager implements TimerManager
         super(game, config);
     }
 
-    private nowFromStart = 0;
-
-    get NowFromStart(){
-        return this.nowFromStart;
-    }
-
     //单位秒(s).
     private  dealTime = 0;
     //单位秒(s).
@@ -52,14 +46,14 @@ export default class TimerManager extends AbstractMnager implements TimerManager
         this.sacle = scale;
     }
 
-    public init(){
+    init = () => {
         this.startTime = Date.now();
     };
     
 
-    public willUpdate(){
+    willUpdate = (now: number) => {
         this.frameCount ++;
-        const newStartFromeNow = (Date.now() - this.startTime) * this.sacle;
+        const newStartFromeNow = (now - this.startTime) * this.sacle;
         
         this.dealTime = (newStartFromeNow - this.startFromeNow);
         this.startFromeNow = newStartFromeNow;

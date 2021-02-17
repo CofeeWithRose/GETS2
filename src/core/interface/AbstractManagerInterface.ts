@@ -7,14 +7,15 @@ export interface AbstractManagerInterface extends AbstractGEObjectInterface {
 
     addGEEvemtListener(ventName: GEEvents, fun : Function): void;
 
-    init(): void
+    init(time?: number): void
 
-    willUpdate(): void
+    willUpdate(time?: number): void
 
-    update(): void
+    update(time?: number): void
 
-    updated(): void
+    updated(time?: number): void
 
+    afterUpdated(): void
 
 }
 
