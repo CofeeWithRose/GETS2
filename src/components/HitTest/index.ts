@@ -90,8 +90,8 @@ export class HitTest extends AbstractComponent {
       offset,
       rotation,
       size: {
-        x: size.x * scale.x,
-        y: size.y * scale.y
+        x: Math.abs(size.x * scale.x),
+        y: Math.abs(size.y * scale.y)
       },
     }
   }

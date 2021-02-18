@@ -1,8 +1,7 @@
 import { AbstractMnager } from "../../../core/implement/AbstractManager";
 import { RendererCfg, RendererInfer, SpiritAttr } from "../infer/Renderer";
-import {IRender, Vec2} from 'i-render'
+import {IRender, Vec2, Iimage} from 'i-render'
 import { GE } from "../../../core/implement/GE";
-import { Ielement } from "_i-render@0.0.15@i-render/lib/src/Ielement/IElement";
 
 
 export class Renderer extends AbstractMnager implements RendererInfer {
@@ -11,7 +10,7 @@ export class Renderer extends AbstractMnager implements RendererInfer {
 
     private loadedSourceRecord = new Map<string, Promise<number>>()
 
-    private spiriteMap = new Map<string, Ielement>()
+    private spiriteMap = new Map<string, Iimage>()
 
 
     private spiriteId = 0
@@ -80,7 +79,7 @@ export class Renderer extends AbstractMnager implements RendererInfer {
       if(spirite) this.updateS(spirite, attr)
     }
 
-    protected updateS(spirite: Ielement, {position, rotation, scale, sourceId}: SpiritAttr) {
+    protected updateS(spirite: Iimage, {position, rotation, scale, sourceId}: SpiritAttr) {
       if(position) spirite.setPosition(position.x, position.y)
       if(sourceId !== undefined ) spirite.setImgId(sourceId)
       if(rotation !== undefined) spirite.setRotation(rotation)

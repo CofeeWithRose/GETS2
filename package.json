@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "i-render": "0.0.15"
+    "i-render": "^0.0.18"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
