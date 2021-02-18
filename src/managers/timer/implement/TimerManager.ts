@@ -30,7 +30,7 @@ export default class TimerManager extends AbstractMnager implements TimerManager
     }
 
     get DealTime (){
-        return this.dealTime
+        return this.dealTime * 0.001
     };
 
     get StartFromNow (){

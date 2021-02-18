@@ -31,7 +31,7 @@ export function Run() {
     useEffect(() => {
         
         const canvas = canvasRef.current
-        const game = new GE(createConfig(canvas))
+        const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
 
         const obj1 = game.craeteObj()
@@ -62,7 +62,7 @@ export function Run() {
         );
         obj1_1.addComponent(Render2DComp, stand1)
         // obj1.addChildren(obj1_1)
-        obj1_1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.B, size: { x: 10, y: 10 }})
+        obj1_1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.A, size: { x: 10, y: 10 }})
         // obj1.removeChildren(obj1_1)
         // obj1.destory()
 

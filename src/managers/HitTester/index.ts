@@ -113,19 +113,21 @@ export class HitTester extends AbstractMnager {
     const hitRest: HitResult[] = []
 
     groupA.forEach( infoA => {
-      const { position: posA, offset: offA, size: sA } = infoA
-      const pA = {
-        x: posA.x + offA.x,
-        y: posA.y + offA.y,
-      }
-      const halfSizeAX = sA.x * 0.5
-      const halfSizeAY = sA.y * 0.5
-      const leftA = pA.x - halfSizeAX
-      const rightA = pA.x + halfSizeAX
-      const topA = pA.y - halfSizeAY
-      const bottomA = pA.y + halfSizeAY
 
       groupB.forEach( infoB => {
+        if(infoA.gameObjectId === infoB.gameObjectId) return
+        const { position: posA, offset: offA, size: sA } = infoA
+        const pA = {
+          x: posA.x + offA.x,
+          y: posA.y + offA.y,
+        }
+        const halfSizeAX = sA.x * 0.5
+        const halfSizeAY = sA.y * 0.5
+        const leftA = pA.x - halfSizeAX
+        const rightA = pA.x + halfSizeAX
+        const topA = pA.y - halfSizeAY
+        const bottomA = pA.y + halfSizeAY
+        
         const { position: posB, offset: offB, size: sB } = infoB
         const halfSizeBX = sB.x * 0.5
         const halfSizeBY = sB.y * 0.5
