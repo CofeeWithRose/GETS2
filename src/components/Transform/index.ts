@@ -1,9 +1,4 @@
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
-import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
-import AbstractComponentLoaderInterface from "../../core/interface/AbstractComponentLoaderInterface";
-import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
-import TimerManager from "../../managers/timer/implement/TimerManager";
-import { GEEvents } from "../../util/enums/GEEvent";
 import EventEmitor from "../../util/event/EventEmitor";
 
 export interface Vec2 {
@@ -49,9 +44,6 @@ export class Transform extends AbstractComponent {
     this.rotation = rotation
   }
 
-  start = () => {
-    // this.GameObject.on('addChild', this.handleChild)
-  }
 
   // protected handleChild = (child: GameObject) => {
   //   const 

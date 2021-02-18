@@ -23,6 +23,8 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected isActive = true;
 
+    name = 'default'
+
     get IsActive() {
         return this.isActive;
     };

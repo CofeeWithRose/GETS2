@@ -6,6 +6,7 @@ import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
 import { GameObject } from "./data/GameObject";
+import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 
 export default class GameObjectManager extends AbstractMnager implements GameObjectManagerInterface {
 
@@ -15,18 +16,30 @@ export default class GameObjectManager extends AbstractMnager implements GameObj
         this.game.subscribeMssage( GEEvents.REMOVE_GAMEOBJECT, this.removeGameObject);
     };
 
-    gameObjectIdMap = new SimpleMap<number, GameObject>();
+    protected idMap = new SimpleMap<number, GameObject>();
+
+    protected nameMap = new MutiValueMap<string, GameObject>()
 
     addGameObject = (gameObject: GameObject) => {
-        this.gameObjectIdMap.set(gameObject.Id, gameObject);
+        this.idMap.set(gameObject.Id, gameObject);
+        this.nameMap.add(gameObject.name, gameObject)
     };
 
     removeGameObject = ( gameObject: GameObject) => {
-        this.gameObjectIdMap.remove( gameObject.Id );
+        this.idMap.remove( gameObject.Id );
+        this.nameMap.removeValue(gameObject.name, gameObject)
     }
 
     findGameObjectById( gameObjectId: number): GameObject {
-        return this.gameObjectIdMap.get(gameObjectId);
+        return this.idMap.get(gameObjectId);
+    }
+
+    findGameObjectByName(name: string): GameObject{
+      return this.nameMap.get(name)?.get(0)
+    }
+
+    findGameObjectsByName(name: string): GameObject[]{
+      return this.nameMap.get(name)?.valus()||[]
     }
 
 }

@@ -1,9 +1,6 @@
-import { Vec2 } from "_i-render@0.0.15@i-render";
 import {AbstractComponent} from "../../../core/implement/AbstractComponent";
 import { Renderer } from "../../../managers/Renderer/implement/Renderer";
-import { RendererInfer } from "../../../managers/Renderer/infer/Renderer";
-import Vector2D from "../../../util/data/Vector2D";
-import { Transform } from "../../Transform";
+import { Transform, Vec2 } from "../../Transform";
 import { Render2DCompInfer } from "../interface/render2DCompInfer";
 
 export class Render2DComp extends AbstractComponent implements Render2DCompInfer {

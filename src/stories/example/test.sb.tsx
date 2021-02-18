@@ -21,7 +21,31 @@ export default {
 }
 
 
-
+function createPlayer(game: GE, count: number){
+  const xNum = 5
+  const x = count%xNum * 100 + 100
+  const y = Math.ceil(count/xNum) * 170
+  const player1 = game.craeteObj()
+    player1.addComponent(
+      Transform, 
+      { x, y }, 
+      { x: 1, y: 1 },
+      0 ,
+    );
+    player1.addComponent(Render2DComp, stand1)
+    const anims: AnimConfig = {
+      'stand': { duration: 1, sourceList: [ {url: stand1} ] },
+      'run': { duration: 1, sourceList: [
+        {url: run1Url}, {url: run2Url},
+        {url: run3Url}, {url: run4Url},
+        {url: run5Url}, {url: run6Url},
+        {url: run7Url}, 
+      ]},
+    }
+    player1.addComponent(Animation, anims)
+    player1.addComponent(MoveController, undefined, undefined, 200)
+    player1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.A, size: { x: 10, y: 10 }})
+}
 
 
 export function Run() {
@@ -34,37 +58,9 @@ export function Run() {
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
 
-        const obj1 = game.craeteObj()
-        obj1.addComponent(
-          Transform, 
-          { x: 300, y: 200 }, 
-          { x: 1, y: 1 },
-          0 ,
-        );
-        obj1.addComponent(Render2DComp, stand1)
-        const anims: AnimConfig = {
-          'stand': { duration: 1, sourceList: [ {url: stand1} ] },
-          'run': { duration: 1, sourceList: [
-            {url: run1Url}, {url: run2Url},
-            {url: run3Url}, {url: run4Url},
-            {url: run5Url}, {url: run6Url},
-            {url: run7Url}, 
-          ]},
+        for(let i =0; i< 10; i++){
+          createPlayer(game, i+1)
         }
-        obj1.addComponent(Animation, anims)
-        obj1.addComponent(MoveController)
-        obj1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.A, size: { x: 10, y: 10 }})
-
-        const obj1_1 = game.craeteObj()
-        obj1_1.addComponent(
-          Transform, 
-          { x: 450, y: 200 }, 
-        );
-        obj1_1.addComponent(Render2DComp, stand1)
-        // obj1.addChildren(obj1_1)
-        obj1_1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.A, size: { x: 10, y: 10 }})
-        // obj1.removeChildren(obj1_1)
-        // obj1.destory()
 
     }, [])
     return <div>

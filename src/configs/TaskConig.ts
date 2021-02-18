@@ -3,23 +3,24 @@ import {AbstractMnager} from "../core/implement/AbstractManager";
 
  export const taskConig = {
     start: [
-        
+        {
+          methodName: 'init',
+          scope: [ AbstractMnager ],
+        },
         {
             methodName: 'awake',
             scope: [ AbstractComponent ],
         },
         {
-            methodName: 'init',
-            scope: [ AbstractMnager ],
-        },
-        {
             methodName: 'start',
             scope: [ AbstractComponent ],
         },
-
     ],
     loop: [
-
+        {
+          methodName: 'beforeUpdate',
+          scope: [ AbstractMnager ],
+        },
         {
             methodName: 'willUpdate',
             scope: [ AbstractComponent, AbstractMnager],

@@ -11,7 +11,7 @@ export abstract class  AbstractComponent extends AbstractGEObject implements Abs
 
     private componentLoader: AbstractComponentLoaderInterface;
 
-    protected game: GE
+    private game: GE
 
     constructor(game: GE){
         super()
