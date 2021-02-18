@@ -17,11 +17,19 @@ export default class ArraySet<T>{
         return this.array[index];
     };
 
+    set(index: number, value: T) {
+      this.array[index] = value
+    }
+
     concat(arraySet: ArraySet<T>): void{
         arraySet.map( item => {
             this.add(item);
         });
     };
+
+    findIndex(cb: (t: T) => boolean): number {
+      return this.array.findIndex(cb)
+    }
 
     map(fun: { (item: T, index: number): any }): Array<any>{
         const array = [... this.array];

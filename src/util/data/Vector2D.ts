@@ -15,4 +15,5 @@ export default class Vector2D{
     get Y(){
         return this.y;
     }
+
 }

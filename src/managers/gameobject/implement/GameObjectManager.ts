@@ -5,6 +5,7 @@ import GameObjectInterface from "../interface/data/GameObjectInterface";
 import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
+import { GameObject } from "./data/GameObject";
 
 export default class GameObjectManager extends AbstractMnager implements GameObjectManagerInterface {
 
@@ -14,17 +15,17 @@ export default class GameObjectManager extends AbstractMnager implements GameObj
         this.game.subscribeMssage( GEEvents.REMOVE_GAMEOBJECT, this.removeGameObject);
     };
 
-    gameObjectIdMap = new SimpleMap<number, GameObjectInterface>();
+    gameObjectIdMap = new SimpleMap<number, GameObject>();
 
-    addGameObject = (gameObject: GameObjectInterface) => {
+    addGameObject = (gameObject: GameObject) => {
         this.gameObjectIdMap.set(gameObject.Id, gameObject);
     };
 
-    removeGameObject = ( gameObject: GameObjectInterface) => {
+    removeGameObject = ( gameObject: GameObject) => {
         this.gameObjectIdMap.remove( gameObject.Id );
     }
 
-    findGameObjectById( gameObjectId: number): GameObjectInterface {
+    findGameObjectById( gameObjectId: number): GameObject {
         return this.gameObjectIdMap.get(gameObjectId);
     }
 

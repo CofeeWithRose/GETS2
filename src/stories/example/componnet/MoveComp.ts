@@ -12,7 +12,19 @@ export class MoveController extends AbstractComponent {
 
   protected render: Render2DComp
 
-  awake = () => {
+  protected left: KeyBoard[]
+
+  protected right: KeyBoard[]
+
+  init = (
+    left: KeyBoard[]=[KeyBoard.d, KeyBoard.D], 
+    right: KeyBoard[]=[KeyBoard.a, KeyBoard.A]
+  ) => {
+    this.left = left
+    this.right = right
+  }
+
+  start = () => {
     this.input = this.getManager(InputManager)
     this.transform = this.GameObject.getComponent(Transform)
     this.anim = this.GameObject.getComponent(Animation)
@@ -22,7 +34,7 @@ export class MoveController extends AbstractComponent {
     const position = this.transform?.getPosition()
     const rotation = this.transform?.getRotation()
     const scale = this.transform?.getScale()
-    if(position && this.input.isKeyDown(KeyBoard.d, KeyBoard.D)){
+    if(position && this.input.isKeyDown(...this.left)){
       this.transform.setPosition({
          x: position.x + 3, y: position.y 
       })
@@ -34,7 +46,7 @@ export class MoveController extends AbstractComponent {
 
       this.anim.play('run')
     }
-    if(this.transform && this.input.isKeyDown(KeyBoard.a, KeyBoard.A)) {
+    if(this.transform && this.input.isKeyDown(...this.right)) {
       this.transform.setPosition ({
          x: position.x - 3, y: position.y 
       })

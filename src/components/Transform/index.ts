@@ -18,6 +18,8 @@ export interface TransformEvent {
   scaleChange: (newScale: Vec2, oldScale: Vec2) => void
 
   rotationChange: (newRotation: number, oldRotation: number) => void
+
+  transformChange: (newPosition: Vec2, newRotation: number, newScale: Vec2 ) => void
 }
 
 export class Transform extends AbstractComponent {
@@ -47,7 +49,7 @@ export class Transform extends AbstractComponent {
     this.rotation = rotation
   }
 
-  awake = () => {
+  start = () => {
     // this.GameObject.on('addChild', this.handleChild)
   }
 
@@ -83,6 +85,7 @@ export class Transform extends AbstractComponent {
       }
     })
     this.emit('rotationChange', newRotation, this.rotation)
+    this.emit('transformChange', this.position, newRotation, this.scale )
     this.rotation = newRotation
   }
 
@@ -115,6 +118,7 @@ export class Transform extends AbstractComponent {
       }
     })
     this.emit('scaleChange', newScale, this.scale)
+    this.emit('transformChange', this.position, this.rotation, newScale)
     this.scale = newScale
   }
 
@@ -136,6 +140,7 @@ export class Transform extends AbstractComponent {
       }
     })
     this.emit('positionChange', newPosition, this.position)
+    this.emit('transformChange', newPosition, this.rotation, this.scale)
     this.position = newPosition
   };
 

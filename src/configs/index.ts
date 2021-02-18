@@ -5,8 +5,13 @@ import TaskManager from "../managers/task/implemet/TaskManager";
 import {taskConig} from "./TaskConig";
 import { InitConfigInterface, ManagerInfo } from "../core/interface/InitConfigInterface";
 import { Renderer } from "../managers/Renderer/implement/Renderer";
+import { HitTester, HitGroup } from "../managers/HitTester";
+import { HIT_TEST_GROUP } from "../managers/HitTester/infer";
 
-export const createConfig = (canvas: HTMLCanvasElement): InitConfigInterface =>  ({
+export const createConfig = (
+  canvas: HTMLCanvasElement, 
+  hitGroup: HitGroup[]= [ {groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.B} ],
+): InitConfigInterface =>  ({
 
     managerInfoArray:[
         {
@@ -29,6 +34,10 @@ export const createConfig = (canvas: HTMLCanvasElement): InitConfigInterface => 
             manager: GameObjectManager,
             config: {},
         } as ManagerInfo<typeof GameObjectManager>,
+        {
+          manager: HitTester,
+          config: hitGroup,
+        } as ManagerInfo<typeof HitTester>
     ],
     
 })

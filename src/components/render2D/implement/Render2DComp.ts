@@ -69,8 +69,8 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
     this.renderer.updateSpirit(this.spiritId, {sourceId} )
   }
 
-  getsize(){
-    this.renderer.getSize(this.spiritId)
+  getsize(): Vec2{
+    return this.renderer.getSize(this.spiritId)
   }
 
   // showBorder(isShowBorder: boolean){

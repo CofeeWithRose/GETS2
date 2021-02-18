@@ -54,7 +54,7 @@ export class Animation extends AbstractComponent {
     this.animationInfo = animationInfo
   }
 
-  awake = async () => {
+  start = async () => {
 
     this.renderer = this.getManager(Renderer)
     this.timer = this.getManager(TimerManager)

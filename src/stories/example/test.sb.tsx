@@ -11,6 +11,8 @@ import run4Url from '../assets/player2/run4.png'
 import run5Url from '../assets/player2/run5.png'
 import run6Url from '../assets/player2/run6.png'
 import run7Url from '../assets/player2/run7.png'
+import { HitTest } from '../../components/HitTest'
+import { HIT_TEST_GROUP } from '../../managers/HitTester/infer'
 
 
 export default {
@@ -51,15 +53,16 @@ export function Run() {
         }
         obj1.addComponent(Animation, anims)
         obj1.addComponent(MoveController)
+        obj1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.A, size: { x: 10, y: 10 }})
 
         const obj1_1 = game.craeteObj()
-        const t = obj1_1.addComponent(
+        obj1_1.addComponent(
           Transform, 
           { x: 450, y: 200 }, 
-          { x: -1, y: 1 }
         );
         obj1_1.addComponent(Render2DComp, stand1)
-        obj1.addChildren(obj1_1)
+        // obj1.addChildren(obj1_1)
+        obj1_1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.B, size: { x: 10, y: 10 }})
         // obj1.removeChildren(obj1_1)
         // obj1.destory()
 

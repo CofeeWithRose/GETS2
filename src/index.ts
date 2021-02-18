@@ -12,3 +12,6 @@ export { Render2DComp } from './components/render2D/implement/Render2DComp'
 export * from './components/animation2D/Animation'
 export { Transform } from './components/Transform'
 
+export * from './components/HitTest'
+export {HIT_TEST_GROUP} from './managers/HitTester/infer'
+
