@@ -13,6 +13,7 @@ import run6Url from '../assets/player2/run6.png'
 import run7Url from '../assets/player2/run7.png'
 import { HitTest } from '../../components/HitTest'
 import { HIT_TEST_GROUP } from '../../managers/HitTester/infer'
+import { KeyBoard } from '../../managers/input/interface/data/enum'
 
 
 export default {
@@ -44,7 +45,7 @@ function createPlayer(game: GE, count: number){
     }
     player1.addComponent(Animation, anims)
     player1.addComponent(MoveController, undefined, undefined, 200)
-    player1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.A, size: { x: 10, y: 10 }})
+    player1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.B})
 }
 
 
@@ -58,9 +59,50 @@ export function Run() {
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
 
-        for(let i =0; i< 10; i++){
-          createPlayer(game, i+1)
+        // for(let i =0; i< 10; i++){
+        //   createPlayer(game, i+1)
+        // }
+
+        const player1 = game.craeteObj()
+        player1.addComponent(
+          Transform, 
+          { x: 100, y: 100 }, 
+          { x: 1, y: 1 },
+          0 ,
+        );
+        player1.addComponent(Render2DComp, stand1)
+        const anims: AnimConfig = {
+          'stand': { duration: 1, sourceList: [ {url: stand1} ] },
+          'run': { duration: 0.2, sourceList: [
+            {url: run1Url}, {url: run2Url},
+            {url: run3Url}, {url: run4Url},
+            {url: run5Url}, {url: run6Url},
+            {url: run7Url}, 
+          ]},
         }
+        player1.addComponent(Animation, anims)
+        player1.addComponent(MoveController, undefined, undefined, 500)
+        player1.addComponent(HitTest, {
+          groupName: HIT_TEST_GROUP.A, 
+          // size: { x: 20, y: 10 }
+        })
+
+        const player2 = game.craeteObj()
+       
+        player2.addComponent(
+          Transform, 
+          { x: 300, y: 100 }, 
+          { x: 1, y: 1 }, 0,
+        );
+        player2.addComponent(Render2DComp, stand1)
+        player2.addComponent(Animation, anims)
+        player2.addComponent(MoveController, [KeyBoard.LEFT], [KeyBoard.RIGHT], 500)
+
+        player2.addComponent(HitTest, {
+          groupName: HIT_TEST_GROUP.A, 
+          // size: { x: 20, y: 10 }
+        })
+       
 
     }, [])
     return <div>

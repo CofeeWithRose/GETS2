@@ -91,17 +91,35 @@ export class TaskFlow implements TaskFolwInterface{
     /**
      * 按照优先级执行task.
      */
-    public runTask(time: number): void{
+    public async runAsyncTask(time: number): Promise<void>{
         this.isRunning = true;
         for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
             const taskArry = this.tasks[currentPriority]||[];
             for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
-                taskArry[taskInd](time);
+              await taskArry[taskInd](time);
             }
         }
         this.isRunning = false;
         this.flushDeadTaskArray();
     };
+
+
+    /**
+     * 按照优先级执行task.
+     */
+    public runTask(time: number): void{
+      this.isRunning = true;
+      for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
+          const taskArry = this.tasks[currentPriority]||[];
+          for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
+            taskArry[taskInd](time);
+          }
+      }
+      this.isRunning = false;
+      this.flushDeadTaskArray();
+  };
+
+
 
      /**
      * 按照优先级执行task.

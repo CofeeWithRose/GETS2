@@ -3,6 +3,7 @@ import { AbstractMnager } from "../../core/implement/AbstractManager";
 import { GE } from "../../core/implement/GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import MutiValueMap from "../../util/map/implement/MutiValueMap";
+import TimerManager from "../timer/implement/TimerManager";
 import { HIT_TEST_GROUP } from "./infer";
 
 
@@ -26,21 +27,26 @@ export interface HitTesterEvent {
 
   hitEnd: (otherObjId: number, otherMotion: MoveInfo, selfMotion: MoveInfo) =>  void
 
+  hitting: (otherObjId: number, otherMotion: MoveInfo, selfMotion: MoveInfo) =>  void
+
 }  
 
 export interface MoveInfo {
   
   position: Vec2
 
+
   /**
    * pixi/s
    */
-  velocity: Vec2 
+  direction: Vec2 
+
+  size: Vec2
 
   /**
    * ms
    */
-  time: number
+  deltaTime: number
 
 }
 
@@ -52,6 +58,8 @@ export interface HitTestInfo {
   position: Vec2
 
   rotation: number
+
+  deltaPosition: Vec2
 
   size: Vec2 
 }
@@ -70,7 +78,7 @@ interface ObjectMoveInfo extends MoveInfo {
 
 }
 
-interface HitResult {
+export interface HitResult {
   motionA: ObjectMoveInfo
   motionB: ObjectMoveInfo
 }
@@ -83,12 +91,19 @@ export class HitTester extends AbstractMnager {
 
   #hitInfoMap = new MutiValueMap<HIT_TEST_GROUP, ObjectHitTestInfo>()
 
-  #hitResultMap = new Map<HIT_TEST_GROUP, HitResult[]>()
+  #hitRecord = new Map<string, HitResult>()
+
+  #timer: TimerManager  
  
   constructor(game: GE, config: HitGroup[]){
     super(game, config)
     this.#config = config
   }
+
+  init = () => {
+    this.#timer = this.getManager(TimerManager)
+  }
+  
 
   addTestInfo( groupName: HIT_TEST_GROUP, gameObjectId: number, hitTestInfo: HitTestInfo){
     this.#hitInfoMap.add(groupName, { gameObjectId, ... hitTestInfo } )
@@ -100,15 +115,15 @@ export class HitTester extends AbstractMnager {
     if(index > -1) array.set(index, { gameObjectId: objectId, ... hitTestInfo })
   }
 
-  update = () => {
+  afterUpdated = () => {
     this.#config.forEach( ({groupB, groupA}) => {
       const gA = this.#hitInfoMap.get(groupA).valus()
       const gB = this.#hitInfoMap.get(groupB).valus()
-      if(gA && gB) this.chekHitTest(gA, gB)
+      if(gA && gB) this.chekHitTest( this.#timer.DealTime ,gA, gB)
     })
   }
 
-  protected chekHitTest(groupA: ObjectHitTestInfo[], groupB: ObjectHitTestInfo[]): HitResult[]{
+  protected chekHitTest(deltaTime: number, groupA: ObjectHitTestInfo[], groupB: ObjectHitTestInfo[]): HitResult[]{
 
     const hitRest: HitResult[] = []
 
@@ -144,9 +159,48 @@ export class HitTester extends AbstractMnager {
           leftA, rightA, topA, bottomA,
           leftB, rightB, topB, bottomB,
         )){
-          console.log('hit...')
-        } else {
+          
+          const motionA: ObjectMoveInfo = {
+              gameObjectId: infoA.gameObjectId,
+              position: infoA.position,
+              direction: infoA.deltaPosition,
+              size: infoA.size,
+              deltaTime,
+          }
+          const motionB: ObjectMoveInfo = {
+            gameObjectId: infoB.gameObjectId,
+            position: infoB.position,
+            direction: infoB.deltaPosition,
+            size: infoB.size,
+            deltaTime,
+          }
+          const result: HitResult = {
+            motionA, motionB
+          }
+          const key1 = `${infoA.gameObjectId}_${infoB.gameObjectId}`
+          const key2 = `${infoB.gameObjectId}_${infoA.gameObjectId}`
+          
+          if(!this.#hitRecord.get(key1)){
+            this.emit('hitBegin', motionA.gameObjectId, motionB.gameObjectId, motionB, motionA)
+            this.emit('hitBegin', motionB.gameObjectId, motionA.gameObjectId, motionA, motionB)
+          }
+          this.emit('hitting', motionA.gameObjectId, motionB.gameObjectId, motionB, motionA)
+           this.emit('hitting', motionB.gameObjectId, motionA.gameObjectId, motionA, motionB)
+         
+          this.#hitRecord.set(key1, result)
+          this.#hitRecord.set(key2, result)
 
+        } else {
+          const key1 = `${infoA.gameObjectId}_${infoB.gameObjectId}`
+          const key2 = `${infoB.gameObjectId}_${infoA.gameObjectId}`
+          const result = this.#hitRecord.get(key1)
+          if(result){
+            const { motionB, motionA } = result
+            this.emit('hitEnd', motionA.gameObjectId, motionB.gameObjectId, motionB, motionA)
+            this.emit('hitEnd', motionB.gameObjectId, motionA.gameObjectId, motionA, motionB)
+            this.#hitRecord.delete(key1)
+            this.#hitRecord.delete(key2)
+          }
         }
 
       })
@@ -159,7 +213,7 @@ export class HitTester extends AbstractMnager {
     lA: number, rA: number, tA: number, bA: number,
     lB: number, rB: number, tB: number, bB: number,
   ){
-    const isXHit = (lA >= lB && lA <= rB)|| ( rA >= lB && rA <= rB )
+    const isXHit = (lA >= lB && lA <= rB) || (rA >= lB && rA <= rB)
     const isYHIt = (tA >= tB && tA <= bB) || (bA >= tB && bA <= bB)
     return isXHit && isYHIt
   }

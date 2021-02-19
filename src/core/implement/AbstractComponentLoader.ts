@@ -6,6 +6,7 @@ import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 
 
+let componentLoaderBaseId = 1
 export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected game: GE
@@ -23,7 +24,11 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected isActive = true;
 
-    name = 'default'
+    protected id = componentLoaderBaseId++
+
+    name = `default${this.Id}`
+
+    tag = 'default'
 
     get IsActive() {
         return this.isActive;

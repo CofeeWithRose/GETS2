@@ -17,7 +17,13 @@ export default  interface TaskFolwInterface {
    /**
     * 按照优先级执行task.
     */
+   runAsyncTask(time: number): Promise<void>;
+
+   /**
+    * 按照优先级执行task.
+    */
    runTask(time: number): void;
+
 
 
    clearAll(): void ;

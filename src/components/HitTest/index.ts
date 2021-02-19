@@ -4,6 +4,7 @@ import GameObjectManager from "../../managers/gameobject/implement/GameObjectMan
 import { HitTester, HitTestInfo, MoveInfo } from "../../managers/HitTester";
 import { HIT_TEST_GROUP } from "../../managers/HitTester/infer";
 import EventEmitor from "../../util/event/EventEmitor";
+import { Render2DComp } from "../render2D/implement/Render2DComp";
 import { Transform, Vec2 } from "../Transform";
 
 export interface HitTestEvent {
@@ -12,12 +13,13 @@ export interface HitTestEvent {
 
   hitEnd: (otherGameObject: AbstractComponentLoader, otherMotion: MoveInfo, selfMotion: MoveInfo ) => void
 
+  hitting: (otherGameObject: AbstractComponentLoader, otherMotion: MoveInfo, selfMotion: MoveInfo ) => void
 }
 
 
 export interface ShapInfo {
  
-  size: Vec2
+  size?: Vec2
 
   offset?: Vec2
 
@@ -40,14 +42,19 @@ export class HitTest extends AbstractComponent {
 
   #shapInfo: ShapInfo
 
+  protected lastPosition: Vec2
+
+  protected position: Vec2
+
 
   init = (shapInfo: ShapInfo) => {
     this.#shapInfo = shapInfo
   }
 
   protected completeShapInfo(){
-    const { offset } = this.#shapInfo
+    const { offset, size } = this.#shapInfo
     if(!offset) this.#shapInfo.offset = { x: 0, y: 0 }
+    if(!size) this.#shapInfo.size = this.GameObject.getComponent(Render2DComp)?.getsize()||{ x: 11, y: 11}
   }
 
   start = () => {
@@ -58,15 +65,19 @@ export class HitTest extends AbstractComponent {
     this.#hitTester = this.getManager(HitTester)
     this.#hitTester.on('hitBegin', this.GameObject.Id, this.#handleHitBegin )
     this.#hitTester.on('hitEnd', this.GameObject.Id, this.#handleHitEnd )
+    this.#hitTester.on('hitting', this.GameObject.Id, this.#handleHitting )
 
 
     this.#transform = this.GameObject.getComponent(Transform)
     const position = this.#transform.getPosition()
     const scale = this.#transform.getScale()
     const rotation = this.#transform.getRotation()
+    this.lastPosition = this.#transform.getPosition()
+    this.position = this.lastPosition
     const info =  this.getHitTestInfo(position, rotation, scale )
     this.#hitTester.addTestInfo(this.#shapInfo.groupName, this.GameObject.Id, info)
     this.#transform.on('transformChange',this.#handleTransformChange )
+    this.#transform.on('positionChange', this.#handlePositionChange)
 
 
   }
@@ -76,6 +87,12 @@ export class HitTest extends AbstractComponent {
 
     this.#hitTester.off('hitBegin', this.GameObject.Id, this.#handleHitBegin )
     this.#hitTester.off('hitEnd', this.GameObject.Id, this.#handleHitEnd )
+    this.#hitTester.off('hitting', this.GameObject.Id, this.#handleHitting )
+  }
+
+  #handlePositionChange = (position: Vec2) => {
+    this.lastPosition = this.position
+    this.position = position
   }
 
   #handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
@@ -83,17 +100,22 @@ export class HitTest extends AbstractComponent {
     this.#hitTester.updateTestInfo(this.#shapInfo.groupName, this.GameObject.Id, info)
   }
 
-  protected getHitTestInfo(position: Vec2, rotation: number, scale: Vec2 ): HitTestInfo {
+  protected getHitTestInfo(_: Vec2, rotation: number, scale: Vec2 ): HitTestInfo {
     const { size, offset } = this.#shapInfo
-    return {
-      position,
+    const info: HitTestInfo =  {
+      position: this.position,
       offset,
       rotation,
+      deltaPosition: {
+        x: this.position.x -  this.lastPosition.x, 
+        y: this.position.y - this.lastPosition.y
+      },
       size: {
         x: Math.abs(size.x * scale.x),
         y: Math.abs(size.y * scale.y)
       },
     }
+    return info
   }
 
   #handleHitBegin = (gameObjectId: number, otherMotion: MoveInfo, selfMotion: MoveInfo) => {
@@ -104,6 +126,11 @@ export class HitTest extends AbstractComponent {
   #handleHitEnd = (gameObjectId: number, otherMotion: MoveInfo, selfMotion: MoveInfo) => {
     const obj = this.#objManager.findGameObjectById(gameObjectId)
     this.emit('hitEnd', obj, otherMotion, selfMotion)
+  }
+
+  #handleHitting = (gameObjectId: number, otherMotion: MoveInfo, selfMotion: MoveInfo) => {
+    const obj = this.#objManager.findGameObjectById(gameObjectId)
+    this.emit('hitting', obj, otherMotion, selfMotion)
   }
 
 

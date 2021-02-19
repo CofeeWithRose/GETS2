@@ -117,15 +117,14 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
             this.isRunning = false;
         }
     };
-    private run = (time: number) => {
+    private run = async (time: number) => {
 
     }
 
-    private emptyRun = (time: number) => {
+    private emptyRun = async (time: number) => {
         const now = Date.now()
-        window.requestAnimationFrame(this.run);
         if(this.hasNewComponent){
-            this.start.runTask(now);
+            await this.start.runAsyncTask(now);
             this.start.clearAll();
             this.hasNewComponent = false;
         }
@@ -134,6 +133,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
             this.removeComponent(c)
         })
         this.removingComponentList = []
+        window.requestAnimationFrame(this.run);
     }
 
 

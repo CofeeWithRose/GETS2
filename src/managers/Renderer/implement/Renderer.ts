@@ -46,6 +46,10 @@ export class Renderer extends AbstractMnager implements RendererInfer {
       return id
     }
 
+    // afterUpdated = () => {
+    //   this.irender.updateImidiatly()
+    // }
+
     // createReact({x, y}: Vec2, {position, scale, ...rest}: SpiritAttr): string {
     //   const spirit = this.irender.createElement({
     //     imgId: this.pixiSourceId,
