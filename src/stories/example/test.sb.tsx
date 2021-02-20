@@ -81,10 +81,10 @@ export function Run() {
           ]},
         }
         player1.addComponent(Animation, anims)
-        player1.addComponent(MoveController, undefined, undefined, 500)
+        player1.addComponent(MoveController, undefined, undefined, 200)
         player1.addComponent(HitTest, {
           groupName: HIT_TEST_GROUP.A, 
-          // size: { x: 20, y: 10 }
+          size: { x: 4, y: 10 }
         })
 
         const player2 = game.craeteObj()
@@ -96,11 +96,11 @@ export function Run() {
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
-        player2.addComponent(MoveController, [KeyBoard.LEFT], [KeyBoard.RIGHT], 500)
+        player2.addComponent(MoveController, [KeyBoard.LEFT], [KeyBoard.RIGHT], 200)
 
         player2.addComponent(HitTest, {
           groupName: HIT_TEST_GROUP.A, 
-          // size: { x: 20, y: 10 }
+          size: { x: 4, y: 10 }
         })
        
 

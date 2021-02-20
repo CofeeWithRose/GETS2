@@ -47,6 +47,6 @@ export default class ArraySet<T>{
     };
 
     valus():Array<T> {
-        return [...this.array];
+        return this.array;
     }
 }
