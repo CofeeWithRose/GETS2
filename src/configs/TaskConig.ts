@@ -1,7 +1,8 @@
 import {AbstractComponent} from "../core/implement/AbstractComponent";
 import {AbstractMnager} from "../core/implement/AbstractManager";
+import TaskMnagerConfigInterface from "../managers/task/interface/config/TaskMnagerConfigInterface";
 
- export const taskConig = {
+ export const taskConig: TaskMnagerConfigInterface = {
     start: [
         {
           methodName: 'init',
@@ -32,6 +33,7 @@ import {AbstractMnager} from "../core/implement/AbstractManager";
         {
             methodName: 'updated',
             scope: [ AbstractComponent, AbstractMnager ],
+            sequence: 'negative',
         },
         {
             methodName: 'afterUpdated',

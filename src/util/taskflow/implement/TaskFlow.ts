@@ -1,4 +1,4 @@
-import TaskFolwInterface from "../interface/TaskFlowInterface";
+import TaskFolwInterface, { TaskOptions } from "../interface/TaskFlowInterface";
 import SimpleMap from "../../map/implement/SimpleMap";
 
 class TaskRecord {
@@ -38,7 +38,9 @@ export class TaskFlow implements TaskFolwInterface{
      * @param task 执行的方法.
      * @returns 任务的ID.
      */
-    public addTask (priority: number, task: Function): number{
+    public addTask (task: Function, options: TaskOptions): number{
+
+        const { priority, sequence } = options
 
         let taskArray = this.tasks[priority];
 
@@ -48,7 +50,7 @@ export class TaskFlow implements TaskFolwInterface{
         }
         const taskId =  this.taskId++;
         this.idTaskMap.set(taskId, new TaskRecord(priority, task));
-        taskArray.push(task);
+        sequence === 'positive'? taskArray.push(task): taskArray.unshift(task)
         return taskId;
     }
 

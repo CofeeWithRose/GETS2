@@ -1,3 +1,9 @@
+import { TaskSequence } from "../../../managers/task/interface/config/TaskMnagerConfigInterface";
+
+export interface TaskOptions {
+  priority: number
+  sequence: TaskSequence
+}
 export default  interface TaskFolwInterface {
     /**
     * 
@@ -6,7 +12,7 @@ export default  interface TaskFolwInterface {
     * @param task 执行的方法.
     * @returns 任务的ID.
     */
-   addTask (priority: number, task: Function): number;
+   addTask (task: Function, options: TaskOptions ): number;
 
    /**
     * 总任务队列中删除任务.

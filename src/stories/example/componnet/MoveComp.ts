@@ -72,6 +72,7 @@ export class MoveController extends AbstractComponent {
 
 
   update = () => {
+    console.log('update',this.Id)
     const deltaTime = this.timer.DealTime
     const position = this.transform?.getPosition()
     const rotation = this.transform?.getRotation()
@@ -117,6 +118,10 @@ export class MoveController extends AbstractComponent {
       })
       this.hitInfo = null
     }
+  }
+
+  updated = () => {
+    console.log('updated',this.Id)
   }
 
 }

@@ -46,7 +46,7 @@ export default class ConfigParser {
             for(let j = 0; j< unitScopes.length; j++){
                 this.classTypeArray.add(unitScopes[j]);
                 this.classTypeTasksMap.add( unitScopes[j], 
-                    new TaskInfo(configUnit.methodName, i, type));
+                    new TaskInfo(configUnit.methodName, i, type, configUnit.sequence||'positive'));
             }
         }
     }
