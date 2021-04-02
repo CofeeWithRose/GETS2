@@ -54,11 +54,11 @@ export class MoveController extends AbstractComponent {
     this.anim = this.GameObject.getComponent(Animation)
     this.timer = this.getManager(TimerManager)
     this.hitTest = this.GameObject.getComponent(HitTest)
-    this.hitTest.on('hitting', this.handleHitting)
+    this.hitTest && this.hitTest.on('hitting', this.handleHitting)
   }
 
   destory = ()  => {
-    this.hitTest.off('hitting', this.handleHitting)
+    this.hitTest && this.hitTest.off('hitting', this.handleHitting)
   }
 
   protected handleHitting = (other: GameObject, otherM: MoveInfo, selfM: MoveInfo) => {
@@ -66,17 +66,15 @@ export class MoveController extends AbstractComponent {
         self: selfM,
         other: otherM,
       }
-      console.log(other.name, other.tag)
   }
 
 
 
   update = () => {
-    console.log('update',this.Id)
     const deltaTime = this.timer.DealTime
     const position = this.transform?.getPosition()
-    const rotation = this.transform?.getRotation()
-    const scale = this.transform?.getScale()
+    // const rotation = this.transform?.getRotation()
+    // const scale = this.transform?.getScale()
     if(this.v.x|| this.v.y) this.transform.setPosition({
       x: position.x + this.v.x * deltaTime, 
       y: position.y + this.v.y * deltaTime,
@@ -120,8 +118,6 @@ export class MoveController extends AbstractComponent {
     }
   }
 
-  updated = () => {
-    console.log('updated',this.Id)
-  }
+
 
 }
