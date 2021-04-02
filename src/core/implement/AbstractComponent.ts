@@ -7,8 +7,8 @@ import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
 
 
 export abstract class  AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
-  
 
+  
     private componentLoader: AbstractComponentLoaderInterface;
 
     private game: GE

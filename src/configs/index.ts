@@ -27,17 +27,17 @@ export const createConfig = (
             config: {},
         },
         {
-            manager: Renderer,
-            config: { canvas, maxSize: 10 },
-        } as ManagerInfo<typeof Renderer>,
-        {
             manager: GameObjectManager,
             config: {},
         } as ManagerInfo<typeof GameObjectManager>,
         {
           manager: HitTester,
           config: hitGroup,
-        } as ManagerInfo<typeof HitTester>
+        } as ManagerInfo<typeof HitTester>,
+        {
+          manager: Renderer,
+          config: { canvas, maxSize: 10 },
+        } as ManagerInfo<typeof Renderer>,
     ],
     
 })

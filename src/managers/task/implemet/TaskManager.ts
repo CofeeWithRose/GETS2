@@ -12,6 +12,7 @@ import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectI
 import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
 import { GE } from "../../../core/implement/GE";
 import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
+import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
 export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
 
@@ -41,7 +42,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private removingComponentList: AbstractComponentInterface[] = []
 
-    private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponentInterface) => {
+    private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponent) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
     };

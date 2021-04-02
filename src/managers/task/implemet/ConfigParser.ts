@@ -1,5 +1,5 @@
 import ArraySet from "../../../util/ArraySet";
-import AbstractGEObject from "../../../core/implement/AbstractGEObject";
+import AbstractGEObject, { AbstractGEObjectConstructor } from "../../../core/implement/AbstractGEObject";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 import TaskMnagerConfigInterface, { RuntimeConfigUnit } from "../interface/config/TaskMnagerConfigInterface";
 import { TaskType } from "../interface/data/enum";
@@ -13,6 +13,8 @@ export default class ConfigParser {
 
     private classTypeTasksMap = new MutiValueMap<typeof AbstractGEObject, TaskInfo>();
   
+    private taskInfoCache = new Map<AbstractGEObjectConstructor, TaskInfo[]>()
+
     constructor(config: TaskMnagerConfigInterface){
         this.initOnTypeConfig(TaskType.START, config.start);
         this.initOnTypeConfig(TaskType.LOOP, config.loop);
@@ -20,13 +22,19 @@ export default class ConfigParser {
     }
 
     getTaskInfoArray(instance: AbstractGEObjectInterface): Array<TaskInfo>{
+      
         const typesArray = this.classTypeArray.valus();
-        let result = [];
+        const constructor = Object.getPrototypeOf(instance).constructor as AbstractGEObjectConstructor
+        let result: TaskInfo[] = this.taskInfoCache.get(constructor);
+        if(result) return result
+        result = []
+        console.log('produce task', instance)
         for(let i = 0; i< typesArray.length; i++){
             if( instance instanceof typesArray[i] ){
-                result = result.concat( this.classTypeTasksMap.get(typesArray[i]).valus() );
+                result.push( ...this.classTypeTasksMap.get(typesArray[i]).valus() );
             }
         } 
+        this.taskInfoCache.set(constructor, result)
         return result;
     }
 
