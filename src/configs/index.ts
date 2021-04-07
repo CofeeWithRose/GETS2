@@ -1,6 +1,6 @@
 import GameObjectManager from "../managers/gameobject/implement/GameObjectManager";
 import {InputManager} from "../managers/input/implement/InputManager";
-import TimerManager from "../managers/timer/implement/TimerManager";
+import {TimerManager} from "../managers/timer/implement/TimerManager";
 import TaskManager from "../managers/task/implemet/TaskManager";
 import {taskConig} from "./TaskConig";
 import { InitConfigInterface, ManagerInfo } from "../core/interface/InitConfigInterface";

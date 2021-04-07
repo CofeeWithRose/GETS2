@@ -3,7 +3,7 @@ import { AbstractMnager } from "../../core/implement/AbstractManager";
 import { GE } from "../../core/implement/GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import MutiValueMap from "../../util/map/implement/MutiValueMap";
-import TimerManager from "../timer/implement/TimerManager";
+import {TimerManager} from "../timer/implement/TimerManager";
 import { HIT_TEST_GROUP } from "./infer";
 
 

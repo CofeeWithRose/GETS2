@@ -2,7 +2,7 @@ import { Uuid } from "../../util/uuid";
 
 export default abstract class AbstractGEObject {
     
-    private id = Uuid.getUuid();
+    protected id = Uuid.getUuid();
 
     get Id(){
         return this.id;

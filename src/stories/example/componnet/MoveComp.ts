@@ -1,12 +1,8 @@
 import {
   Animation, Render2DComp, Transform,
-  AbstractComponent, InputManager, KeyBoard 
+  AbstractComponent, InputManager, KeyBoard,
+  HitTest, GameObject, Vec2, MoveInfo, TimerManager 
 } from 'ge'
-import { HitTest } from '../../../components/HitTest'
-import { Vec2 } from '../../../components/Transform'
-import { GameObject } from '../../../managers/gameobject/implement/data/GameObject'
-import { HitResult, MoveInfo } from '../../../managers/HitTester'
-import TimerManager from '../../../managers/timer/implement/TimerManager'
 
 
 export interface HitInfomation {

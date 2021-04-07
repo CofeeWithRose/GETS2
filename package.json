@@ -1,8 +1,10 @@
 {
-  "name": "ge",
-  "version": "1.0.0",
-  "description": "",
+  "name": "ge2",
+  "version": "0.0.1",
   "main": "index.js",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "i-render": "^0.0.39"
   },
@@ -32,6 +34,18 @@
     "storybook": "start-storybook -p 7006",
     "build-storybook": "build-storybook"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "cofeewithrose",
+  "license": "MIT",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CofeeWithRose/GETS2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CofeeWithRose/GETS2/issues"
+  },
+  "homepage": "https://github.com/CofeeWithRose/GETS2#readme",
+  "description": ""
 }

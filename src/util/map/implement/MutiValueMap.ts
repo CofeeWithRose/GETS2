@@ -24,13 +24,15 @@ export default class MutiValueMap <K, V> {
     keys(){
         return this.map.keys();
     }
-    values(): Array<V>{
-        return this.map.values().reduce( (resulrtArray,itemArry) => {
-          return resulrtArray.concat(itemArry.valus())
-        }, []);
+    values(): Array<V> {
+        const res: V[] = []
+        this.map.forEach((itemArry) => {
+            res.push(...itemArry.valus())
+        })
+        return res
     }
     removeValues(key: K) {
-        this.map.remove(key);
+        this.map.delete(key);
     };
 
     removeValue(key: K, value: V){

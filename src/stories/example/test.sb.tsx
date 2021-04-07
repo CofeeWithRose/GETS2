@@ -1,4 +1,4 @@
-import { GE, createConfig, Transform, Render2DComp, Animation, AnimConfig } from 'ge'
+import { GE, createConfig, Transform, Render2DComp, Animation, AnimConfig, HitTest, HIT_TEST_GROUP, KeyBoard } from 'ge'
 import { useEffect, useRef } from 'react'
 
 import { MoveController } from './componnet/MoveComp'
@@ -11,9 +11,6 @@ import run4Url from '../assets/player2/run4.png'
 import run5Url from '../assets/player2/run5.png'
 import run6Url from '../assets/player2/run6.png'
 import run7Url from '../assets/player2/run7.png'
-import { HitTest } from '../../components/HitTest'
-import { HIT_TEST_GROUP } from '../../managers/HitTester/infer'
-import { KeyBoard } from '../../managers/input/interface/data/enum'
 
 
 export default {
@@ -59,7 +56,7 @@ function createPlayers(game: GE, ind: number){
         player1.addComponent(Render2DComp, stand1)
         const anims: AnimConfig = {
           'stand': { duration: 1, sourceList: [ {url: stand1} ] },
-          'run': { duration: 0.2, sourceList: [
+          'run': { duration: 0.8, sourceList: [
             {url: run1Url}, {url: run2Url},
             {url: run3Url}, {url: run4Url},
             {url: run5Url}, {url: run6Url},
@@ -101,9 +98,7 @@ export function Run() {
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
 
-        for(let i =0; i < 400;i++ ){
-          createPlayers(game, i+1)
-        }
+        createPlayers(game, 0)
        
 
     }, [])

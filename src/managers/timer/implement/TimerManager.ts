@@ -4,7 +4,7 @@ import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig
 import { Ranger, Scale } from "../../../util/decorators/Number";
 import { GE } from "../../../core/implement/GE";
 
-export default class TimerManager extends AbstractMnager implements TimerManagerInterfce {
+export class TimerManager extends AbstractMnager implements TimerManagerInterfce {
 
     constructor(game: GE ,config: AbstractManagerConfig){
         super(game, config);

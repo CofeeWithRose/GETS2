@@ -1,4 +1,6 @@
 
+export { HitResult, MoveInfo } from "./managers/HitTester";
+
 export { GE } from "./core/implement/GE";
 export { createConfig } from './configs'
 export {InitConfigInterface} from "./core/interface/InitConfigInterface";
@@ -10,8 +12,10 @@ export { KeyBoard } from "./managers/input/interface/data/enum";
 export { AbstractComponent } from "./core/implement/AbstractComponent";
 export { Render2DComp } from './components/render2D/implement/Render2DComp'
 export * from './components/animation2D/Animation'
-export { Transform } from './components/Transform'
+export { Transform, Vec2 } from './components/Transform'
 
 export * from './components/HitTest'
-export {HIT_TEST_GROUP} from './managers/HitTester/infer'
+export {HIT_TEST_GROUP, } from './managers/HitTester/infer'
+export { TimerManager} from "./managers/timer/implement/TimerManager";
+
 

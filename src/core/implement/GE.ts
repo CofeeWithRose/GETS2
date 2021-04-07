@@ -48,7 +48,7 @@ export  class GE {
      * 注入一个 managerInfo.
      * @param managerInfo 
      */
-    initManager( managerInfo: ManagerInfo){
+    initManager( managerInfo: ManagerInfo<any>){
 
         this.checkStarted( this.INIT_ERROR );
         const manager = new managerInfo.manager(this, managerInfo.config);
@@ -63,7 +63,7 @@ export  class GE {
         }
     }
 
-    private  initManagers(managerInfos: Array<ManagerInfo>) {
+    private  initManagers(managerInfos: Array<ManagerInfo<any>>) {
 
         for(let i = 0; i <managerInfos.length; i++){
             this.initManager( managerInfos[i] );
