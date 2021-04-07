@@ -80,7 +80,9 @@ export class MoveController extends AbstractComponent {
       y: position.y + this.v.y * deltaTime,
     })
 
-    if(this.input.isKeyDown(...this.left)){
+   
+
+    if(this.input.keyDown(...this.left)){
        this.v = {
         x: -this.speed,
         y: 0
@@ -89,7 +91,7 @@ export class MoveController extends AbstractComponent {
       this.anim.play('run')
     }
 
-    if( this.input.isKeyDown(...this.right)) {
+    if( this.input.keyDown(...this.right)) {
       this.v = {
         x: this.speed,
         y: 0
@@ -97,14 +99,16 @@ export class MoveController extends AbstractComponent {
       this.transform.setScale({ x: -1, y: 1})
       this.anim.play('run')
     }
-
-    if( this.input.keyUp(...this.left, ...this.right)){
+    // console.log(this.input.isKeyUp(KeyBoard.a, KeyBoard.A))
+    if( this.input.isKeyUp(...this.left) && this.input.isKeyUp(...this.right)){
       this.v = {
         x: 0,
         y: 0
       }
       this.anim.play('stand')
     }
+
+    
     if(this.hitInfo){
       const {direction: otherDirection, deltaTime, position: otherPosition, size: otherSize } = this.hitInfo.other
       const { direction, position, size } = this.hitInfo.self
@@ -116,6 +120,10 @@ export class MoveController extends AbstractComponent {
       })
       this.hitInfo = null
     }
+  }
+
+  private handleUp(){
+   
   }
 
 

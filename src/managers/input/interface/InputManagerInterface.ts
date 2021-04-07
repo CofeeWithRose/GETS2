@@ -12,9 +12,9 @@ export default interface InputManagerInterface extends AbstractManagerInterface 
 
     isKeyUp(...keyBoard: KeyBoard[]): boolean;
 
-    onKeyDown(fun: Function, ...keyBoard: KeyBoard[] ): void;
+    // onKeyDown(fun: Function, ...keyBoard: KeyBoard[] ): void;
 
-    onKeyUp( fun: Function, ...keyBoard: KeyBoard[] ): void;
+    // onKeyUp( fun: Function, ...keyBoard: KeyBoard[] ): void;
 
     updated():void;
     /**

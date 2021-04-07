@@ -59,6 +59,12 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
         return false;
     }
 
+    /**
+     * 任意一个 keyBoard up 返回 true.
+     * 每个 keyBoard 一次 up 只触发一次true.
+     * @param keyBoard 
+     * @returns 
+     */
     keyUp(...keyBoard: KeyBoard[]): boolean{
       for(let i =0; i< keyBoard.length; i++ ){
         if(this.hasKeysUp[keyBoard[i]]) return true
@@ -66,19 +72,29 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
       return false;
     }
 
+    /**
+     * 所有 keyBoard down 返回true.
+     * @param keyBoard 
+     * @returns 
+     */
     isKeyDown(...keyBoard: KeyBoard[]): boolean{
 
       for(let i =0; i< keyBoard.length; i++ ){
-        if(this.isKeysDownMap[keyBoard[i]]) return true
+        if(!this.isKeysDownMap[keyBoard[i]]) return false
       }
-      return false;
+      return true;
     };
 
+    /**
+     * 所有 keyboard up 返回true.
+     * @param keyBoard 
+     * @returns 
+     */
     isKeyUp(...keyBoard: KeyBoard[]): boolean{
       for(let i =0; i< keyBoard.length; i++ ){
-        if(!this.isKeysDownMap[keyBoard[i]]) return true
+        if(this.isKeysDownMap[keyBoard[i]]) return false
       }
-      return false;
+      return true;
     };
 
     afterUpdated = () => {
@@ -86,13 +102,13 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
       this.hasKeysUp = {}
     }
 
-    onKeyDown(fun: Function, ...keyBoard: KeyBoard[]): void{
-        fun();
-    };
+    // onKeyDown(fun: Function, ...keyBoard: KeyBoard[]): void{
+    //     fun();
+    // };
 
-    onKeyUp( fun: Function, ...keyBoard: KeyBoard[]): void{
-        fun();
-    };
+    // onKeyUp( fun: Function, ...keyBoard: KeyBoard[]): void{
+    //     fun();
+    // };
 
     triggerInputEvent( inputType: InputType,inputEvent: InputEvent): void {
         

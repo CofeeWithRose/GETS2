@@ -48,11 +48,11 @@ function createPlayer(game: GE, count: number){
     player1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.B})
 }
 
-function createPlayers(game: GE){
+function createPlayers(game: GE, ind: number){
   const player1 = game.craeteObj()
         player1.addComponent(
           Transform, 
-          { x: 100, y: 100 }, 
+          { x: 100 * ind, y: 100 }, 
           { x: 1, y: 1 },
           0 ,
         );
@@ -67,17 +67,17 @@ function createPlayers(game: GE){
           ]},
         }
         player1.addComponent(Animation, anims)
-        player1.addComponent(MoveController, [KeyBoard.LEFT], [KeyBoard.RIGHT], 200)
+        player1.addComponent(MoveController, undefined, undefined, 200)
         // player1.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
-        //   size: { x: 4, y: 10 }
+        //   size: { x: 15, y: 10 }
         // })
 
         const player2 = game.craeteObj()
        
         player2.addComponent(
           Transform, 
-          { x: 300, y: 100 }, 
+          { x: 100 * ind * 2, y: 100 }, 
           { x: 1, y: 1 }, 0,
         );
         player2.addComponent(Render2DComp, stand1)
@@ -86,7 +86,7 @@ function createPlayers(game: GE){
 
         // player2.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
-        //   size: { x: 4, y: 10 }
+        //   size: { x: 15, y: 10 }
         // })
 }
 
@@ -101,8 +101,8 @@ export function Run() {
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
 
-        for(let i =0; i < 300;i++ ){
-          createPlayers(game)
+        for(let i =0; i < 400;i++ ){
+          createPlayers(game, i+1)
         }
        
 

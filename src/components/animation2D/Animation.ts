@@ -100,8 +100,7 @@ export class Animation extends AbstractComponent {
     const animationInfo = this.animationInfo[animationName]
     const sourceList = this.sourceList[animationName]
     const curTime = (this.timer.StartFromNow - startPlayTime)%animationInfo.duration
-    const percent = curTime/animationInfo.duration
-    const index = Math.floor(percent*sourceList.length)
+    const index = Math.floor((curTime/animationInfo.duration)*sourceList.length)
     
     if(this.lastIndex !==index || this.lastAnimationName !==animationName) {
       this.lastIndex = index
