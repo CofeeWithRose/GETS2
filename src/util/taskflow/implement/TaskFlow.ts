@@ -113,9 +113,7 @@ export class TaskFlow implements TaskFolwInterface{
       this.isRunning = true;
       for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
           const taskArry = this.tasks[currentPriority]||[];
-          for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
-            taskArry[taskInd](time);
-          }
+          taskArry.forEach( task => task(time))
       }
       this.isRunning = false;
       this.flushDeadTaskArray();

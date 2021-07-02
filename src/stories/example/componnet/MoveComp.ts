@@ -68,7 +68,7 @@ export class MoveController extends AbstractComponent {
 
   update = () => {
     const deltaTime = this.timer.DealTime
-    const position = this.transform?.getPosition()
+    const position = this.transform.getPosition()
     // const rotation = this.transform?.getRotation()
     // const scale = this.transform?.getScale()
     if(this.v.x|| this.v.y) this.transform.setPosition({
@@ -95,14 +95,14 @@ export class MoveController extends AbstractComponent {
       this.transform.setScale({ x: -1, y: 1})
       this.anim.play('run')
     }
-    // console.log(this.input.isKeyUp(KeyBoard.a, KeyBoard.A))
-    if( this.input.isKeyUp(...this.left) && this.input.isKeyUp(...this.right)){
+    if( this.input.isKeyUp(...this.left) && this.input.isKeyUp(...this.right) ){
       this.v = {
         x: 0,
         y: 0
       }
       this.anim.play('stand')
     }
+    
 
     
     if(this.hitInfo){

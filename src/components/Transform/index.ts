@@ -1,3 +1,6 @@
+import AbstractComponentLoader from "GETS2/src/core/implement/AbstractComponentLoader";
+import AbstractComponentLoaderInterface from "GETS2/src/core/interface/AbstractComponentLoaderInterface";
+import { GameObject } from "GETS2/src/managers/gameobject/implement/data/GameObject";
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import EventEmitor from "../../util/event/EventEmitor";
 
@@ -32,6 +35,8 @@ export class Transform extends AbstractComponent {
 
   protected initRelativeScale: Vec2
 
+  protected gameObj: AbstractComponentLoaderInterface
+
 
 
   init = (
@@ -42,6 +47,7 @@ export class Transform extends AbstractComponent {
     this.position = position
     this.scale = scale
     this.rotation = rotation
+    this.gameObj = this.GameObject
   }
 
 
@@ -57,7 +63,7 @@ export class Transform extends AbstractComponent {
 
   setRotation(newRotation: number) {
     newRotation = newRotation%360
-    this.GameObject.Children.forEach(c => {
+    this.gameObj.Children.forEach(c => {
       const transform = c.getComponent(Transform)
       if (transform) {
         const childRotation = transform.getRotation()
@@ -76,8 +82,8 @@ export class Transform extends AbstractComponent {
         })
       }
     })
-    this.emit('rotationChange', newRotation, this.rotation)
-    this.emit('transformChange', this.position, newRotation, this.scale )
+    // this.emit('rotationChange', newRotation, this.rotation)
+    // this.emit('transformChange', this.position, newRotation, this.scale )
     this.rotation = newRotation
   }
 
@@ -109,8 +115,8 @@ export class Transform extends AbstractComponent {
         })
       }
     })
-    this.emit('scaleChange', newScale, this.scale)
-    this.emit('transformChange', this.position, this.rotation, newScale)
+    // this.emit('scaleChange', newScale, this.scale)
+    // this.emit('transformChange', this.position, this.rotation, newScale)
     this.scale = newScale
   }
 
@@ -131,8 +137,8 @@ export class Transform extends AbstractComponent {
         })
       }
     })
-    this.emit('positionChange', newPosition, this.position)
-    this.emit('transformChange', newPosition, this.rotation, this.scale)
+    // this.emit('positionChange', newPosition, this.position)
+    // this.emit('transformChange', newPosition, this.rotation, this.scale)
     this.position = newPosition
   };
 

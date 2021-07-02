@@ -29,11 +29,11 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
 
     if(this.tansform) {
 
-      this.tansform.on('positionChange', this.handlePositionChange)
+      // this.tansform.on('positionChange', this.handlePositionChange)
 
-      this.tansform.on('rotationChange', this.handleRotationChange)
+      // this.tansform.on('rotationChange', this.handleRotationChange)
 
-      this.tansform.on('scaleChange', this.handleScaleChange)
+      // this.tansform.on('scaleChange', this.handleScaleChange)
 
       this.renderer = this.getManager(Renderer)
 
@@ -47,6 +47,12 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
       }
       
     }
+  }
+
+  update = () => {
+    this.handlePositionChange(this.tansform.getPosition())
+    this.handleRotationChange(this.tansform.getRotation())
+    this.handleScaleChange(this.tansform.getScale())
   }
 
   protected handlePositionChange = (newV: Vec2) => {

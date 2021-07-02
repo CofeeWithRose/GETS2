@@ -48,7 +48,7 @@ export class Animation extends AbstractComponent {
   protected lastAnimationName: string
 
 
-  protected curPalyingState: PalyingState
+  public curPalyingState: PalyingState
 
 
   init = (animationInfo: { [animationName: string]: AnimationInfo }) => {
@@ -114,8 +114,8 @@ export class Animation extends AbstractComponent {
       this.curPalyingState.isPlaying = false
     }
   }
-
   
+
  
 
 }
