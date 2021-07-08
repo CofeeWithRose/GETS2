@@ -19,9 +19,9 @@ export class MoveController extends AbstractComponent {
 
   protected render: Render2DComp
 
-  protected left: KeyBoard[]
+  protected left: KeyBoard
 
-  protected right: KeyBoard[]
+  protected right: KeyBoard
 
   protected timer: TimerManager
 
@@ -33,9 +33,11 @@ export class MoveController extends AbstractComponent {
 
   protected hitInfo: HitInfomation 
 
+  protected position: Vec2
+
   init = (
-    left: KeyBoard[]=[KeyBoard.a, KeyBoard.A],
-    right: KeyBoard[]=[KeyBoard.d, KeyBoard.D], 
+    left: KeyBoard=KeyBoard.a,
+    right: KeyBoard=KeyBoard.d, 
     speed = 150
   ) => {
     this.left = left
@@ -51,6 +53,7 @@ export class MoveController extends AbstractComponent {
     this.timer = this.getManager(TimerManager)
     this.hitTest = this.GameObject.getComponent(HitTest)
     this.hitTest && this.hitTest.on('hitting', this.handleHitting)
+    this.position = this.transform.getPosition()
   }
 
   destory = ()  => {
@@ -68,39 +71,29 @@ export class MoveController extends AbstractComponent {
 
   update = () => {
     const deltaTime = this.timer.DealTime
-    const position = this.transform?.getPosition()
-    // const rotation = this.transform?.getRotation()
-    // const scale = this.transform?.getScale()
-    if(this.v.x|| this.v.y) this.transform.setPosition({
-      x: position.x + this.v.x * deltaTime, 
-      y: position.y + this.v.y * deltaTime,
-    })
+    
+    this.transform.setPosition(
+      this.position.x + this.v.x * deltaTime, 
+      this.position.y + this.v.y * deltaTime,
+    )
 
    
 
-    if(this.input.keyDown(...this.left)){
-       this.v = {
-        x: -this.speed,
-        y: 0
-      }
+    if(this.input.keyDown(this.left)){
+       this.v.x = -this.speed,
       this.transform.setScale({ x: 1, y: 1 })
       this.anim.play('run')
     }
 
-    if( this.input.keyDown(...this.right)) {
-      this.v = {
-        x: this.speed,
-        y: 0
-      }
+    if( this.input.keyDown(this.right)) {
+      this.v.x = this.speed
       this.transform.setScale({ x: -1, y: 1})
       this.anim.play('run')
     }
     // console.log(this.input.isKeyUp(KeyBoard.a, KeyBoard.A))
-    if( this.input.isKeyUp(...this.left) && this.input.isKeyUp(...this.right)){
-      this.v = {
-        x: 0,
-        y: 0
-      }
+    if( this.input.isKeyUp(this.left) && this.input.isKeyUp(this.right)){
+      this.v.x = 0;
+      this.v.y = 0
       this.anim.play('stand')
     }
 
@@ -110,10 +103,10 @@ export class MoveController extends AbstractComponent {
       const { direction, position, size } = this.hitInfo.self
       const directionX = ((position.x - direction.x) - (otherPosition.x - otherDirection.x) ) > 0? -1: 1
       const dist = (otherSize.x + size.x) * 0.5 + Math.abs(directionX) * ((this.timer.DealTime/deltaTime)||1)
-      this.transform.setPosition({
-        x: otherPosition.x - directionX * dist,
-        y: position.y,
-      })
+      this.transform.setPosition(
+        otherPosition.x - directionX * dist,
+        position.y,
+      )
       this.hitInfo = null
     }
   }

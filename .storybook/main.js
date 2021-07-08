@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   "stories": [
@@ -13,7 +14,8 @@ module.exports = {
 
     config.resolve.extensions.push('.ts', '.tsx')
     config.resolve.alias['ge'] = path.resolve(__dirname, '../src/index.ts')
-
+    config.devtool = 'source-map'
+    config.mode = 'production'
     return config
   }
 }

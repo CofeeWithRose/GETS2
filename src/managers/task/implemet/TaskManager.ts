@@ -122,19 +122,23 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     }
 
-    private emptyRun = async (time: number) => {
-        const now = Date.now()
+    protected runStatrtTask = async (time: number) => {
         if(this.hasNewComponent){
-            await this.start.runAsyncTask(now);
+            await this.start.runAsyncTask(time);
             this.start.clearAll();
             this.hasNewComponent = false;
         }
-        this.loop.runTask(now);
-        this.removingComponentList.forEach(c => {
-            this.removeComponent(c)
+    }
+    private emptyRun = (time: number) => {
+        const now = Date.now()
+        this.runStatrtTask(now).then(() => {
+            this.loop.runTask(now);
+            this.removingComponentList.forEach(c => {
+                this.removeComponent(c)
+            })
+            this.removingComponentList = []
+            window.requestAnimationFrame(this.run);
         })
-        this.removingComponentList = []
-        window.requestAnimationFrame(this.run);
     }
 
 

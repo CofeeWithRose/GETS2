@@ -9,18 +9,18 @@
         "sourceMap": true,
         "experimentalDecorators": true,
         "declaration": true,
-        "baseUrl": "..",
+        "baseUrl": "./",
         "paths": {
-            "ge": ["./src/index.ts"]
+            "ge": ["src/index.ts"]
         }
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts",
-        "src/stories/**/*",
-    ],
+    // "include": [
+    //     "src/**/*"
+    // ],
+    // "exclude": [
+    //     "node_modules",
+    //     "**/*.spec.ts",
+    //     // "src/stories/**/*",
+    // ],
     
 }
