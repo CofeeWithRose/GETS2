@@ -1,7 +1,18 @@
 import { TaskSequence } from "../../../managers/task/interface/config/TaskMnagerConfigInterface";
 
 export interface TaskOptions {
+
+  /**
+   * 越小越先执行.
+   */
   priority: number
+
+   /**
+   * 优先级权重较大.
+   * 同优先级内,同组的在一起执行.
+   */
+  group: string
+
   sequence: TaskSequence
 }
 export default  interface TaskFolwInterface {
