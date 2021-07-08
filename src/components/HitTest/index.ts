@@ -90,9 +90,9 @@ export class HitTest extends AbstractComponent {
     this.#hitTester.off('hitting', this.GameObject.Id, this.#handleHitting )
   }
 
-  #handlePositionChange = (position: Vec2) => {
+  #handlePositionChange = (x: number, y: number) => {
     this.lastPosition = this.position
-    this.position = position
+    this.position = {x, y}
   }
 
   #handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {

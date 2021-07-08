@@ -131,7 +131,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
     private emptyRun = (time: number) => {
         const now = Date.now()
-        this.runStatrtTask(now).then(() => {
+        return this.runStatrtTask(now).then(() => {
             this.loop.runTask(now);
             this.removingComponentList.forEach(c => {
                 this.removeComponent(c)

@@ -97,7 +97,7 @@ export function Run() {
         const canvas = canvasRef.current
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
-        for (let index = 0; index < 500; index++) {
+        for (let index = 0; index < 3000; index++) {
           createPlayers(game, index)
         }
        
