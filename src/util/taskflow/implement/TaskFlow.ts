@@ -3,13 +3,11 @@ import SimpleMap from "../../map/implement/SimpleMap";
 
 class TaskRecord {
 
-    constructor(priority: number, groupIndex: number, task: Function){
+    constructor(priority: number, task: Function){
         this.priority = priority;
         this.task = task;
-        this.groupIndex = groupIndex
     }
     public priority: number;
-    public groupIndex: number;
     public task: Function;
 }
 
@@ -27,20 +25,7 @@ export class TaskFlow implements TaskFolwInterface{
 
     private idTaskMap: SimpleMap<number, TaskRecord> = new SimpleMap<number, TaskRecord>();
 
-    /**
-     * 优先级 -> group -> function
-     */
-    private tasks: Array<Array<Array<Function>>> = []
-
-    /**
-     * key -> group, value -> index in task.  
-     */
-    private groupMap: Map<string, number> = new Map()
-
-    /**
-     * index -> priority, value -> curGroupIndex.
-     */
-    private curGroupIndexMap = []
+    private tasks: Array<Array<Function>> = new Array<Array<Function>>();
 
     private isRunning = false;
 
@@ -54,43 +39,19 @@ export class TaskFlow implements TaskFolwInterface{
      * @returns 任务的ID.
      */
     public addTask (task: Function, options: TaskOptions): number{
-        const { priority, sequence, group } = options
-        const groupIndex = this.getGroupIndex(priority, group)
-        const taskArray = this.getTaskArray(priority, groupIndex)
+
+        const { priority, sequence } = options
+
+        let taskArray = this.tasks[priority];
+
+        if(!taskArray){
+            taskArray = new Array<Function>();
+            this.tasks[priority] = taskArray;
+        }
         const taskId =  this.taskId++;
-        this.idTaskMap.set(taskId, new TaskRecord(priority, groupIndex, task));
+        this.idTaskMap.set(taskId, new TaskRecord(priority, task));
         sequence === 'positive'? taskArray.push(task): taskArray.unshift(task)
         return taskId;
-    }
-
-    protected getGroupIndex(priority: number,group: string) {
-        let groupIndex = this.groupMap.get(group)
-        if(groupIndex === undefined) {
-            if(this.curGroupIndexMap[priority] === undefined) {
-                this.curGroupIndexMap[priority] = 0
-            }
-            groupIndex = this.curGroupIndexMap[priority]++
-            this.groupMap.set(group, groupIndex)
-        }
-        return groupIndex
-    }
-
-    protected getTaskArray(priority: number, groupIndex: number ):  Array<Function> {
-        const groupArray = this.getGroupArray(priority)
-        let taskArray = groupArray[groupIndex]
-        if(!taskArray){
-            groupArray[groupIndex] =  taskArray = [];
-        }
-        return taskArray
-    }
-
-    protected getGroupArray(priority: number): Array<Array<Function>>{
-        
-        let groupArray = this.tasks[priority]
-        if(!groupArray) {
-            groupArray = this.tasks[priority] = []
-        }
-        return groupArray
     }
 
     /**
@@ -110,7 +71,7 @@ export class TaskFlow implements TaskFolwInterface{
     private deleteTaskRightNow (taskId:number): void{
         const taskRecord = this.idTaskMap.get(taskId);
         if(taskRecord){
-            const taskArray: Array<Function>  = this.getTaskArray(taskRecord.priority, taskRecord.groupIndex)
+            const taskArray: Array<Function>  = this.tasks[taskRecord.priority];
             if(taskArray){
                 const taskInd: number = taskArray.indexOf(taskRecord.task);
                 if(taskInd > -1){
@@ -135,14 +96,9 @@ export class TaskFlow implements TaskFolwInterface{
     public async runAsyncTask(time: number): Promise<void>{
         this.isRunning = true;
         for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
-            const groupArray = this.tasks[currentPriority]||[];
-            for(let groupIndex = 0; groupIndex < groupArray.length; groupIndex++){
-                const taskArray = groupArray[groupIndex]
-                for(let taskIndex = 0; taskIndex < taskArray.length; taskIndex++) {
-                    await taskArray[taskIndex](time);
-                    debugger
-                }
-             
+            const taskArry = this.tasks[currentPriority]||[];
+            for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
+              await taskArry[taskInd](time);
             }
         }
         this.isRunning = false;
@@ -156,15 +112,10 @@ export class TaskFlow implements TaskFolwInterface{
     public runTask(time: number): void{
       this.isRunning = true;
       for( let currentPriority = 0; currentPriority < this.tasks.length; currentPriority++){
-          const groupArray = this.tasks[currentPriority]||[];
-            groupArray.forEach( taskArray => {
-                taskArray.forEach((task) => {
-                    task(time);
-                })
-            })
-          //   for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
-        //     taskArry[taskInd](time);
-        //   }
+          const taskArry = this.tasks[currentPriority]||[];
+          for(let taskInd = 0; taskInd < taskArry.length; taskInd++){
+            taskArry[taskInd](time);
+          }
       }
       this.isRunning = false;
       this.flushDeadTaskArray();
@@ -191,7 +142,7 @@ export class TaskFlow implements TaskFolwInterface{
 
         this.idTaskMap = new SimpleMap<number, TaskRecord>();
 
-        this.tasks = new Array<Array<Array<Function>>>();
+        this.tasks = new Array<Array<Function>>();
     }
        
 }

@@ -62,7 +62,6 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                 const taskId = this[taskInfo.taskType].addTask(taskFun.bind(component), { 
                   priority: taskInfo.taskPriority,
                   sequence: taskInfo.sequence,
-                  group: Object.getPrototypeOf(component).constructor
                 });
                 componentTaskIdMap.add(taskInfo.taskType, taskId);
             }
