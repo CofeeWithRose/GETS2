@@ -7,6 +7,7 @@ import { InitConfigInterface, ManagerInfo } from "../core/interface/InitConfigIn
 import { Renderer } from "../managers/Renderer/implement/Renderer";
 import { HitTester, HitGroup } from "../managers/HitTester";
 import { HIT_TEST_GROUP } from "../managers/HitTester/infer";
+import { Fps } from "../managers/Fps";
 
 export const createConfig = (
   canvas: HTMLCanvasElement, 
@@ -38,6 +39,10 @@ export const createConfig = (
           manager: Renderer,
           config: { canvas, maxSize: 10000 },
         } as ManagerInfo<typeof Renderer>,
+        {
+          manager: Fps,
+          config: {}
+        }
     ],
     
 })

@@ -72,10 +72,7 @@ export class MoveController extends AbstractComponent {
   update = () => {
     const deltaTime = this.timer.DealTime
     
-    this.transform.setPosition(
-      this.position.x + this.v.x * deltaTime, 
-      this.position.y + this.v.y * deltaTime,
-    )
+   
 
    
 
@@ -96,6 +93,11 @@ export class MoveController extends AbstractComponent {
       this.v.y = 0
       this.anim.play('stand')
     }
+
+    this.transform.setPosition(
+      this.position.x + this.v.x * deltaTime, 
+      this.position.y + this.v.y * deltaTime,
+    )
 
     
     if(this.hitInfo){
