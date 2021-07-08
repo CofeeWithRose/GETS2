@@ -52,11 +52,8 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
         }
     }
 
-    keyDown(...keyBoard: KeyBoard[]): boolean {
-        for(let i =0; i< keyBoard.length; i++ ){
-          if(this.hasKeysDown[keyBoard[i]]) return true
-        }
-        return false;
+    keyDown(keyBoard: KeyBoard): boolean {
+        return this.hasKeysDown[keyBoard];
     }
 
     /**
@@ -65,11 +62,8 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
      * @param keyBoard 
      * @returns 
      */
-    keyUp(...keyBoard: KeyBoard[]): boolean{
-      for(let i =0; i< keyBoard.length; i++ ){
-        if(this.hasKeysUp[keyBoard[i]]) return true
-      }
-      return false;
+    keyUp(keyBoard: KeyBoard): boolean{
+      return this.hasKeysUp[keyBoard];
     }
 
     /**
@@ -77,12 +71,8 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
      * @param keyBoard 
      * @returns 
      */
-    isKeyDown(...keyBoard: KeyBoard[]): boolean{
-
-      for(let i =0; i< keyBoard.length; i++ ){
-        if(!this.isKeysDownMap[keyBoard[i]]) return false
-      }
-      return true;
+    isKeyDown(keyBoard: KeyBoard): boolean{
+      return this.isKeysDownMap[keyBoard];
     };
 
     /**
@@ -90,11 +80,8 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
      * @param keyBoard 
      * @returns 
      */
-    isKeyUp(...keyBoard: KeyBoard[]): boolean{
-      for(let i =0; i< keyBoard.length; i++ ){
-        if(this.isKeysDownMap[keyBoard[i]]) return false
-      }
-      return true;
+    isKeyUp(keyBoard: KeyBoard): boolean{
+      return !this.isKeysDownMap[keyBoard];
     };
 
     afterUpdated = () => {
@@ -102,14 +89,7 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
       this.hasKeysUp = {}
     }
 
-    // onKeyDown(fun: Function, ...keyBoard: KeyBoard[]): void{
-    //     fun();
-    // };
-
-    // onKeyUp( fun: Function, ...keyBoard: KeyBoard[]): void{
-    //     fun();
-    // };
-
+   
     triggerInputEvent( inputType: InputType,inputEvent: InputEvent): void {
         
         if(inputType === InputType.keyUp){

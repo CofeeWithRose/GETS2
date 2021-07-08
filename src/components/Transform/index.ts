@@ -1,9 +1,11 @@
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import EventEmitor from "../../util/event/EventEmitor";
+import AbstractComponentLoader from '../../core/implement/AbstractComponentLoader'
+import { GE } from "GETS2/src/core/implement/GE";
 
 export interface Vec2 {
-  readonly x: number
-  readonly y: number
+  x: number
+  y: number
 }
 
 export interface TransformEvent {
@@ -19,28 +21,24 @@ export interface TransformEvent {
 
 export class Transform extends AbstractComponent {
 
-  private position: Vec2
+  private position: Vec2 = {x:0, y: 0}
 
-  private scale: Vec2
+  private scale: Vec2 = { x: 1.0, y: 1.0}
 
-  private rotation: number
+  private rotation: number = 0.0
 
   private eventEnitor: EventEmitor = new EventEmitor()
-
-  protected parentTransform: Transform
-
-
-  protected initRelativeScale: Vec2
-
 
 
   init = (
     position = { x: 0, y: 0 },
-    scale = { x: 1, y: 1 },
-    rotation = 0,
+    scale = { x: 1.0, y: 1.0 },
+    rotation = 0.0,
   ) => {
-    this.position = position
-    this.scale = scale
+    this.position.x = position.x
+    this.position.y = position.y
+    this.scale.x = scale.x
+    this.scale.y = scale.y
     this.rotation = rotation
   }
 
@@ -111,7 +109,9 @@ export class Transform extends AbstractComponent {
     })
     this.emit('scaleChange', newScale, this.scale)
     this.emit('transformChange', this.position, this.rotation, newScale)
-    this.scale = newScale
+    // this.scale = newScale
+    this.scale.x = newScale.x
+    this.scale.y = newScale.y
   }
 
 
@@ -133,7 +133,8 @@ export class Transform extends AbstractComponent {
     })
     this.emit('positionChange', newPosition, this.position)
     this.emit('transformChange', newPosition, this.rotation, this.scale)
-    this.position = newPosition
+    this.position.x = newPosition.x
+    this.position.y = newPosition.y
   };
 
   
