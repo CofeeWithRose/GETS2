@@ -1,14 +1,15 @@
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import EventEmitor from "../../util/event/EventEmitor";
+import AbstractComponentLoaderInterface from "src/core/interface/AbstractComponentLoaderInterface";
 
 export interface Vec2 {
-  readonly x: number
-  readonly y: number
+  x: number
+  y: number
 }
 
 export interface TransformEvent {
 
-  positionChange: (newPosition: Vec2, oldPosition: Vec2) => void
+  positionChange: (x: number, y:number) => void
 
   scaleChange: (newScale: Vec2, oldScale: Vec2) => void
 
@@ -19,29 +20,32 @@ export interface TransformEvent {
 
 export class Transform extends AbstractComponent {
 
-  private position: Vec2
+  private position: Vec2 = {x:0, y: 0}
 
-  private scale: Vec2
+  private scale: Vec2 = { x: 1.0, y: 1.0}
 
-  private rotation: number
+  private rotation: number = 0.0
 
   private eventEnitor: EventEmitor = new EventEmitor()
 
-  protected parentTransform: Transform
-
-
-  protected initRelativeScale: Vec2
-
+  private children: AbstractComponentLoaderInterface[]
 
 
   init = (
     position = { x: 0, y: 0 },
-    scale = { x: 1, y: 1 },
-    rotation = 0,
+    scale = { x: 1.0, y: 1.0 },
+    rotation = 0.0,
   ) => {
-    this.position = position
-    this.scale = scale
+    this.position.x = position.x
+    this.position.y = position.y
+    this.scale.x = scale.x
+    this.scale.y = scale.y
     this.rotation = rotation
+  }
+
+  start = () => {
+    this.children = this.GameObject.Children
+
   }
 
 
@@ -70,10 +74,10 @@ export class Transform extends AbstractComponent {
         const dist = Math.sqrt(  Math.pow(distX, 2) +  Math.pow(distY, 2) )
         const radians = Math.atan2(distY, distX)
         const updatedRadians = radians + (deltaRotation / 180) * Math.PI
-        transform.setPosition({
-          x: this.position.x +  Math.cos(updatedRadians) * dist,
-          y: this.position.y + Math.sin(updatedRadians) * dist
-        })
+        transform.setPosition(
+          this.position.x +  Math.cos(updatedRadians) * dist,
+          this.position.y + Math.sin(updatedRadians) * dist
+        )
       }
     })
     this.emit('rotationChange', newRotation, this.rotation)
@@ -81,7 +85,7 @@ export class Transform extends AbstractComponent {
     this.rotation = newRotation
   }
 
-  getScale() {
+  getScale(): Readonly<Vec2> {
     return this.scale
   }
 
@@ -103,44 +107,45 @@ export class Transform extends AbstractComponent {
         const distY = childPosition.y - this.position.y
         // const angle = this.rotation/
        
-        transform.setPosition({
-          x: this.position.x + distX * scaledX,
-          y: this.position.y + distY * scaledY,
-        })
+        transform.setPosition(
+          this.position.x + distX * scaledX,
+          this.position.y + distY * scaledY,
+        )
       }
     })
     this.emit('scaleChange', newScale, this.scale)
     this.emit('transformChange', this.position, this.rotation, newScale)
-    this.scale = newScale
+    // this.scale = newScale
+    this.scale.x = newScale.x
+    this.scale.y = newScale.y
   }
 
 
-  getPosition() {
+  getPosition(): Readonly<Vec2> {
     return this.position
   };
 
-  setPosition(newPosition: Vec2) {
+  setPosition(x: number, y: number) {
     
-    this.GameObject.Children.forEach(c => {
+    this.children.forEach(c => {
       const transform = c.getComponent(Transform)
       if (transform) {
         const postion = transform.getPosition()
-        transform.setPosition({
-          x: postion.x + newPosition.x - this.position.x,
-          y: postion.y + newPosition.y - this.position.y,
-        })
+        transform.setPosition(
+          postion.x + x - this.position.x,
+          postion.y + y - this.position.y,
+        )
       }
     })
-    this.emit('positionChange', newPosition, this.position)
-    this.emit('transformChange', newPosition, this.rotation, this.scale)
-    this.position = newPosition
+  
+    this.emit('positionChange', x, y)
+    this.position.x = x
+    this.position.y = y
+    this.emit('transformChange', this.position, this.rotation, this.scale)
+   
   };
 
-  
-
-  protected emit<E extends keyof TransformEvent>(eventName: E, ...params: Parameters<TransformEvent[E]>): void {
-    this.eventEnitor.emit(eventName, ...params)
-  }
+  protected emit: <E extends keyof TransformEvent>(eventName: E, ...params: Parameters<TransformEvent[E]>) => void = this.eventEnitor.emit.bind(this.eventEnitor)
 
   on<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void {
     this.eventEnitor.addEventListener(eventName, cb)

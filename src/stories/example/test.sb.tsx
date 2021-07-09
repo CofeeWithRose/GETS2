@@ -79,7 +79,7 @@ function createPlayers(game: GE, ind: number){
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
-        player2.addComponent(MoveController, [KeyBoard.LEFT], [KeyBoard.RIGHT], 200)
+        player2.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
 
         // player2.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 

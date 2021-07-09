@@ -9,9 +9,9 @@
         "sourceMap": true,
         "experimentalDecorators": true,
         "declaration": true,
-        "baseUrl": "..",
+        "baseUrl": "./",
         "paths": {
-            "ge": ["./src/index.ts"]
+            "ge": ["src/index.ts"]
         }
     },
     "include": [

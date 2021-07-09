@@ -22,16 +22,11 @@ export default class EventEmitor {
 
     emit(eventName: string|number, ...params:Array<any> ){
       this.isEmitting = true
-
       const listeners = this.listeners.get(eventName).valus();
-      for(let i = 0; i< listeners.length; i++){
-          try{
-            listeners[i](...params);
-          }catch (e){
-              console.error(e);
-          }
-          
-      }
+      listeners.forEach(listener => {
+        listener(...params)
+      });
+ 
       if(this.afterEmit.length) {
         this.afterEmit.forEach( ({eventName, fun}) => this.removeEventListener(eventName, fun) )
         this.afterEmit=[]

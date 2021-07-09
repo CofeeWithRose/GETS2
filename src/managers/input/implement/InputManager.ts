@@ -19,44 +19,41 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
         });
     };
 
-    protected isKeysDownMap: any = {};
+    protected isKeysDownMap = new Map<string, boolean>();
 
-    protected hasKeysDown: any = {};
+    protected hasKeysDown = new Map<string, boolean>();
 
-    protected hasKeysUp: any = {};
+    protected hasKeysUp = new Map<string, boolean>();
 
     private handleKeyUp(key: KeyBoard){
 
-        this.isKeysDownMap[key] = false;
-        this.hasKeysDown[key] = false;
-        this.hasKeysUp[key] = true;
+        this.isKeysDownMap.set(key, false);
+        this.hasKeysDown.set(key, false);
+        this.hasKeysUp.set(key, false);
         
     };
 
     private handleKeyDown(key: KeyBoard){
         
-        this.isKeysDownMap[key] = true;
-        this.hasKeysDown[key] = true;
-        this.hasKeysUp[key] = false;
+        this.isKeysDownMap.set(key, true);
+        this.hasKeysDown.set(key, true);
+        this.hasKeysUp.set(key, true);
     };
     
     updated = () => {
         const downKeys = Object.keys(this.hasKeysDown);
         for(let i = 0; i< downKeys.length; i++){
-            this.hasKeysDown[downKeys[i]] = false;
+            this.hasKeysDown.set(downKeys[i], false);
         }
 
         const upKeys = Object.keys(this.hasKeysUp);
         for(let i = 0; i< upKeys.length; i++){
-            this.hasKeysUp[upKeys[i]] = false;
+            this.hasKeysUp.set(upKeys[i], false);
         }
     }
 
-    keyDown(...keyBoard: KeyBoard[]): boolean {
-        for(let i =0; i< keyBoard.length; i++ ){
-          if(this.hasKeysDown[keyBoard[i]]) return true
-        }
-        return false;
+    keyDown(keyBoard: KeyBoard): boolean {
+        return this.hasKeysDown.get(keyBoard);
     }
 
     /**
@@ -65,11 +62,8 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
      * @param keyBoard 
      * @returns 
      */
-    keyUp(...keyBoard: KeyBoard[]): boolean{
-      for(let i =0; i< keyBoard.length; i++ ){
-        if(this.hasKeysUp[keyBoard[i]]) return true
-      }
-      return false;
+    keyUp(keyBoard: KeyBoard): boolean{
+      return this.hasKeysUp.get(keyBoard);
     }
 
     /**
@@ -77,12 +71,8 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
      * @param keyBoard 
      * @returns 
      */
-    isKeyDown(...keyBoard: KeyBoard[]): boolean{
-
-      for(let i =0; i< keyBoard.length; i++ ){
-        if(!this.isKeysDownMap[keyBoard[i]]) return false
-      }
-      return true;
+    isKeyDown(keyBoard: KeyBoard): boolean{
+      return this.isKeysDownMap.get(keyBoard);
     };
 
     /**
@@ -90,26 +80,16 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
      * @param keyBoard 
      * @returns 
      */
-    isKeyUp(...keyBoard: KeyBoard[]): boolean{
-      for(let i =0; i< keyBoard.length; i++ ){
-        if(this.isKeysDownMap[keyBoard[i]]) return false
-      }
-      return true;
+    isKeyUp(keyBoard: KeyBoard): boolean{
+      return !this.isKeysDownMap.get(keyBoard);
     };
 
     afterUpdated = () => {
-      this.hasKeysDown= {}
-      this.hasKeysUp = {}
+      this.hasKeysDown.clear()
+      this.hasKeysUp.clear()
     }
 
-    // onKeyDown(fun: Function, ...keyBoard: KeyBoard[]): void{
-    //     fun();
-    // };
-
-    // onKeyUp( fun: Function, ...keyBoard: KeyBoard[]): void{
-    //     fun();
-    // };
-
+   
     triggerInputEvent( inputType: InputType,inputEvent: InputEvent): void {
         
         if(inputType === InputType.keyUp){

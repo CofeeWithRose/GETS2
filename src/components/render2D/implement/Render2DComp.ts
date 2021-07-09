@@ -37,33 +37,32 @@ export class Render2DComp extends AbstractComponent implements Render2DCompInfer
 
       this.renderer = this.getManager(Renderer)
 
-      if(this.sourceUrl) {
+      // if(this.sourceUrl) {
         this.sourceId = await this.renderer.loadSource(this.sourceUrl)
         this.spiritId =  this.renderer.craeteSpirit(this.sourceId, {
           position: this.tansform.getPosition(),
           scale: this.tansform.getScale(),
           rotation: this.tansform.getRotation(),
-        })
-      }
+        } )
+      // }
       
     }
   }
 
-  protected handlePositionChange = (newV: Vec2) => {
-    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, {position: newV})
+  protected handlePositionChange = (x: number, y: number) => {
+    this.renderer.updatePosition(this.spiritId, x,  y)
   }
 
   protected handleScaleChange = (scale: Vec2) => {
-    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, {scale})
+    this.renderer.updateScale(this.spiritId, scale)
   }
 
   protected handleRotationChange = (rotation: number) => {
-    if(this.spiritId) this.renderer.updateSpirit(this.spiritId, {rotation})
+    this.renderer.updateRotation(this.spiritId, rotation)
   }
 
   setSourceId(sourceId: number){
-    this.sourceId = sourceId
-    this.renderer.updateSpirit(this.spiritId, {sourceId} )
+    this.renderer.updateSourceId(this.spiritId, sourceId)
   }
 
   getsize(): Vec2{

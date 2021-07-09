@@ -11,7 +11,7 @@ export class TimerManager extends AbstractMnager implements TimerManagerInterfce
     }
 
     //单位秒(s).
-    private  dealTime = 0;
+    private  dealTime = 0.0;
     //单位秒(s).
     private  startFromeNow = 0;
 
@@ -24,13 +24,12 @@ export class TimerManager extends AbstractMnager implements TimerManagerInterfce
 
     private frameCount = 0;
 
-
     get FrameCount(){
         return this.frameCount;
     }
 
     get DealTime (){
-        return this.dealTime * 0.001
+        return this.dealTime
     };
 
     get StartFromNow (){
@@ -55,7 +54,7 @@ export class TimerManager extends AbstractMnager implements TimerManagerInterfce
         this.frameCount ++;
         const newStartFromeNow = (now - this.startTime) * this.sacle;
         
-        this.dealTime = (newStartFromeNow - this.startFromeNow);
+        this.dealTime = (newStartFromeNow - this.startFromeNow) * 0.001;
         this.startFromeNow = newStartFromeNow;
 
     };

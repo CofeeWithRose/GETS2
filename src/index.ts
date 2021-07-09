@@ -18,4 +18,6 @@ export * from './components/HitTest'
 export {HIT_TEST_GROUP, } from './managers/HitTester/infer'
 export { TimerManager} from "./managers/timer/implement/TimerManager";
 
+export { Fps } from './managers/Fps'
+
 

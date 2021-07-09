@@ -4,7 +4,7 @@ import {IRender, Vec2, Iimage} from 'i-render'
 import { GE } from "../../../core/implement/GE";
 
 
-export class Renderer extends AbstractMnager implements RendererInfer {
+export class Renderer extends AbstractMnager {
 
     private irender: IRender
 
@@ -78,9 +78,29 @@ export class Renderer extends AbstractMnager implements RendererInfer {
       // TODO handle clean source.
     }
 
-    updateSpirit(spiriteId: string, attr: SpiritAttr ){
+    // updateSpirit(spiriteId: string, attr: SpiritAttr ){
+    //   const spirite = this.spiriteMap.get(spiriteId)
+    //   if(spirite) this.updateS(spirite, attr)
+    // }
+
+    updatePosition(spiriteId: string, x: number, y: number){
       const spirite = this.spiriteMap.get(spiriteId)
-      if(spirite) this.updateS(spirite, attr)
+      spirite.setPosition(x, y)
+    }
+
+    updateSourceId(spiriteId: string, sourceId: number){
+      const spirite = this.spiriteMap.get(spiriteId)
+      spirite.setImgId(sourceId)
+    }
+
+    updateScale(spiriteId: string, scale: Vec2){
+      const spirite = this.spiriteMap.get(spiriteId)
+      spirite.setScale(scale.x, scale.y)
+    }
+
+    updateRotation(spiriteId: string, rotation: number){
+      const spirite = this.spiriteMap.get(spiriteId)
+      spirite.setRotation(rotation)
     }
 
     protected updateS(spirite: Iimage, {position, rotation, scale, sourceId}: SpiritAttr) {

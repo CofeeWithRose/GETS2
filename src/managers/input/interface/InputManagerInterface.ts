@@ -4,17 +4,13 @@ import InputEvent from "./data/InputEvent";
 
 export default interface InputManagerInterface extends AbstractManagerInterface {
 
-    keyDown(...keyBoard: KeyBoard[]): boolean;
+    keyDown(keyBoard: KeyBoard): boolean;
 
-    keyUp(...keyBoard: KeyBoard[]): boolean;
+    keyUp(keyBoard: KeyBoard): boolean;
 
-    isKeyDown(...keyBoard: KeyBoard[]): boolean;
+    isKeyDown(keyBoard: KeyBoard): boolean;
 
-    isKeyUp(...keyBoard: KeyBoard[]): boolean;
-
-    // onKeyDown(fun: Function, ...keyBoard: KeyBoard[] ): void;
-
-    // onKeyUp( fun: Function, ...keyBoard: KeyBoard[] ): void;
+    isKeyUp(keyBoard: KeyBoard): boolean;
 
     updated():void;
     /**
