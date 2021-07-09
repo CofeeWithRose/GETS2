@@ -13,9 +13,9 @@ module.exports = {
   webpackFinal: config => {
 
     config.resolve.extensions.push('.ts', '.tsx')
-    config.resolve.alias['ge'] = path.resolve(__dirname, '../lib/index.js')
+    config.resolve.alias['ge'] = path.resolve(__dirname, '../src/index.ts')
     // config.devtool = 'source-map'
-    config.mode = 'production'
+    // config.mode = 'production'
     return config
   }
 }

@@ -17,6 +17,8 @@ export  class GE {
 
     private  hasStarted = false;
 
+    curCompType: any
+
     /**
      *启动.
      */

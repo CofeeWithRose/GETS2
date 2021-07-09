@@ -1,9 +1,10 @@
 import AbstractGEObject from "./AbstractGEObject";
-import {AbstractComponentConstructor, AbstractComponentInterface, ResetParams} from "../interface/AbstractComponentInterface";
+import {AbstractComponentConstructor, AbstractComponentInterface, ResetParams, FunComponent} from "../interface/AbstractComponentInterface";
 import { GEEvents } from "../../util/enums/GEEvent";
 import { GE } from "./GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
+import { AbstractComponent } from "./AbstractComponent";
 
 
 let componentLoaderBaseId = 1
@@ -81,11 +82,27 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     abstract destory(): void
 
+    regist(name: string, fun: FunComponent) {
+
+    }
+
     /**
      * 添加装载的 component.
      * @param component 
      */
-    addComponent<C extends AbstractComponentConstructor> (
+    addComponent<C extends (AbstractComponentConstructor| FunComponent)> (
+        componentClass: C, ...params:  ResetParams<C>
+    ): InstanceType<C> {
+        if(Object.getPrototypeOf(componentClass) === AbstractComponent) {
+            return this.addClassComponent(componentClass as any, ...params )
+        }else {
+            this.game.curCompType = componentClass
+            return (componentClass as FunComponent)( this.game, this, ...params )
+        }
+       
+    }
+
+    protected addClassComponent<C extends AbstractComponentConstructor> (
         componentClass: C, ...params:  ResetParams<C>
     ): InstanceType<C> {
         const component = new componentClass(this.game)
@@ -98,6 +115,8 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         
         return component as InstanceType<C>;
     }
+
+    
 
     /**
      * 获取装载的 component.

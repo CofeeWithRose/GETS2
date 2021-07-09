@@ -2,6 +2,7 @@ import { GE, createConfig, Transform, Render2DComp, Animation, AnimConfig, HitTe
 import { useEffect, useRef } from 'react'
 
 import { MoveController } from './componnet/MoveComp'
+import { FuncComponent } from './componnet/FunComponent'
 import stand1 from '../assets/player2/stand1.png'
 
 import run1Url from '../assets/player2/run1.png'
@@ -64,7 +65,8 @@ function createPlayers(game: GE, ind: number){
           ]},
         }
         player1.addComponent(Animation, anims)
-        player1.addComponent(MoveController, undefined, undefined, 200)
+        // player1.addComponent(MoveController, undefined, undefined, 200)
+        player1.addComponent(FuncComponent, undefined, undefined, 200)
         // player1.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
         //   size: { x: 15, y: 10 }
@@ -79,7 +81,7 @@ function createPlayers(game: GE, ind: number){
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
-        player2.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
+        player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
 
         // player2.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 

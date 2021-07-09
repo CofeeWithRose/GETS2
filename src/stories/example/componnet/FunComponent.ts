@@ -1,8 +1,7 @@
 import { 
     AbstractComponentLoaderInterface, GE, KeyBoard, InputManager,
-    Animation,  TimerManager, HitTest
+    Animation,  TimerManager, HitTest, Transform
 } from 'ge'
-import { Transform } from 'src/components/Transform'
 
 export  function FuncComponent( 
     ge: GE,
