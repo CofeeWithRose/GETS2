@@ -4,7 +4,7 @@ import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import AbstractComponentLoader from "./AbstractComponentLoader";
 import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
-import AbstractComponentLoaderInterface, { AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
+import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 
 
 export  class GE {
@@ -16,7 +16,7 @@ export  class GE {
     private  INIT_ERROR = new Error( 'Init Error: Please init Before invoke start method !' ); 
 
     private  hasStarted = false;
-    
+
     /**
      *启动.
      */

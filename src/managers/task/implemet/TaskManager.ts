@@ -9,7 +9,7 @@ import { TaskFlow } from "../../../util/taskflow/implement/TaskFlow";
 import { TaskType } from "../interface/data/enum";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
-import AbstractComponentLoaderInterface from "../../../core/interface/AbstractComponentLoaderInterface";
+import {AbstractComponentLoaderInterface} from "../../../core/interface/AbstractComponentLoaderInterface";
 import { GE } from "../../../core/implement/GE";
 import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";

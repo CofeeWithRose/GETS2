@@ -1,5 +1,5 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
-import AbstractComponentLoaderInterface from "./AbstractComponentLoaderInterface";
+import {AbstractComponentLoaderInterface} from "./AbstractComponentLoaderInterface";
 import { GE } from "../implement/GE";
 import { AbstractManagerConstructor } from "./AbstractManagerInterface";
 

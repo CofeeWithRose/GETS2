@@ -1,6 +1,6 @@
 import AbstractGEObject from "./AbstractGEObject";
 import {AbstractComponentInterface} from "../interface/AbstractComponentInterface";
-import AbstractComponentLoaderInterface from "../interface/AbstractComponentLoaderInterface";
+import {AbstractComponentLoaderInterface} from "../interface/AbstractComponentLoaderInterface";
 import {GE} from "./GE";
 import { AbstractManagerConstructor } from "../interface/AbstractManagerInterface";
 import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";

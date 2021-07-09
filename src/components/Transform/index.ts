@@ -1,6 +1,6 @@
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import EventEmitor from "../../util/event/EventEmitor";
-import AbstractComponentLoaderInterface from "src/core/interface/AbstractComponentLoaderInterface";
+import {AbstractComponentLoaderInterface} from "../../core/interface/AbstractComponentLoaderInterface";
 
 export interface Vec2 {
   x: number

@@ -11,7 +11,7 @@ export interface AbstractComponentLoaderEvent {
   removeChild: (removedChildren: AbstractComponentLoaderInterface) => void
 }
 
-export default interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {
+export interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {
 
     /**
      * 是否被加入场景, 若没有被加入场景，component不起任何作用.
@@ -26,6 +26,8 @@ export default interface AbstractComponentLoaderInterface extends AbstractGEObje
         eventName: E, cb: AbstractComponentLoaderEvent[E]
     ) :void
     
+    regist(name: string, fun: () => void): void
+
     /**
      * 添加装载的 component.
      * @param component 
