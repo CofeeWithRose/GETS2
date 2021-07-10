@@ -66,9 +66,10 @@ function createPlayers(game: GE, ind: number){
         }
 
         player1.addComponent(Render2DComp, stand1)
+        
         player1.addComponent(Animation, anims)
         // player1.addComponent(MoveController, undefined, undefined, 200)
-        player1.addComponent(FuncComponent, undefined, undefined, 200)
+        player1.addComponent(FuncComponent, KeyBoard.a, KeyBoard.d, 200)
         // player1.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
         //   size: { x: 15, y: 10 }
@@ -83,8 +84,8 @@ function createPlayers(game: GE, ind: number){
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
-        // player1.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
-        player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
+        player1.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
+        // player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
 
         // player2.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
