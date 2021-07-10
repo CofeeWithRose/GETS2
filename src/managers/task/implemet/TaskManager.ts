@@ -22,10 +22,12 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         this.addGEEvemtListener(GEEvents.ADD_MANAGER, this.addInstanceTask)
         this.addGEEvemtListener(GEEvents.START, this.onStart);
         this.addGEEvemtListener(GEEvents.PAUSE, this.onPause);
-        this.addGEEvemtListener(GEEvents.ADD_COMPONENT, this.onAddComponnet);
-        this.addGEEvemtListener(GEEvents.REMOVE_COMPONENT, this.onRemoveComponent);
+        this.addGEEvemtListener(GEEvents.ADD_CLASS_COMPONENT, this.onAddComponnet);
+        this.addGEEvemtListener(GEEvents.REMOVE_CLASS_COMPONENT, this.onRemoveComponent);
 
         this.addGEEvemtListener(GEEvents.REGIST_TASK, this.onRegistTask)
+
+        this.addGEEvemtListener(GEEvents.REMOVE_FUNC_COMPONENT, this.onRemoveFunComponent)
     };
 
     private configParser: ConfigParser;
@@ -36,7 +38,9 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private end = new TaskFlow(TaskType.END);
 
-    private instanceTaskId = new SimpleMap<number, MutiValueMap<TaskType, number>>();
+    private instanceTaskId = new Map<number, MutiValueMap<TaskType, number>>();
+
+    private funCompTaskId = new Map<number, MutiValueMap<TaskType, number>>()
 
     private hasNewComponent = true;
 
@@ -44,21 +48,54 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private removingComponentList: AbstractComponentInterface[] = []
 
+    private curFunComponentId: number
+
     private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponent) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
     };
 
-    protected onRegistTask = (methodName: string, type: Function, taskFun: Function ) => {
-        // TODO needInstance ID
+    protected onRegistTask = (methodName: string, taskFun: Function, funCompId?: number ) => {
+        
         const tarskInfoArray = this.configParser.getFuncTaskInfoArray()
+       
         for(let i =0; i< tarskInfoArray.length; i++) {
             const taskInfo = tarskInfoArray[i]
             if(taskInfo.taskNames === methodName){
-                this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
+                let taskId: number
+                if(taskInfo.taskType === 'start') {
+                    this.hasNewComponent = true
+                    const startFun = () => {
+                        this.curFunComponentId = funCompId
+                        taskFun()
+                        this.curFunComponentId = undefined
+                    }
+                    taskId = this[taskInfo.taskType].addTask(startFun, { 
+                        priority: taskInfo.taskPriority, 
+                        sequence: taskInfo.sequence 
+                    })
+
+                } else {
+                    taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
+                }
+                this.recordFunTask(taskId, taskInfo.taskType, funCompId)
                 return
             }
         }
+    }
+
+    protected onRemoveFunComponent = (funcCompId: number) => {
+        this.removeInstanceTask(this.funCompTaskId.get(funcCompId))
+    }
+
+    protected recordFunTask(taskId: number, taskType: TaskType, componentId?: number) {
+        const compId= isNaN(componentId)? this.curFunComponentId : componentId
+        let muiMap = this.funCompTaskId.get(compId)
+        if(!muiMap) {
+            muiMap = new MutiValueMap<TaskType, number>()
+            this.funCompTaskId.set(compId, muiMap)
+        }
+        muiMap.add(taskType, taskId)
     }
 
 
@@ -109,7 +146,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         const endIdList  = idInfo.get(TaskType.END)
         this.end.runTasks(endIdList.valus())
         this.removeInstanceTask(idInfo);
-        this.instanceTaskId.remove(component.Id);
+        this.instanceTaskId.delete(component.Id);
     }
 
     private onStart = () => {

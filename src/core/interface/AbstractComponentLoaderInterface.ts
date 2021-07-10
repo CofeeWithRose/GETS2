@@ -1,5 +1,5 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
-import {AbstractComponentConstructor, AbstractComponentInterface, ResetParams} from "./AbstractComponentInterface";
+import {AbstractComponentConstructor, AbstractComponentInterface, ComponentInstance, ComponentType, ResetParams} from "./AbstractComponentInterface";
 import { GE } from "../implement/GE";
 
 export interface AbstractComponentLoaderEvent {
@@ -40,17 +40,17 @@ export interface AbstractComponentLoaderInterface extends AbstractGEObjectInterf
      * 获取装载的 component.
      * @param componentClass 
      */
-    getComponent<C extends AbstractComponentConstructor> (
+    getComponent<C extends ComponentType> (
         componentClass: C
-    ):InstanceType<C>
+    ):ComponentInstance<C>
 
     /**
      * 获取该类型的所有 component.
      * @param componentClass 
      */
-    getComponents<C extends AbstractComponentConstructor> (
+    getComponents<C extends ComponentType> (
         componentClass: C
-    ): InstanceType<C>[];
+    ): ComponentInstance<C>[];
     
     /**
      * 获取所有装载的 component.

@@ -10,8 +10,12 @@ export enum GEEvents {
     
     ADD_MANAGER = 'ADD_MANAGER',
 
-    ADD_COMPONENT = 'ADD_COMPONENT',
-    REMOVE_COMPONENT =  'REMOVE_COMPONENT',
+    ADD_CLASS_COMPONENT = 'ADD_COMPONENT',
+    REMOVE_CLASS_COMPONENT =  'REMOVE_CLASS_COMPONENT',
+
+
+    ADD_FUNC_COMPONENT = 'ADD_FUNC_COMPONENT',
+    REMOVE_FUNC_COMPONENT = 'REMOVE_FUNC_COMPONENT',
 
     REGIST_TASK = 'REGIST_TASK',
 
@@ -24,14 +28,16 @@ export interface GEEventsMap {
     [GEEvents.START]: () => void
     [GEEvents.PAUSE]: () => void
 
-    [GEEvents.ADD_COMPONENT]: (gameObject:AbstractComponentLoader, component: AbstractComponentInterface) => void
-    [GEEvents.REMOVE_COMPONENT]: (gameObject:AbstractComponentLoader, component: AbstractComponentInterface) => void
+    [GEEvents.ADD_CLASS_COMPONENT]: (gameObject:AbstractComponentLoader, component: AbstractComponentInterface) => void
+    [GEEvents.REMOVE_CLASS_COMPONENT]: (gameObject:AbstractComponentLoader, component: AbstractComponentInterface) => void
 
     [GEEvents.ADD_GAMEOBJECT]: (gameObject:GameObjectInterface) => void
     [GEEvents.REMOVE_GAMEOBJECT]: (gameObject:GameObjectInterface) => void
 
     [GEEvents.ADD_MANAGER]: (gameObject: AbstractManagerInterface) => void
 
-    [GEEvents.REGIST_TASK]: (name: string, type: any, fun: () => void) => void
+    [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
+
+    [GEEvents.REMOVE_FUNC_COMPONENT]: (funCompId: number) => void
 
 }

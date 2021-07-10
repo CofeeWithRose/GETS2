@@ -7,9 +7,13 @@ import { GE } from "./GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import { AbstractComponent } from "./AbstractComponent";
+import { Component, FunctionComponent } from "react";
 
 
 let componentLoaderBaseId = 1
+
+let funCompBaseId = 1
+
 export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected game: GE
@@ -59,10 +63,12 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     private componentList: AbstractComponentInterface[] = []
 
+    private funComponentMap = new Map<Function, any[]>() 
+
     private activeAllComponent() {
         const allComponents = [ ...this.componentList ]
         for( let i = 0; i< allComponents.length; i++){
-            this.game.sendMessage(GEEvents.ADD_COMPONENT, this, allComponents[i]);
+            this.game.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, allComponents[i]);
         }
     };
 
@@ -70,7 +76,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
         const allComponents: Array<AbstractComponentInterface> = [...this.componentList]
         for( let i = 0; i< allComponents.length; i++){
-            this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponents[i]);
+            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponents[i]);
         }
     };
 
@@ -84,10 +90,10 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     abstract destory(): void
 
-    protected curCompType: FunComponent
+    protected curFunCompInfo: { type: FunComponent, id: number}
 
     regist(name: string, fun: () => void) {
-        this.game.sendMessage(GEEvents.REGIST_TASK, name, this.curCompType, fun);
+        this.game.sendMessage(GEEvents.REGIST_TASK, name, fun, this.curFunCompInfo?.id );
     }
 
     /**
@@ -97,7 +103,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     addComponent<C extends ComponentType> (
         componentClass: C, ...params:  ResetParams<C>
     ): ComponentInstance<C> {
-        if(Object.getPrototypeOf(componentClass) === AbstractComponent) {
+        if(this.isClassComponentClass(componentClass)) {
             return this.addClassComponent(componentClass as any, ...params )
         }else {
            return this.addFunComponent(componentClass as FunComponent, ...params)
@@ -105,9 +111,21 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
        
     }
 
+    protected isClassComponentClass(componentClass: ComponentType): boolean {
+        return Object.getPrototypeOf(componentClass) === AbstractComponent
+    }
+
     protected addFunComponent(componentClass: FunComponent, ...params:any): ReturnType<FunComponent> {
-        // TODO store to list.
+        this.curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
+        let componentList = this.funComponentMap.get(componentClass)
+        if(!componentList) {
+            componentList = []
+            this.funComponentMap.set(componentClass, componentList)
+        }
         const instance =  componentClass( this.game, this, ...params )
+        instance._id = this.curFunCompInfo.id
+        this.curFunCompInfo = undefined
+        componentList.push(instance)
         return instance
     }
 
@@ -119,7 +137,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         this.componentList.push( component);
         component.GameObject = <any>this;
         if(this.isActive){
-            this.game.sendMessage(GEEvents.ADD_COMPONENT, this, component);
+            this.game.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, component);
         }
         
         return component as InstanceType<C>;
@@ -131,13 +149,30 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * 获取装载的 component.
      * @param componentConstructor 
      */
-    getComponent<C extends AbstractComponentConstructor> (
+    getComponent<C extends ComponentType> (
         componentClass: C,
-    ): InstanceType<C> {
+    ): ComponentInstance<C> {
+        if(this.isClassComponentClass(componentClass)) {
+            return this.getClassComponent(componentClass)
+        } else {
+            return this.getFunComponent(componentClass)
+        }
+    }
+
+    protected getFunComponent<C extends ComponentType> (
+        componentClass: C,
+    ): ComponentInstance<C> {
+        return (this.funComponentMap.get(componentClass)||[])[0];
+    }
+
+    protected getClassComponent<C extends ComponentType> (
+        componentClass: C,
+    ): ComponentInstance<C> {
+        
         // support func component.
         for(let i =0; i< this.componentList.length; i++){
             if(this.componentList[i] instanceof componentClass){
-                return this.componentList[i] as InstanceType<C>
+                return this.componentList[i] as ComponentInstance<C>
             }
         }
     }
@@ -146,33 +181,63 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * 获取该类型的所有 component.
      * @param componentConstructor 
      */
-    getComponents<C extends AbstractComponentConstructor> (
+    getComponents<C extends ComponentType> (
         componentClass: C
-    ): InstanceType<C>[] {
-        // support func component.
-        return this.componentList.filter( c => c instanceof componentClass ) as InstanceType<C>[]
+    ): ComponentInstance<C>[] {
+        if(this.isClassComponentClass(componentClass)) {
+            return this.componentList.filter( c => c instanceof componentClass ) as ComponentInstance<C>[]
+            
+        }else {
+            return this.funComponentMap.get(componentClass)||[]
+        }
     }
 
     /**
      * 获取所有装载的 component.
      */
     getAllComponents(): AbstractComponentInterface[] {
-        // support func component.
-        return [...this.componentList]
+        return [...this.componentList, ...this.getAllFunCompoents()]
+    }
+
+    protected getAllFunCompoents(): any[] {
+        const funcComponentList = []
+        const valuseIt = this.funComponentMap.values()
+        while (true) {
+          const next =  valuseIt.next()
+          if(next.value) funcComponentList.push(next.value)
+          if(next.done) return funcComponentList
+        }
     }
 
     /**
     * 指定 component 的移除 components.
     * @param component 
     */
-    removeComponent<C extends AbstractComponentConstructor> (
+    removeComponent<C extends ComponentType> (
         componentClass: C
     ): void {
-        // support func component.
+       if(this.isClassComponentClass(componentClass)) {
+           return this.removeClassComponent(componentClass)
+       } 
+    }
+
+    protected removeFuncComponent<C extends ComponentType> (
+        componentClass: C
+    ): void {
+        const componentList = this.funComponentMap.get(componentClass)
+        if (componentList?.length) {
+            const c = componentList.shift()
+            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c._id)
+        }
+    }
+
+    protected removeClassComponent<C extends ComponentType> (
+        componentClass: C
+    ): void {
         for(let i =0; i< this.componentList.length; i++ ){
             const c = this.componentList[i]
             if( c instanceof componentClass ) {
-                this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, c);
+                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c);
                 this.componentList.splice(i, 1)
                 return
             }
@@ -183,14 +248,34 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * 指定 namespace 的移除 components.
      * @param componentConstructor 
      */
-    removeComponents<C extends AbstractComponentConstructor> (
+    removeComponents<C extends ComponentType> (
         componentClass: C
     ): void {
-        // support func component.
+        if(this.isClassComponentClass(componentClass)) {
+            return this.removeClassComponents(componentClass as AbstractComponentConstructor)
+        } else {
+            return this.removeFunComponents(componentClass as FunComponent)
+        }
+      
+    }
+
+    protected removeFunComponents(componentClass: FunComponent) {
+        const componentArray = this.funComponentMap.get(componentClass)
+        if(componentArray) {
+            componentArray.forEach( c => {
+                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c)
+            })
+            componentArray.splice(0)
+        }
+    }
+
+    protected removeClassComponents<C extends AbstractComponentConstructor> (
+        componentClass: C
+    ): void {
         for ( let i =0; i< this.componentList.length; i++ ) {
             const c = this.componentList[i]
             if ( c instanceof componentClass ) {
-                this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, c);
+                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c);
                 this.componentList.splice( i, 1 );
                 i--;
             }
@@ -201,14 +286,25 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * 移除所有的 components.
      */
     removeAllComponents(): void {
-        // support func component.
+       this.removeAllClassComponents()
+       this.removeAllFuncComponents()
+    }
+
+    protected  removeAllClassComponents(): void {
         const allComponentArray: Array<AbstractComponentInterface> = [...this.componentList]
         for (let i = 0; i < allComponentArray.length; i++) {
-            this.game.sendMessage(GEEvents.REMOVE_COMPONENT, this, allComponentArray[i]);
+            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponentArray[i]);
         }
         this.componentList = []
     }
 
+    protected removeAllFuncComponents(): void {
+        const funCompArray = this.getAllFunCompoents()
+        funCompArray.forEach( c => {
+            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c)
+        })
+        this.funComponentMap.clear()
+    }
 
     on<E extends keyof AbstractComponentLoaderEvent >(
       eventName: E, cb: AbstractComponentLoaderEvent[E]

@@ -84,8 +84,8 @@ function createPlayers(game: GE, ind: number){
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
-        player1.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
-        // player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
+        // player1.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
+        player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
 
         // player2.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
@@ -103,7 +103,7 @@ export function Run() {
         const canvas = canvasRef.current
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
-        for (let index = 0; index < 3000; index++) {
+        for (let index = 0; index < 300; index++) {
           createPlayers(game, index)
         }
        
