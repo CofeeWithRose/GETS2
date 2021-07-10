@@ -61,7 +61,7 @@ export const Render2DComp: FunComponent<Render2DCompInfer> = function Render2DCo
   })
 
   function setSourceId(sourceId: number){
-    _renderer.updateSourceId(_spiritId, _sourceId)
+    _renderer.updateSourceId(_spiritId, sourceId)
   }
 
   function getsize(): Vec2{

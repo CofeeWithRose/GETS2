@@ -4,42 +4,46 @@ import Map from './Map';
 /**
  * 一对多的map，value 将自动去重.
  */
-export default class MutiValueMap <K, V> {
+export default function MutiValueMap <K, V> (){
 
-    private map = new Map <K, ArraySet<V>>();
+    const _map = new Map <K, V[]>();
 
-    add(key: K, value: V): void {
-        const arraySet = this.get(key);
-        arraySet.add(value);
+    function add(key: K, value: V): void {
+        const arraySet = get(key);
+        arraySet.push(value);
     };
 
-    get(key: K): ArraySet<V> {
-        let resultArray = this.map.get(key);
+    function get(key: K): V[] {
+        let resultArray = _map.get(key);
         if(!resultArray){
-            resultArray = new ArraySet<V>();
-            this.map.set(key, resultArray);
+            resultArray = [];
+            _map.set(key, resultArray);
         }
         return resultArray;
     };
-    keys(){
-        return this.map.keys();
+    function keys(){
+        return _map.keys();
     }
-    values(): Array<V> {
+    function values(): Array<V> {
         const res: V[] = []
-        this.map.forEach((itemArry) => {
-            res.push(...itemArry.valus())
+        _map.forEach((itemArry) => {
+            res.push(...itemArry)
         })
         return res
     }
-    removeValues(key: K) {
-        this.map.delete(key);
+    function removeValues(key: K) {
+        _map.delete(key);
     };
 
-    removeValue(key: K, value: V){
-        const resultArray = this.map.get(key);
+    function removeValue(key: K, value: V){
+        const resultArray = _map.get(key);
         if(resultArray){
-            resultArray.remove(value);
+            const ind = resultArray.indexOf(value)
+            if(ind > -1) resultArray.splice(ind, 1)
         }
     };
-
+    return {
+        add, get, keys, values, 
+        removeValues, removeValue
+    }
 }

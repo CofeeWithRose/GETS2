@@ -12,7 +12,7 @@ export default class ConfigParser {
 
     private classTypeArray = new ArraySet<typeof AbstractGEObject>();
 
-    private classTypeTasksMap = new MutiValueMap<typeof AbstractGEObject, TaskInfo>();
+    private classTypeTasksMap = MutiValueMap<typeof AbstractGEObject, TaskInfo>();
   
     private taskInfoCache = new Map<AbstractGEObjectConstructor, TaskInfo[]>()
 
@@ -23,7 +23,7 @@ export default class ConfigParser {
     }
 
     getFuncTaskInfoArray():Array<TaskInfo> {
-        return this.classTypeTasksMap.get(AbstractComponent as any).valus()
+        return this.classTypeTasksMap.get(AbstractComponent as any)
     }
 
     getTaskInfoArray(instance: AbstractGEObjectInterface): Array<TaskInfo>{
@@ -36,7 +36,7 @@ export default class ConfigParser {
         console.log('produce task', instance)
         for(let i = 0; i< typesArray.length; i++){
             if( instance instanceof typesArray[i] ){
-                result.push( ...this.classTypeTasksMap.get(typesArray[i]).valus() );
+                result.push( ...this.classTypeTasksMap.get(typesArray[i]));
             }
         } 
         this.taskInfoCache.set(constructor, result)

@@ -117,8 +117,8 @@ export class HitTester extends AbstractMnager {
 
   afterUpdated = () => {
     this.#config.forEach( ({groupB, groupA}) => {
-      const gA = this.#hitInfoMap.get(groupA).valus()
-      const gB = this.#hitInfoMap.get(groupB).valus()
+      const gA = this.#hitInfoMap.get(groupA)
+      const gB = this.#hitInfoMap.get(groupB)
       if(gA && gB) this.chekHitTest( this.#timer.DealTime ,gA, gB)
     })
   }

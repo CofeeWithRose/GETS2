@@ -122,7 +122,7 @@ export type AnimConfig  = { [animationName: string]: AnimationInfo }
 
 // }
 
-export const Animation: FunComponent = function AnimationFun(
+export const Animation: FunComponent<any> = function AnimationFun(
   ge, obj, animationInfo: { [animationName: string]: AnimationInfo }
 ) {
 
@@ -152,6 +152,7 @@ export const Animation: FunComponent = function AnimationFun(
       const render = obj.getComponent(Render2DComp)
 
       function _updateAnim(){
+
         const { animationName, isLoop, startPlayTime } = curPalyingState
         const _animationInfo = animationInfo[animationName]
         const _sourceList = sourceList[animationName]
@@ -188,12 +189,6 @@ export const Animation: FunComponent = function AnimationFun(
       curPalyingState.animationName = animName
       curPalyingState.startPlayTime = timer.StartFromNow
       curPalyingState.isPlaying = true
-      // curPalyingState = {
-      //   isLoop,
-      //   animationName: animName as string,
-      //   startPlayTime: this.timer.StartFromNow,
-      //   isPlaying: true
-      // }
     }
   }
 

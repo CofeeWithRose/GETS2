@@ -1,38 +1,44 @@
 import MutiValueMap from "../map/implement/MutiValueMap";
 
-export default class EventEmitor {
+export default function EventEmitor() {
 
-    private listeners = new  MutiValueMap<string|number, Function>();
+    const _listeners = MutiValueMap<string|number, Function>();
 
-    private afterEmit: {eventName: string|number, fun: Function}[] =[]
+    const _afterEmit: {eventName: string|number, fun: Function}[] =[]
 
-    private isEmitting = false
+    let _isEmitting = false
 
-    addEventListener(eventName: string|number, fun: Function){
-        this.listeners.add(eventName, fun);
+    function addEventListener(eventName: string|number, fun: Function){
+        _listeners.add(eventName, fun);
     }
 
-    removeEventListener(eventName: string|number, fun: Function){
-      if(this.isEmitting) {
-        this.afterEmit.push({eventName, fun})
+    function removeEventListener(eventName: string|number, fun: Function){
+      if(_isEmitting) {
+        _afterEmit.push({eventName, fun})
       }else{
-        this.listeners.removeValue(eventName, fun);
+        _listeners.removeValue(eventName, fun);
       }
     }
 
-    emit(eventName: string|number, ...params:Array<any> ){
-      this.isEmitting = true
-      const listeners = this.listeners.get(eventName).valus();
+    function emit(eventName: string|number, ...params:Array<any> ){
+      _isEmitting = true
+      const listeners = _listeners.get(eventName);
       listeners.forEach(listener => {
         listener(...params)
       });
  
-      if(this.afterEmit.length) {
-        this.afterEmit.forEach( ({eventName, fun}) => this.removeEventListener(eventName, fun) )
-        this.afterEmit=[]
+      if(_afterEmit.length) {
+        _afterEmit.forEach( ({eventName, fun}) => removeEventListener(eventName, fun) )
+        _afterEmit.slice(0)
       }
 
-      this.isEmitting = false
+      _isEmitting = false
 
+    }
+
+    return {
+      addEventListener,
+      removeEventListener,
+      emit
     }
 }
