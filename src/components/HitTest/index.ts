@@ -1,3 +1,4 @@
+import { ComponentInstance } from "src/core/interface/AbstractComponentInterface";
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import GameObjectManager from "../../managers/gameobject/implement/GameObjectManager";
@@ -35,10 +36,10 @@ export class HitTest extends AbstractComponent {
   #objManager :GameObjectManager
 
 
-  #transform: Transform
+  #transform: ComponentInstance< typeof Transform>
 
 
-  #eventEmiter = new EventEmitor()
+  #eventEmiter = EventEmitor()
 
   #shapInfo: ShapInfo
 
