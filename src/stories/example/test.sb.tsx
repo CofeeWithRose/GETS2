@@ -54,7 +54,7 @@ function createPlayers(game: GE, ind: number){
           { x: 1, y: 1 },
           0 ,
         );
-        player1.addComponent(Render2DComp, stand1)
+
         const anims: AnimConfig = {
           'stand': { duration: 1, sourceList: [ {url: stand1} ] },
           'run': { duration: 0.8, sourceList: [
@@ -64,6 +64,8 @@ function createPlayers(game: GE, ind: number){
             {url: run7Url}, 
           ]},
         }
+
+        player1.addComponent(Render2DComp, stand1)
         player1.addComponent(Animation, anims)
         // player1.addComponent(MoveController, undefined, undefined, 200)
         player1.addComponent(FuncComponent, undefined, undefined, 200)
@@ -81,6 +83,7 @@ function createPlayers(game: GE, ind: number){
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
+        // player1.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
         player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
 
         // player2.addComponent(HitTest, {
@@ -102,7 +105,6 @@ export function Run() {
         for (let index = 0; index < 3000; index++) {
           createPlayers(game, index)
         }
-       
        
 
     }, [])

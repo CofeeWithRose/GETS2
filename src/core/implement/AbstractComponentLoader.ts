@@ -82,8 +82,10 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     abstract destory(): void
 
-    regist(name: string, fun: FunComponent) {
+    protected curCompType: FunComponent
 
+    regist(name: string, fun: () => void) {
+        this.game.sendMessage(GEEvents.REGIST_TASK, name, this.curCompType, fun);
     }
 
     /**
@@ -96,10 +98,15 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         if(Object.getPrototypeOf(componentClass) === AbstractComponent) {
             return this.addClassComponent(componentClass as any, ...params )
         }else {
-            this.game.curCompType = componentClass
-            return (componentClass as FunComponent)( this.game, this, ...params )
+           return this.addFunComponent(componentClass as FunComponent, ...params)
         }
        
+    }
+
+    protected addFunComponent(componentClass: FunComponent, ...params:any) {
+        this.curCompType = componentClass
+        const instance =  (componentClass as FunComponent)( this.game, this, ...params )
+        return instance
     }
 
     protected addClassComponent<C extends AbstractComponentConstructor> (

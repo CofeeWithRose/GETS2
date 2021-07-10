@@ -24,6 +24,8 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         this.addGEEvemtListener(GEEvents.PAUSE, this.onPause);
         this.addGEEvemtListener(GEEvents.ADD_COMPONENT, this.onAddComponnet);
         this.addGEEvemtListener(GEEvents.REMOVE_COMPONENT, this.onRemoveComponent);
+
+        this.addGEEvemtListener(GEEvents.REGIST_TASK, this.onRegistTask)
     };
 
     private configParser: ConfigParser;
@@ -47,6 +49,17 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         this.hasNewComponent = true;
     };
 
+    protected onRegistTask = (methodName: string, type: Function, taskFun: Function ) => {
+        // TODO needInstance ID
+        const tarskInfoArray = this.configParser.getFuncTaskInfoArray()
+        for(let i =0; i< tarskInfoArray.length; i++) {
+            const taskInfo = tarskInfoArray[i]
+            if(taskInfo.taskNames === methodName){
+                this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
+                return
+            }
+        }
+    }
 
 
     private addInstanceTask = ( component: AbstractGEObjectInterface) => {

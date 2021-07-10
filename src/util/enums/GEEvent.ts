@@ -13,6 +13,8 @@ export enum GEEvents {
     ADD_COMPONENT = 'ADD_COMPONENT',
     REMOVE_COMPONENT =  'REMOVE_COMPONENT',
 
+    REGIST_TASK = 'REGIST_TASK',
+
     ADD_GAMEOBJECT = 'ADD_GAMEOBJECT',
     REMOVE_GAMEOBJECT = 'REMOVE_GAMEOBJECT',
 }
@@ -29,5 +31,7 @@ export interface GEEventsMap {
     [GEEvents.REMOVE_GAMEOBJECT]: (gameObject:GameObjectInterface) => void
 
     [GEEvents.ADD_MANAGER]: (gameObject: AbstractManagerInterface) => void
+
+    [GEEvents.REGIST_TASK]: (name: string, type: any, fun: () => void) => void
 
 }

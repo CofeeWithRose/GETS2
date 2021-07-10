@@ -5,6 +5,7 @@ import TaskMnagerConfigInterface, { RuntimeConfigUnit } from "../interface/confi
 import { TaskType } from "../interface/data/enum";
 import TaskInfo from "../interface/data/TaskInfo";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
+import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
 export default class ConfigParser {
 
@@ -19,6 +20,10 @@ export default class ConfigParser {
         this.initOnTypeConfig(TaskType.START, config.start);
         this.initOnTypeConfig(TaskType.LOOP, config.loop);
         this.initOnTypeConfig(TaskType.END, config.end);
+    }
+
+    getFuncTaskInfoArray():Array<TaskInfo> {
+        return this.classTypeTasksMap.get(AbstractComponent as any).valus()
     }
 
     getTaskInfoArray(instance: AbstractGEObjectInterface): Array<TaskInfo>{
@@ -36,6 +41,7 @@ export default class ConfigParser {
         } 
         this.taskInfoCache.set(constructor, result)
         return result;
+
     }
 
     private initOnTypeConfig(type:TaskType, configUnitArray: Array<RuntimeConfigUnit>){
