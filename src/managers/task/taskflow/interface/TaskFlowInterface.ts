@@ -1,4 +1,4 @@
-import { TaskSequence } from "../../../managers/task/interface/config/TaskMnagerConfigInterface";
+import { TaskSequence } from "../../../../managers/task/interface/config/TaskMnagerConfigInterface";
 
 export interface TaskOptions {
   priority: number

@@ -27,7 +27,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected children:AbstractComponentLoader[] = []
 
-    protected eventEmiter = new EventEmitor()
+    protected eventEmiter = EventEmitor()
 
     protected isActive = true;
 
@@ -90,7 +90,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     abstract destory(): void
 
-    protected curFunCompInfo: { type: FunComponent, id: number}
+    protected curFunCompInfo: { type: ComponentType, id: number}
 
     regist(name: string, fun: () => void) {
         this.game.sendMessage(GEEvents.REGIST_TASK, name, fun, this.curFunCompInfo?.id );
@@ -106,7 +106,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         if(this.isClassComponentClass(componentClass)) {
             return this.addClassComponent(componentClass as any, ...params )
         }else {
-           return this.addFunComponent(componentClass as FunComponent, ...params)
+           return this.addFunComponent(componentClass as FunComponent<any>, ...params)
         }
        
     }
@@ -115,14 +115,14 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         return Object.getPrototypeOf(componentClass) === AbstractComponent
     }
 
-    protected addFunComponent(componentClass: FunComponent, ...params:any): ReturnType<FunComponent> {
+    protected addFunComponent<C>(componentClass: FunComponent<C>, ...params:any): ReturnType<FunComponent<C>> {
         this.curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
         let componentList = this.funComponentMap.get(componentClass)
         if(!componentList) {
             componentList = []
             this.funComponentMap.set(componentClass, componentList)
         }
-        const instance =  componentClass( this.game, this, ...params )
+        const instance: any =  componentClass( this.game, this, ...params )
         instance._id = this.curFunCompInfo.id
         this.curFunCompInfo = undefined
         componentList.push(instance)
@@ -254,12 +254,12 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         if(this.isClassComponentClass(componentClass)) {
             return this.removeClassComponents(componentClass as AbstractComponentConstructor)
         } else {
-            return this.removeFunComponents(componentClass as FunComponent)
+            return this.removeFunComponents(componentClass as FunComponent<any>)
         }
       
     }
 
-    protected removeFunComponents(componentClass: FunComponent) {
+    protected removeFunComponents(componentClass: FunComponent<any>) {
         const componentArray = this.funComponentMap.get(componentClass)
         if(componentArray) {
             componentArray.forEach( c => {

@@ -1,14 +1,15 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import {AbstractComponentConstructor, AbstractComponentInterface, ComponentInstance, ComponentType, ResetParams} from "./AbstractComponentInterface";
 import { GE } from "../implement/GE";
+import AbstractComponentLoader from "../implement/AbstractComponentLoader";
 
 export interface AbstractComponentLoaderEvent {
 
-  parentChange: ( newParent: AbstractComponentLoaderInterface) => void;
+  parentChange: ( newParent: AbstractComponentLoader) => void;
 
-  addChild: ( newChildren: AbstractComponentLoaderInterface) => void
+  addChild: ( newChildren: AbstractComponentLoader) => void
 
-  removeChild: (removedChildren: AbstractComponentLoaderInterface) => void
+  removeChild: (removedChildren: AbstractComponentLoader) => void
 }
 
 export interface AbstractComponentLoaderInterface extends AbstractGEObjectInterface {

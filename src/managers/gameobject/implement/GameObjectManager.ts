@@ -18,7 +18,7 @@ export default class GameObjectManager extends AbstractMnager implements GameObj
 
     protected idMap = new SimpleMap<number, GameObject>();
 
-    protected nameMap = new MutiValueMap<string, GameObject>()
+    protected nameMap = MutiValueMap<string, GameObject>()
 
     addGameObject = (gameObject: GameObject) => {
         this.idMap.set(gameObject.Id, gameObject);
@@ -35,11 +35,11 @@ export default class GameObjectManager extends AbstractMnager implements GameObj
     }
 
     findGameObjectByName(name: string): GameObject{
-      return this.nameMap.get(name)?.get(0)
+      return (this.nameMap.get(name)||[])[0]
     }
 
     findGameObjectsByName(name: string): GameObject[]{
-      return this.nameMap.get(name)?.valus()||[]
+      return this.nameMap.get(name)||[]
     }
 
 }

@@ -2,6 +2,7 @@ import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import {AbstractComponentLoaderInterface} from "./AbstractComponentLoaderInterface";
 import { GE } from "../implement/GE";
 import { AbstractManagerConstructor } from "./AbstractManagerInterface";
+import AbstractComponentLoader from "../implement/AbstractComponentLoader";
 
 export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
@@ -32,7 +33,7 @@ export interface AbstractComponentConstructor {
     new (game: GE): AbstractComponentInterface
 }
 
-export type FunComponent<T> = (  ge: GE, obj: AbstractComponentLoaderInterface,  ...params: any[] ) => T
+export type FunComponent<T> = (  ge: GE, obj: AbstractComponentLoader,  ...params: any[] ) => T
 
 export type ComponentType = AbstractComponentConstructor| FunComponent<any>
 

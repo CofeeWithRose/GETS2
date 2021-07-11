@@ -87,9 +87,9 @@ export class HitTester extends AbstractMnager {
 
   #config: HitGroup[]
 
-  #eventEniter = new EventEmitor()
+  #eventEniter = EventEmitor()
 
-  #hitInfoMap = new MutiValueMap<HIT_TEST_GROUP, ObjectHitTestInfo>()
+  #hitInfoMap = MutiValueMap<HIT_TEST_GROUP, ObjectHitTestInfo>()
 
   #hitRecord = new Map<string, HitResult>()
 
@@ -112,7 +112,7 @@ export class HitTester extends AbstractMnager {
   updateTestInfo( groupName: HIT_TEST_GROUP, objectId: number, hitTestInfo: HitTestInfo){
     const array = this.#hitInfoMap.get(groupName)
     const index =  array.findIndex(({gameObjectId}) => gameObjectId == objectId )
-    if(index > -1) array.set(index, { gameObjectId: objectId, ... hitTestInfo })
+    if(index > -1) array[index] = { gameObjectId: objectId, ... hitTestInfo }
   }
 
   afterUpdated = () => {
