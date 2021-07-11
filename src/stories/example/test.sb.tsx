@@ -106,8 +106,7 @@ export function Run() {
         for (let index = 0; index < 3000; index++) {
           createPlayers(game, index)
         }
-       
-
+        return game.destroy()
     }, [])
     return <div>
         <canvas 

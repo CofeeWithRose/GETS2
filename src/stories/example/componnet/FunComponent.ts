@@ -27,27 +27,23 @@ export  function FuncComponent(
         obj.regist('update', () => {
             const deltaTime = timer.DealTime
     
-            if(input.keyDown(left)){
+            if(input.isKeyDown(left)){
                v.x = -speed,
               transform.setScale({ x: 1, y: 1 })
               anim.play('run')
-            }
-        
-            if( input.keyDown(right)) {
+            } else if( input.isKeyDown(right)) {
               v.x = speed
               transform.setScale({ x: -1, y: 1})
               anim.play('run')
-            }
-            // console.log(input.isKeyUp(KeyBoard.a, KeyBoard.A))
-            if( input.isKeyUp(left) && input.isKeyUp(right)){
+            } else {
               v.x = 0;
               v.y = 0
               anim.play('stand')
             }
         
             transform.setPosition(
-              position.x + v.x * deltaTime, 
-              position.y + v.y * deltaTime,
+              Math.floor(position.x + v.x * 0.01), 
+              Math.floor(position.y + v.y * 0.01),
             )
         })
     })

@@ -2,10 +2,10 @@ import {AbstractMnager} from "../../../core/implement/AbstractManager";
 import TaskManagerInterface, { EMPTY_TASK } from "../interface/TaskManagerInterface";
 import TaskMnagerConfigInterface from "../interface/config/TaskMnagerConfigInterface";
 import { GEEvents } from "../../../util/enums/GEEvent";
-import {AbstractComponentInterface} from "../../../core/interface/AbstractComponentInterface";
-import MutiValueMap from "../../../util/map/implement/MutiValueMap";
+import {AbstractComponentInterface, ComponentInstance, ComponentType} from "../../../core/interface/AbstractComponentInterface";
+import MutiValueMap, { MutiValueMapInfer } from "../../../util/map/implement/MutiValueMap";
 import ConfigParser from "./ConfigParser";
-import { TaskFlow } from "../../../util/taskflow/implement/TaskFlow";
+import { TaskFlow } from "../taskflow/implement/TaskFlow";
 import { TaskType } from "../interface/data/enum";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
@@ -38,9 +38,9 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private end = new TaskFlow(TaskType.END);
 
-    private instanceTaskId = new Map<number, MutiValueMap<TaskType, number>>();
+    private instanceTaskId = new Map<number, MutiValueMapInfer<TaskType, number>>();
 
-    private funCompTaskId = new Map<number, MutiValueMap<TaskType, number>>()
+    private funCompTaskId = new Map<number, MutiValueMapInfer<TaskType, number>>()
 
     private hasNewComponent = true;
 
@@ -92,7 +92,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         const compId= isNaN(componentId)? this.curFunComponentId : componentId
         let muiMap = this.funCompTaskId.get(compId)
         if(!muiMap) {
-            muiMap = new MutiValueMap<TaskType, number>()
+            muiMap =  MutiValueMap<TaskType, number>()
             this.funCompTaskId.set(compId, muiMap)
         }
         muiMap.add(taskType, taskId)
@@ -102,7 +102,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     private addInstanceTask = ( component: AbstractGEObjectInterface) => {
         
         const taskInfoArray = this.configParser.getTaskInfoArray(component);
-        const componentTaskIdMap = new MutiValueMap<TaskType, number>();
+        const componentTaskIdMap =  MutiValueMap<TaskType, number>();
         this.instanceTaskId.set(component.Id, componentTaskIdMap);
         for (let i = 0; i < taskInfoArray.length; i++) {
             const taskInfo = taskInfoArray[i];
@@ -118,17 +118,16 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         }
     };
 
-    private removeInstanceTask(idInfo: MutiValueMap<TaskType, number> ){
+    private removeInstanceTask(idInfo: MutiValueMapInfer<TaskType, number> ){
         this.removeTasks(idInfo, TaskType.START);
         this.removeTasks(idInfo, TaskType.LOOP);
         this.removeTasks(idInfo, TaskType.END);
     };
 
-    private removeTasks( idInfo: MutiValueMap<TaskType, number>, taskType: TaskType ){
+    private removeTasks( idInfo: MutiValueMapInfer<TaskType, number>, taskType: TaskType ){
         if(idInfo){
-            const idSet = idInfo.get(taskType);
-            if(idSet){
-               const  taskIdArray = idSet.valus();
+            const taskIdArray = idInfo.get(taskType);
+            if(taskIdArray){
                 const taskFlow = this[taskType];
                 for(let i = 0; i < taskIdArray.length; i++){
                     taskFlow.deleteTask( taskIdArray[i]);
@@ -137,14 +136,14 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         };
     }
 
-    private onRemoveComponent = (_: AbstractComponentLoaderInterface, component: AbstractComponentInterface) => {
+    private onRemoveComponent = (_: AbstractComponentLoader, component: ComponentInstance<ComponentType>) => {
       this.removingComponentList.push(component)
     };
 
     private removeComponent = (component: AbstractComponentInterface) => {
         const idInfo = this.instanceTaskId.get(component.Id);
         const endIdList  = idInfo.get(TaskType.END)
-        this.end.runTasks(endIdList.valus())
+        this.end.runTasks(endIdList)
         this.removeInstanceTask(idInfo);
         this.instanceTaskId.delete(component.Id);
     }

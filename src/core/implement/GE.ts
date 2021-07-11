@@ -11,7 +11,7 @@ export  class GE {
 
     private  managerList: AbstractManagerInterface[] = [];
     
-    private  emitor = new EventEmitor();
+    private  emitor = EventEmitor();
 
     private  INIT_ERROR = new Error( 'Init Error: Please init Before invoke start method !' ); 
 
@@ -31,6 +31,10 @@ export  class GE {
     pause(){
         this.emitor.emit(GEEvents.PAUSE);
     };
+
+    destroy() {
+        this.emitor.emit(GEEvents.DESTROY)
+    }
 
     /**
      * 根据配置注入 manager.

@@ -1,10 +1,26 @@
 import ArraySet from "../../ArraySet";
 import Map from './Map';
 
+
+export interface MutiValueMapInfer <K, V> {
+
+    add(key: K, value: V): void
+
+    get(key: K): V[]
+
+    keys(): K[]
+
+    values(): V[]
+
+    removeValues(key: K): void
+
+    removeValue(key: K, value: V): void
+
+}
 /**
  * 一对多的map，value 将自动去重.
  */
-export default function MutiValueMap <K, V> (){
+export default function MutiValueMap <K, V> (): MutiValueMapInfer <K, V>{
 
     const _map = new Map <K, V[]>();
 
@@ -22,7 +38,11 @@ export default function MutiValueMap <K, V> (){
         return resultArray;
     };
     function keys(){
-        return _map.keys();
+        const keys: K[] = []
+        _map.forEach( (_, key) => {
+            keys.push(key)
+        })
+        return keys;
     }
     function values(): Array<V> {
         const res: V[] = []

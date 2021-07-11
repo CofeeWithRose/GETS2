@@ -1,5 +1,5 @@
 import TaskFolwInterface, { TaskOptions } from "../interface/TaskFlowInterface";
-import SimpleMap from "../../map/implement/SimpleMap";
+import SimpleMap from "../../../../util/map/implement/SimpleMap";
 
 class TaskRecord {
 

@@ -21,12 +21,20 @@ export class Fps extends AbstractMnager {
         document.body.appendChild(this.container)
     }
 
+    protected lastFrameCount = 0
+
+    protected lastTime = 0
+
     update = () => {
+        
         if(this.timer.FrameCount%100 ===0) {
-            const fps = this.timer.FrameCount/this.timer.StartFromNow
+            const fromNow = this.timer.StartFromNow
+            const framCount = this.timer.FrameCount
+            const fps = (framCount - this.lastFrameCount)/(this.timer.StartFromNow - this.lastTime)
+            this.lastTime = fromNow
+            this.lastFrameCount = framCount
             this.container.innerHTML = `FPS: ${fps.toFixed(0)}`
         }
-       
 
     }
 }
