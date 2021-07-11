@@ -56,8 +56,9 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     };
 
     protected onRegistTask = (methodName: string, taskFun: Function, funCompId?: number ) => {
-        
         const tarskInfoArray = this.configParser.getFuncTaskInfoArray()
+
+        
        
         for(let i =0; i< tarskInfoArray.length; i++) {
             const taskInfo = tarskInfoArray[i]
@@ -65,10 +66,11 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                 let taskId: number
                 if(taskInfo.taskType === 'start') {
                     this.hasNewComponent = true
-                    const startFun = () => {
+                    const startFun = async () => {
+                        const lastFunComponentId = this.curFunComponentId
                         this.curFunComponentId = funCompId
-                        taskFun()
-                        this.curFunComponentId = undefined
+                        await taskFun()
+                        this.curFunComponentId = lastFunComponentId
                     }
                     taskId = this[taskInfo.taskType].addTask(startFun, { 
                         priority: taskInfo.taskPriority, 

@@ -50,7 +50,7 @@ function createPlayers(game: GE, ind: number){
   const player1 = game.craeteObj()
         player1.addComponent(
           Transform, 
-          { x: 100 * ind, y: 100 }, 
+          { x: 100+ 100 * ind, y: 100 }, 
           { x: 1, y: 1 },
           0 ,
         );
@@ -68,8 +68,8 @@ function createPlayers(game: GE, ind: number){
         player1.addComponent(Render2DComp, stand1)
         
         player1.addComponent(Animation, anims)
-        // player1.addComponent(MoveController, undefined, undefined, 200)
         player1.addComponent(FuncComponent, KeyBoard.a, KeyBoard.d, 200)
+        // player1.addComponent(MoveController, KeyBoard.a, KeyBoard.d, 200)
         // player1.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
         //   size: { x: 15, y: 10 }
@@ -79,14 +79,13 @@ function createPlayers(game: GE, ind: number){
        
         player2.addComponent(
           Transform, 
-          { x: 100 * ind * 2, y: 100 }, 
+          { x: 200 + 100 * ind * 2, y: 100 }, 
           { x: 1, y: 1 }, 0,
         );
         player2.addComponent(Render2DComp, stand1)
         player2.addComponent(Animation, anims)
-        // player1.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
         player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
-
+        // player2.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
         // player2.addComponent(HitTest, {
         //   groupName: HIT_TEST_GROUP.A, 
         //   size: { x: 15, y: 10 }

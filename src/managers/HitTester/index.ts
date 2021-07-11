@@ -116,11 +116,11 @@ export class HitTester extends AbstractMnager {
   }
 
   afterUpdated = () => {
-    this.#config.forEach( ({groupB, groupA}) => {
-      const gA = this.#hitInfoMap.get(groupA)
-      const gB = this.#hitInfoMap.get(groupB)
-      if(gA && gB) this.chekHitTest( this.#timer.DealTime ,gA, gB)
-    })
+    // this.#config.forEach( ({groupB, groupA}) => {
+    //   const gA = this.#hitInfoMap.get(groupA)
+    //   const gB = this.#hitInfoMap.get(groupB)
+    //   if(gA && gB) this.chekHitTest( this.#timer.DealTime ,gA, gB)
+    // })
   }
 
   protected chekHitTest(deltaTime: number, groupA: ObjectHitTestInfo[], groupB: ObjectHitTestInfo[]): HitResult[]{
@@ -132,6 +132,7 @@ export class HitTester extends AbstractMnager {
       groupB.forEach( infoB => {
         if(infoA.gameObjectId === infoB.gameObjectId) return
         const { position: posA, offset: offA, size: sA } = infoA
+        
         const pA = {
           x: posA.x + offA.x,
           y: posA.y + offA.y,

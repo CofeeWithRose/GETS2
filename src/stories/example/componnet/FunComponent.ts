@@ -1,6 +1,6 @@
 import { 
   AbstractComponentLoader, GE, KeyBoard, InputManager,
-    Animation,  TimerManager, HitTest, Transform
+    Animation,  TimerManager, HitTest, Transform, GameObject, MoveInfo
 } from 'ge'
 
 export  function FuncComponent( 
@@ -19,10 +19,21 @@ export  function FuncComponent(
         const transform = obj.getComponent(Transform)
         const anim = obj.getComponent(Animation)
         const timer = ge.getManager(TimerManager)
-        // const hitTest = obj.getComponent(HitTest)
-        // hitTest && hitTest.on('hitting', handleHitting)
+  
         const position = transform.getPosition()
 
+        const hitTest = obj.getComponent(HitTest)
+
+        let hitInfo: {self: MoveInfo, other: MoveInfo}
+        const handleHitting = (other: GameObject, otherM: MoveInfo, selfM: MoveInfo) => {
+          hitInfo = {
+            self: selfM,
+            other: otherM,
+          }
+        }
+
+        // hitTest.on('hitting', handleHitting)
+        
         
         obj.regist('update', () => {
             const deltaTime = timer.DealTime
@@ -45,6 +56,23 @@ export  function FuncComponent(
               Math.floor(position.x + v.x * 0.01), 
               Math.floor(position.y + v.y * 0.01),
             )
+
+            if(hitInfo){
+              const {direction: otherDirection, deltaTime, position: otherPosition, size: otherSize } = hitInfo.other
+              const { direction, position, size } = hitInfo.self
+              const directionX = ((position.x - direction.x) - (otherPosition.x - otherDirection.x) ) > 0? -1: 1
+              const dist = (otherSize.x + size.x) * 0.5 + Math.abs(directionX) * ((timer.DealTime/(deltaTime||1))||1)
+              transform.setPosition(
+                otherPosition.x - directionX * dist,
+                position.y,
+              )
+              hitInfo = null
+            }else{
+              transform.setPosition(
+                Math.floor(position.x + v.x * 0.01), 
+                Math.floor(position.y + v.y * 0.01),
+              )
+            }
         })
     })
     return {}

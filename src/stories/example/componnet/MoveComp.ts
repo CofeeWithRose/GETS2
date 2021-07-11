@@ -1,8 +1,10 @@
 import {
-  Animation, Render2DComp, Transform,
+  Animation, AnimationInfer,
+  Transform, TransformInfer,
   AbstractComponent, InputManager, KeyBoard,
-  HitTest, GameObject, Vec2, MoveInfo, TimerManager 
+  HitTest, GameObject, Vec2, MoveInfo, TimerManager, 
 } from 'ge'
+
 
 
 export interface HitInfomation {
@@ -13,11 +15,9 @@ export class MoveController extends AbstractComponent {
   
   protected input: InputManager
 
-  protected transform: Transform
+  protected transform: TransformInfer
 
-  protected anim: Animation
-
-  protected render: Render2DComp
+  protected anim: AnimationInfer
 
   protected left: KeyBoard
 
@@ -71,10 +71,6 @@ export class MoveController extends AbstractComponent {
 
   update = () => {
     const deltaTime = this.timer.DealTime
-    
-   
-
-   
 
     if(this.input.keyDown(this.left)){
        this.v.x = -this.speed,
