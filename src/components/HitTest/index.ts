@@ -1,3 +1,4 @@
+import { ComponentInstance } from "src/core/interface/AbstractComponentInterface";
 import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import GameObjectManager from "../../managers/gameobject/implement/GameObjectManager";
@@ -5,7 +6,7 @@ import { HitTester, HitTestInfo, MoveInfo } from "../../managers/HitTester";
 import { HIT_TEST_GROUP } from "../../managers/HitTester/infer";
 import EventEmitor from "../../util/event/EventEmitor";
 import { Render2DComp } from "../render2D/implement/Render2DComp";
-import { Transform, Vec2 } from "../Transform";
+import { Transform, TransformEvent, Vec2 } from "../Transform";
 
 export interface HitTestEvent {
 
@@ -35,10 +36,10 @@ export class HitTest extends AbstractComponent {
   #objManager :GameObjectManager
 
 
-  #transform: Transform
+  #transform: ComponentInstance< typeof Transform>
 
 
-  #eventEmiter = new EventEmitor()
+  #eventEmiter = EventEmitor()
 
   #shapInfo: ShapInfo
 
@@ -90,12 +91,12 @@ export class HitTest extends AbstractComponent {
     this.#hitTester.off('hitting', this.GameObject.Id, this.#handleHitting )
   }
 
-  #handlePositionChange = (x: number, y: number) => {
+  #handlePositionChange: TransformEvent['positionChange'] = ({x, y}) => {
     this.lastPosition = this.position
     this.position = {x, y}
   }
 
-  #handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
+  #handleTransformChange: TransformEvent['transformChange'] = ({position, rotation, scale} ) => {
     const info =  this.getHitTestInfo(position, rotation, scale )
     this.#hitTester.updateTestInfo(this.#shapInfo.groupName, this.GameObject.Id, info)
   }
