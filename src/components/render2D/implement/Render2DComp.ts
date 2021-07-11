@@ -1,7 +1,7 @@
 import { ComponentInstance, FunComponent } from "../../../core/interface/AbstractComponentInterface";
 import {AbstractComponent} from "../../../core/implement/AbstractComponent";
 import { Renderer } from "../../../managers/Renderer/implement/Renderer";
-import { Transform, TransformEvent, Vec2 } from "../../Transform";
+import { Transform, Vec2 } from "../../Transform";
 
 export interface Render2DCompInfer {
 
@@ -23,7 +23,7 @@ export const Render2DComp: FunComponent<Render2DCompInfer> = function Render2DCo
 
   let _tansform: ComponentInstance<typeof Transform>
 
-  const _handlePositionChange: TransformEvent['positionChange'] = ({x,y}) => {
+  const _handlePositionChange = (x: number, y: number) => {
     _renderer.updatePosition(_spiritId, x,  y)
   
   }

@@ -6,7 +6,7 @@ import { HitTester, HitTestInfo, MoveInfo } from "../../managers/HitTester";
 import { HIT_TEST_GROUP } from "../../managers/HitTester/infer";
 import EventEmitor from "../../util/event/EventEmitor";
 import { Render2DComp } from "../render2D/implement/Render2DComp";
-import { Transform, TransformEvent, Vec2 } from "../Transform";
+import { Transform, Vec2 } from "../Transform";
 
 export interface HitTestEvent {
 
@@ -91,12 +91,12 @@ export class HitTest extends AbstractComponent {
     this.#hitTester.off('hitting', this.GameObject.Id, this.#handleHitting )
   }
 
-  #handlePositionChange: TransformEvent['positionChange'] = ({x, y}) => {
+  #handlePositionChange = (x: number, y: number) => {
     this.lastPosition = this.position
     this.position = {x, y}
   }
 
-  #handleTransformChange: TransformEvent['transformChange'] = ({position, rotation, scale} ) => {
+  #handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
     const info =  this.getHitTestInfo(position, rotation, scale )
     this.#hitTester.updateTestInfo(this.#shapInfo.groupName, this.GameObject.Id, info)
   }

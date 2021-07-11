@@ -30,11 +30,11 @@ export default function EventEmitor() {
       }
     }
 
-    function emit(eventName: string|number, params:any ){
+    function emit(eventName: string|number, ...params:Array<any> ){
       _isEmitting = true
       const listeners = _listeners.get(eventName)||[];
       listeners.forEach(listener => {
-        listener(params)
+        listener(...params)
       });
  
       if(_afterEmit.length) {

@@ -12,13 +12,13 @@ export interface Vec2 {
 
 export interface TransformEvent {
 
-  positionChange: (position: Vec2) => void
+  positionChange: (x: number, y:number) => void
 
-  scaleChange: (newScale: Vec2) => void
+  scaleChange: (newScale: Vec2, oldScale: Vec2) => void
 
-  rotationChange: (newRotation: number) => void
+  rotationChange: (newRotation: number, oldRotation: number) => void
 
-  transformChange: (data: {position: Vec2, rotation: number, scale: Vec2} ) => void
+  transformChange: (newPosition: Vec2, newRotation: number, newScale: Vec2 ) => void
 }
 
 export interface TransformInfer {
@@ -48,7 +48,7 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
   scale = { x: 1.0, y: 1.0 },
   rotation = 0.0
 ) {
-    const _eventEnitor = EventEmitor2()
+    const _eventEnitor = EventEmitor()
     const _children = obj.Children
     position = {...position}
     scale = {...scale}
@@ -86,8 +86,8 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
           )
         }
       })
-      emit('rotationChange', newRotation)
-      emit('transformChange', {position, rotation: newRotation, scale} )
+      emit('rotationChange', newRotation, rotation)
+      emit('transformChange', position, newRotation, scale )
       rotation = newRotation
     }
 
@@ -118,8 +118,8 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
           )
         }
       })
-      emit('scaleChange', newScale)
-      emit('transformChange', {position, rotation, scale: newScale})
+      emit('scaleChange', newScale, scale)
+      emit('transformChange', position, rotation, newScale)
       scale.x = newScale.x
       scale.y = newScale.y
     }
@@ -138,11 +138,11 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
           )
         }
       })
+    
+      emit('positionChange', x, y)
       position.x = x
       position.y = y
-      emit('positionChange',position)
-     
-      emit('transformChange', {position, rotation, scale})
+      emit('transformChange', position, rotation, scale)
     
     }
 
