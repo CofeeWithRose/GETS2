@@ -20,6 +20,8 @@ export { TimerManager} from "./managers/timer/implement/TimerManager";
 
 export { Fps } from './managers/Fps'
 
-export { AbstractComponentLoaderInterface } from './core/interface/AbstractComponentLoaderInterface'
+import  AbstractComponentLoader from './core/implement/AbstractComponentLoader'
 
+
+export { AbstractComponentLoader }
 

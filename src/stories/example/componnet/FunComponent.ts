@@ -1,11 +1,11 @@
 import { 
-    AbstractComponentLoaderInterface, GE, KeyBoard, InputManager,
+  AbstractComponentLoader, GE, KeyBoard, InputManager,
     Animation,  TimerManager, HitTest, Transform
 } from 'ge'
 
 export  function FuncComponent( 
     ge: GE,
-    obj: AbstractComponentLoaderInterface,  
+    obj: AbstractComponentLoader,  
     left: KeyBoard=KeyBoard.a,
     right: KeyBoard=KeyBoard.d, 
     speed = 150 

@@ -116,6 +116,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     }
 
     protected addFunComponent<C>(componentClass: FunComponent<C>, ...params:any): ReturnType<FunComponent<C>> {
+        const lastFunCompInfo = this.curFunCompInfo
         this.curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
         let componentList = this.funComponentMap.get(componentClass)
         if(!componentList) {
@@ -124,7 +125,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         }
         const instance: any =  componentClass( this.game, this, ...params )
         instance._id = this.curFunCompInfo.id
-        this.curFunCompInfo = undefined
+        this.curFunCompInfo = lastFunCompInfo
         componentList.push(instance)
         return instance
     }

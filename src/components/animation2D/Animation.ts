@@ -122,7 +122,12 @@ export type AnimConfig  = { [animationName: string]: AnimationInfo }
 
 // }
 
-export const Animation: FunComponent<any> = function AnimationFun(
+export interface AnimationInfer {
+  play(animName: string, isLoop?: boolean): void
+  stop(): void
+}
+
+export const Animation: FunComponent<AnimationInfer> = function AnimationFun(
   ge, obj, animationInfo: { [animationName: string]: AnimationInfo }
 ) {
 
