@@ -3,6 +3,7 @@ import EventEmitor from "../../util/event/EventEmitor";
 import {AbstractComponentLoaderInterface} from "../../core/interface/AbstractComponentLoaderInterface";
 import { ComponentInstance, FunComponent } from "../../core/interface/AbstractComponentInterface";
 import { GE } from "src/core/implement/GE";
+import EventEmitor2 from "../../util/event/EventEmitor2";
 
 export interface Vec2 {
   x: number
