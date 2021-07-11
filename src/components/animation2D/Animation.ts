@@ -172,7 +172,7 @@ export const Animation: FunComponent<any> = function AnimationFun(
       }
 
       obj.regist('update', () => {
-        if(curPalyingState?.isPlaying) _updateAnim()
+        if(curPalyingState.isPlaying) _updateAnim()
       })
   })
 

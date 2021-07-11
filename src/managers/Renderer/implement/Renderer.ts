@@ -19,7 +19,7 @@ export class Renderer extends AbstractMnager {
 
     constructor(game:GE, config: RendererCfg) {
         super(game, config);
-        this.irender = new IRender(config.canvas, { maxNumber:  config.maxSize })
+        this.irender = new IRender(config.canvas, { maxNumber:  config.maxSize, autoUpdate:false })
         this.loadAPixi()
     }
 
@@ -46,7 +46,7 @@ export class Renderer extends AbstractMnager {
       return id
     }
 
-    afterUpdated = () => {
+    beforeUpdate = () => {
       this.irender.updateImidiatly()
     }
 
