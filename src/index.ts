@@ -22,6 +22,8 @@ export { Fps } from './managers/Fps'
 
 import  AbstractComponentLoader from './core/implement/AbstractComponentLoader'
 
+export type { FunComponent } from './core/interface/AbstractComponentInterface'
+
 
 export { AbstractComponentLoader }
 

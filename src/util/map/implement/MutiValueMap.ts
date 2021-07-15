@@ -14,7 +14,7 @@ export interface MutiValueMapInfer <K, V> {
 
 }
 /**
- * 一对多的map，value 将自动去重.
+ * 一对多的map.
  */
 export default function MutiValueMap <K, V> (): MutiValueMapInfer <K, V>{
 

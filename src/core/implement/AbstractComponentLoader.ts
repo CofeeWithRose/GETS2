@@ -31,7 +31,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected isActive = true;
 
-    protected id = componentLoaderBaseId++
+    readonly id = componentLoaderBaseId++
 
     name = `default${this.Id}`
 

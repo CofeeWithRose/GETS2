@@ -12,6 +12,9 @@ import run4Url from '../assets/player2/run4.png'
 import run5Url from '../assets/player2/run5.png'
 import run6Url from '../assets/player2/run6.png'
 import run7Url from '../assets/player2/run7.png'
+import icon from '../assets/setting-press.png'
+
+import { AutoMove } from './componnet/AutoMove'
 
 
 export default {
@@ -47,7 +50,7 @@ function createPlayer(game: GE, count: number){
 }
 
 function createPlayers(game: GE, ind: number){
-  const player1 = game.craeteObj()
+        const player1 = game.craeteObj()
         player1.addComponent(
           Transform, 
           { x: 100+ 100 * ind, y: 100 }, 
@@ -65,7 +68,8 @@ function createPlayers(game: GE, ind: number){
           ]},
         }
 
-        player1.addComponent(Render2DComp, stand1)
+        player1.addComponent(Render2DComp, icon)
+        // player1.addComponent(AutoMove, 320,720, 3)
         
         player1.addComponent(Animation, anims)
         player1.addComponent(FuncComponent, KeyBoard.a, KeyBoard.d, 200)
@@ -76,7 +80,6 @@ function createPlayers(game: GE, ind: number){
         // })
 
         const player2 = game.craeteObj()
-       
         player2.addComponent(
           Transform, 
           { x: 200 + 100 * ind * 2, y: 100 }, 
@@ -102,16 +105,17 @@ export function Run() {
         const canvas = canvasRef.current
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
-        for (let index = 0; index < 3000; index++) {
+        for (let index = 0; index < 4900; index++) {
           createPlayers(game, index)
         }
         return game.destroy()
     }, [])
     return <div>
         <canvas 
+            style={{backgroundColor: 'gray'}}
             ref={canvasRef}
             width={800}
-            height={600}
+            height={500}
         />
     </div>
 }

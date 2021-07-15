@@ -1,7 +1,8 @@
 import { ComponentInstance, FunComponent } from "../../../core/interface/AbstractComponentInterface";
 import {AbstractComponent} from "../../../core/implement/AbstractComponent";
 import { Renderer } from "../../../managers/Renderer/implement/Renderer";
-import { Transform, Vec2 } from "../../Transform";
+import { Transform, TransformEvent, TransformInfer, Vec2 } from "../../Transform";
+import { Iimage } from "i-render";
 
 export interface Render2DCompInfer {
 
@@ -19,62 +20,45 @@ export const Render2DComp: FunComponent<Render2DCompInfer> = function Render2DCo
 
   let _renderer: Renderer
 
-  let _spiritId: string
+  let _sprite: Iimage
 
-  let _tansform: ComponentInstance<typeof Transform>
-
-  const _handlePositionChange = (x: number, y: number) => {
-    _renderer.updatePosition(_spiritId, x,  y)
-  
-  }
-
-  const _handleScaleChange = (scale: Vec2) => {
-    _renderer.updateScale(_spiritId, scale)
-  }
-
-  const _handleRotationChange = (rotation: number) => {
-    _renderer.updateRotation(_spiritId, rotation)
-  }
+  let _tansform: TransformInfer
 
 
   obj.regist('start', async () => {
     
     _tansform = obj.getComponent(Transform)
-
+    const _position = _tansform.getPosition()
    
+    const _scale = _tansform.getScale()
 
     _renderer = ge.getManager(Renderer)
 
     _sourceId = await _renderer.loadSource(sourceUrl)
-    _spiritId =  _renderer.craeteSpirit(_sourceId, {
-      position: _tansform.getPosition(),
+    _sprite =  _renderer.craeteSpirit(_sourceId, {
+      position: {x: _position.x, y: _position.y},
       scale: _tansform.getScale(),
       rotation: _tansform.getRotation(),
     } )
 
-    _tansform.on('positionChange', _handlePositionChange)
-
-    _tansform.on('rotationChange', _handleRotationChange)
-
-    _tansform.on('scaleChange', _handleScaleChange)
-    
+    obj.regist('update', function update() {
+      if(_tansform.positionChanged)   _sprite.setPosition( _position.x,  _position.y)
+      if(_tansform.rotationChanged) _sprite.setRotation(_tansform.rotation)
+      if(_tansform.scaleChanged) _sprite.setScale(_scale.x, _scale.y)
+    })
+   
   })
 
   function setSourceId(sourceId: number){
-    _renderer.updateSourceId(_spiritId, sourceId)
+    _sprite.setImgId(sourceId)
   }
 
   function getsize(): Vec2{
-    return _renderer.getSize(_spiritId)
+    return _sprite.size
   }
   
   obj.regist('destory',  () => {
-    if(_renderer) _renderer.destroySpirit(_spiritId)
-    if(_tansform) {
-      _tansform.off('positionChange', _handlePositionChange)
-      _tansform.off('rotationChange', _handleRotationChange)
-      _tansform.off('scaleChange', _handleScaleChange)
-    }
+    _renderer.destroySpirit(_sprite)
   })
 
   return {

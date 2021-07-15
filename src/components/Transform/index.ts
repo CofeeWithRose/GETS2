@@ -10,6 +10,7 @@ export interface Vec2 {
   y: number
 }
 
+// TODO remove event infer.
 export interface TransformEvent {
 
   positionChange: (x: number, y:number) => void
@@ -40,18 +41,35 @@ export interface TransformInfer {
   on<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void
 
   off<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void
+
+  positionChanged: boolean,
+  
+  rotationChanged: boolean,
+  
+  scaleChanged: boolean
+
+  position: Vec2
+  scale:Vec2
+  rotation: number
+
 }
 
 export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
   ge, obj,  
-  position = { x: 0, y: 0 },
+  positionParam: Vec2 = { x: 0, y: 0 },
   scale = { x: 1.0, y: 1.0 },
   rotation = 0.0
 ) {
-    const _eventEnitor = EventEmitor()
+    const _eventEnitor = EventEmitor2()
     const _children = obj.Children
-    position = {...position}
+    const position: Vec2 = {x: positionParam.x, y: positionParam.y}
     scale = {...scale}
+    const transform: Partial<TransformInfer> = {
+      positionChanged: false,
+      rotationChanged:false,
+      scaleChanged:false
+    }
+
     const emit = _eventEnitor.emit.bind(_eventEnitor) as <E extends keyof TransformEvent>(eventName: E, ...params: Parameters<TransformEvent[E]>) => void
 
     function on<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void {
@@ -88,7 +106,8 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
       })
       emit('rotationChange', newRotation, rotation)
       emit('transformChange', position, newRotation, scale )
-      rotation = newRotation
+      transform.rotation = newRotation
+      transform.rotationChanged = true
     }
 
     function getScale(): Readonly<Vec2> {
@@ -96,25 +115,25 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
     }
     function setScale(newScale: Vec2) {
       _children.forEach((child) => {
-        const transform = child.getComponent(TransFormFun)
-        if (transform) {
-          const childScale = transform.getScale()
+        const _transform = child.getComponent(TransFormFun)
+        if (_transform) {
+          const childScale = _transform.getScale()
 
-          const scaledX = newScale.x/transform.scale.x
-          const scaledY = newScale.y/transform.scale.y
-          transform.setScale({
+          const scaledX = newScale.x/_transform.scale.x
+          const scaledY = newScale.y/_transform.scale.y
+          _transform.setScale({
             x: childScale.x * scaledX,
             y: childScale.y * scaledY,
           })
 
-          const childPosition = transform.getPosition()
-          const distX = childPosition.x - transform.position.x
-          const distY = childPosition.y - transform.position.y
+          const childPosition = _transform.getPosition()
+          const distX = childPosition.x - _transform.position.x
+          const distY = childPosition.y - _transform.position.y
           // const angle = transform.rotation/
         
-          transform.setPosition(
-            transform.position.x + distX * scaledX,
-            transform.position.y + distY * scaledY,
+          _transform.setPosition(
+            _transform.position.x + distX * scaledX,
+            _transform.position.y + distY * scaledY,
           )
         }
       })
@@ -122,6 +141,8 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
       emit('transformChange', position, rotation, newScale)
       scale.x = newScale.x
       scale.y = newScale.y
+      transform.scaleChanged = true
+      
     }
     function  getPosition(): Readonly<Vec2> {
       return position
@@ -129,34 +150,39 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
     function setPosition(x: number, y: number) {
       
       _children.forEach(c => {
-        const transform = c.getComponent(TransFormFun)
-        if (transform) {
-          const postion = transform.getPosition()
-          transform.setPosition(
-            postion.x + x - transform.position.x,
-            postion.y + y - transform.position.y,
+        const _transform = c.getComponent(TransFormFun)
+        if (_transform) {
+          const postion = _transform.getPosition()
+          _transform.setPosition(
+            postion.x + x - _transform.position.x,
+            postion.y + y - _transform.position.y,
           )
         }
       })
     
-      emit('positionChange', x, y)
+      // emit('positionChange', x, y)
       position.x = x
       position.y = y
-      emit('transformChange', position, rotation, scale)
-    
+      // emit('transformChange', position, rotation, scale)
+      transform.positionChanged = true
     }
 
+    obj.regist('beforeUpdate', function beforeUpdate() {
+      transform.positionChanged = false
+      transform.rotationChanged = false
+      transform.scaleChanged = false
+    })
 
-  return {
-    getPosition,
-    setPosition,
-    getRotation,
-    position,
-    getScale,
-    setScale,
-    scale,
-    setRotation,
-    rotation,
-    on, off,
-  }
+    transform.getPosition = getPosition,
+    transform.setPosition = setPosition
+    transform.getRotation = getRotation
+    transform.position = position
+    transform.getScale= getScale
+    transform.setScale =  setScale
+    transform.scale = scale
+    transform.setRotation = setRotation,
+    transform.rotation = rotation,
+    transform.on = on
+    transform.off = off
+  return  transform as TransformInfer
 }
