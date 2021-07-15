@@ -51,7 +51,7 @@ export interface MoveInfo {
 }
 
 
-export interface HitTestInfo {
+export interface PhysicalInfo {
 
   offset: Vec2
 
@@ -64,7 +64,7 @@ export interface HitTestInfo {
   size: Vec2 
 }
 
-export interface ObjectHitTestInfo extends HitTestInfo{
+export interface ObjectPhysicalInfo extends PhysicalInfo{
 
   gameObjectId: number
 
@@ -89,7 +89,7 @@ export class HitTester extends AbstractMnager {
 
   #eventEniter = EventEmitor()
 
-  #hitInfoMap = MutiValueMap<HIT_TEST_GROUP, ObjectHitTestInfo>()
+  #hitInfoMap = MutiValueMap<HIT_TEST_GROUP, ObjectPhysicalInfo>()
 
   #hitRecord = new Map<string, HitResult>()
 
@@ -105,11 +105,11 @@ export class HitTester extends AbstractMnager {
   }
   
 
-  addTestInfo( groupName: HIT_TEST_GROUP, gameObjectId: number, hitTestInfo: HitTestInfo){
+  addTestInfo( groupName: HIT_TEST_GROUP, gameObjectId: number, hitTestInfo: PhysicalInfo){
     this.#hitInfoMap.add(groupName, { gameObjectId, ... hitTestInfo } )
   }
 
-  updateTestInfo( groupName: HIT_TEST_GROUP, objectId: number, hitTestInfo: HitTestInfo){
+  updateTestInfo( groupName: HIT_TEST_GROUP, objectId: number, hitTestInfo: PhysicalInfo){
     const array = this.#hitInfoMap.get(groupName)
     const index =  array.findIndex(({gameObjectId}) => gameObjectId == objectId )
     if(index > -1) array[index] = { gameObjectId: objectId, ... hitTestInfo }
@@ -123,7 +123,7 @@ export class HitTester extends AbstractMnager {
     // })
   }
 
-  protected chekHitTest(deltaTime: number, groupA: ObjectHitTestInfo[], groupB: ObjectHitTestInfo[]): HitResult[]{
+  protected chekHitTest(deltaTime: number, groupA: ObjectPhysicalInfo[], groupB: ObjectPhysicalInfo[]): HitResult[]{
 
     const hitRest: HitResult[] = []
 

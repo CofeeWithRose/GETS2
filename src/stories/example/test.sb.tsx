@@ -23,32 +23,6 @@ export default {
 }
 
 
-function createPlayer(game: GE, count: number){
-  const xNum = 5
-  const x = count%xNum * 100 + 100
-  const y = Math.ceil(count/xNum) * 170
-  const player1 = game.craeteObj()
-    player1.addComponent(
-      Transform, 
-      { x, y }, 
-      { x: 1, y: 1 },
-      0 ,
-    );
-    player1.addComponent(Render2DComp, stand1)
-    const anims: AnimConfig = {
-      'stand': { duration: 1, sourceList: [ {url: stand1} ] },
-      'run': { duration: 1, sourceList: [
-        {url: run1Url}, {url: run2Url},
-        {url: run3Url}, {url: run4Url},
-        {url: run5Url}, {url: run6Url},
-        {url: run7Url}, 
-      ]},
-    }
-    player1.addComponent(Animation, anims)
-    player1.addComponent(MoveController, undefined, undefined, 200)
-    player1.addComponent(HitTest, {groupName: HIT_TEST_GROUP.B})
-}
-
 function createPlayers(game: GE, ind: number){
         const player1 = game.craeteObj()
         player1.addComponent(
@@ -68,7 +42,7 @@ function createPlayers(game: GE, ind: number){
           ]},
         }
 
-        player1.addComponent(Render2DComp, icon)
+        player1.addComponent(Render2DComp, stand1)
         // player1.addComponent(AutoMove, 320,720, 3)
         
         player1.addComponent(Animation, anims)
@@ -105,7 +79,7 @@ export function Run() {
         const canvas = canvasRef.current
         const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
-        for (let index = 0; index < 4900; index++) {
+        for (let index = 0; index < 4500; index++) {
           createPlayers(game, index)
         }
         return game.destroy()
@@ -114,8 +88,8 @@ export function Run() {
         <canvas 
             style={{backgroundColor: 'gray'}}
             ref={canvasRef}
-            width={800}
-            height={500}
+            width={1600}
+            height={200}
         />
     </div>
 }

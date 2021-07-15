@@ -42,6 +42,7 @@ export  function FuncComponent(
                v.x = -speed,
               transform.setScale({ x: 1, y: 1 })
               anim.play('run')
+              
             } else if( input.isKeyDown(right)) {
               v.x = speed
               transform.setScale({ x: -1, y: 1})
@@ -51,10 +52,9 @@ export  function FuncComponent(
               v.y = 0
               anim.play('stand')
             }
-        
             transform.setPosition(
-              Math.floor(position.x + v.x * deltaTime), 
-              Math.floor(position.y + v.y * deltaTime),
+              position.x + (v.x * deltaTime), 
+              position.y + (v.y * deltaTime),
             )
 
             // if(hitInfo){

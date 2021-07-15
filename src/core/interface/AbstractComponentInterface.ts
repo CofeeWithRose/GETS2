@@ -34,7 +34,7 @@ export interface AbstractComponentConstructor {
     new (game: GE): AbstractComponentInterface
 }
 
-export type FunComponent<T> = (  ge: GE, obj: AbstractComponentLoader,  ...params: any[] ) => T
+export type FunComponent<T extends {} = {}> = (  ge: GE, obj: AbstractComponentLoader,  ...params: any[] ) => T
 
 export type ComponentType = AbstractComponentConstructor| FunComponent<any>
 

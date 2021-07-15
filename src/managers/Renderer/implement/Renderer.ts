@@ -47,7 +47,7 @@ export class Renderer extends AbstractMnager {
 
     destroySpirit(spirit: Iimage) {
       this.irender.destoryElement(spirit)
-      // TODO handle clean source.
+      // FIXME handle clean source.
     }
 
     

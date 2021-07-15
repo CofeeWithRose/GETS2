@@ -1,26 +1,10 @@
-import { AbstractComponent } from "../../core/implement/AbstractComponent";
-import EventEmitor from "../../util/event/EventEmitor";
-import {AbstractComponentLoaderInterface} from "../../core/interface/AbstractComponentLoaderInterface";
-import { ComponentInstance, FunComponent } from "../../core/interface/AbstractComponentInterface";
-import { GE } from "src/core/implement/GE";
-import EventEmitor2 from "../../util/event/EventEmitor2";
+import { FunComponent } from "../../core/interface/AbstractComponentInterface";
 
 export interface Vec2 {
   x: number
   y: number
 }
 
-// TODO remove event infer.
-export interface TransformEvent {
-
-  positionChange: (x: number, y:number) => void
-
-  scaleChange: (newScale: Vec2, oldScale: Vec2) => void
-
-  rotationChange: (newRotation: number, oldRotation: number) => void
-
-  transformChange: (newPosition: Vec2, newRotation: number, newScale: Vec2 ) => void
-}
 
 export interface TransformInfer {
 
@@ -32,15 +16,9 @@ export interface TransformInfer {
 
   setScale(newScale: Vec2): void
 
-
   getPosition(): Readonly<Vec2>
 
   setPosition(x: number, y: number): void
-
-
-  on<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void
-
-  off<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void
 
   positionChanged: boolean,
   
@@ -55,12 +33,11 @@ export interface TransformInfer {
 }
 
 export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
-  ge, obj,  
+  _, obj,  
   positionParam: Vec2 = { x: 0, y: 0 },
   scale = { x: 1.0, y: 1.0 },
   rotation = 0.0
 ) {
-    const _eventEnitor = EventEmitor2()
     const _children = obj.Children
     const position: Vec2 = {x: positionParam.x, y: positionParam.y}
     scale = {...scale}
@@ -70,15 +47,6 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
       scaleChanged:false
     }
 
-    const emit = _eventEnitor.emit.bind(_eventEnitor) as <E extends keyof TransformEvent>(eventName: E, ...params: Parameters<TransformEvent[E]>) => void
-
-    function on<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void {
-      _eventEnitor.addEventListener(eventName, cb)
-    }
-  
-    function off<E extends keyof TransformEvent>(eventName: E, cb: TransformEvent[E]): void {
-      _eventEnitor.removeEventListener(eventName, cb)
-    }
     function getRotation(){
       return rotation
     }
@@ -104,8 +72,6 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
           )
         }
       })
-      emit('rotationChange', newRotation, rotation)
-      emit('transformChange', position, newRotation, scale )
       transform.rotation = newRotation
       transform.rotationChanged = true
     }
@@ -129,16 +95,12 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
           const childPosition = _transform.getPosition()
           const distX = childPosition.x - _transform.position.x
           const distY = childPosition.y - _transform.position.y
-          // const angle = transform.rotation/
-        
           _transform.setPosition(
             _transform.position.x + distX * scaledX,
             _transform.position.y + distY * scaledY,
           )
         }
       })
-      emit('scaleChange', newScale, scale)
-      emit('transformChange', position, rotation, newScale)
       scale.x = newScale.x
       scale.y = newScale.y
       transform.scaleChanged = true
@@ -160,10 +122,8 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
         }
       })
     
-      // emit('positionChange', x, y)
       position.x = x
       position.y = y
-      // emit('transformChange', position, rotation, scale)
       transform.positionChanged = true
     }
 
@@ -181,8 +141,6 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
     transform.setScale =  setScale
     transform.scale = scale
     transform.setRotation = setRotation,
-    transform.rotation = rotation,
-    transform.on = on
-    transform.off = off
+    transform.rotation = rotation
   return  transform as TransformInfer
 }
