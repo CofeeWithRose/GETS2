@@ -17,10 +17,29 @@ export  class GE {
 
     private  hasStarted = false;
 
+    isRunning = false
+
+    stage: GameObject
+
+    /**
+     * 根据配置注入 manager.
+     * @param initConfigs 
+     */
+     constructor( initConfigs: InitConfigInterface) {
+
+        this.checkStarted( this.INIT_ERROR );
+
+        this.initManagers(initConfigs.managerInfoArray);
+
+        this.stage = new GameObject(this, true)
+
+    };
+
     /**
      *启动.
      */
     start(){
+        this.isRunning = true
         this.emitor.emit(GEEvents.START);
         this.hasStarted = true;
     };
@@ -30,23 +49,16 @@ export  class GE {
      */
     pause(){
         this.emitor.emit(GEEvents.PAUSE);
+        this.isRunning = false
     };
 
     destroy() {
+        // TODO enable start.
         this.emitor.emit(GEEvents.DESTROY)
+        this.isRunning = false
     }
 
-    /**
-     * 根据配置注入 manager.
-     * @param initConfigs 
-     */
-    constructor( initConfigs: InitConfigInterface) {
-
-        this.checkStarted( this.INIT_ERROR );
-
-        this.initManagers(initConfigs.managerInfoArray);
-
-    };
+    
 
     /**
      * 注入一个 managerInfo.

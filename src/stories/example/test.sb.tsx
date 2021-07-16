@@ -1,5 +1,5 @@
 import { GE, createConfig, Transform, Render2DComp, Animation, AnimConfig, HitTest, HIT_TEST_GROUP, KeyBoard } from 'ge'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { MoveController } from './componnet/MoveComp'
 import { FuncComponent } from './componnet/FunComponent'
@@ -25,6 +25,7 @@ export default {
 
 function createPlayers(game: GE, ind: number){
         const player1 = game.craeteObj()
+        
         player1.addComponent(
           Transform, 
           { x: 100+ 100 * ind, y: 100 }, 
@@ -52,8 +53,10 @@ function createPlayers(game: GE, ind: number){
         //   groupName: HIT_TEST_GROUP.A, 
         //   size: { x: 15, y: 10 }
         // })
+        game.stage.addChildren(player1)
 
         const player2 = game.craeteObj()
+        game.stage.addChildren(player2)
         player2.addComponent(
           Transform, 
           { x: 200 + 100 * ind * 2, y: 100 }, 
@@ -74,16 +77,31 @@ export function Run() {
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
+    const gameRef = useRef<GE>(null)
+
+    const [isrunning, setIsRunning] = useState(true)
+
     useEffect(() => {
         
         const canvas = canvasRef.current
-        const game = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
+        const game = gameRef.current = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
         game.start()
-        for (let index = 0; index < 3000; index++) {
+        for (let index = 0; index < 1; index++) {
           createPlayers(game, index)
         }
-        return game.destroy()
+        return () => game.destroy()
     }, [])
+
+    let pauseOrStart = () => {
+      if(gameRef.current.isRunning) {
+        gameRef.current.pause()
+        setIsRunning(false)
+      } else {
+        gameRef.current.start()
+        setIsRunning(true)
+      }
+     
+    }
     return <div>
         <canvas 
             style={{backgroundColor: 'gray'}}
@@ -91,5 +109,8 @@ export function Run() {
             width={1600}
             height={200}
         />
+        <p>
+          <button onClick={pauseOrStart} >{isrunning? 'pause': 'start'}</button>
+        </p>
     </div>
 }

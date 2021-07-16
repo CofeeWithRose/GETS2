@@ -45,5 +45,7 @@ export type ResetParams<C extends ComponentType> = C extends AbstractComponentCo
 export type ComponentInstance<ComponentType> =  ComponentType extends AbstractComponentConstructor? InstanceType<ComponentType>: 
 ComponentType extends FunComponent<infer T>? T : never
 
-let a: ComponentInstance<typeof Transform>
+export type ComponentInfo<C extends ComponentType> = {componentClass: C, params:  ResetParams<C>[]}
+
+
 
