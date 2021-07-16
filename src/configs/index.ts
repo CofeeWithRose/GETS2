@@ -37,7 +37,7 @@ export const createConfig = (
         } as ManagerInfo<typeof HitTester>,
         {
           manager: Renderer,
-          config: { canvas, maxSize: 30000 },
+          config: { canvas, maxSize: 25000 },
         } as ManagerInfo<typeof Renderer>,
         {
           manager: Fps,

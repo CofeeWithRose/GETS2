@@ -53,6 +53,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponent) => {
         this.addInstanceTask(component);
         this.hasNewComponent = true;
+        this.curRun = this.runAll
     };
 
     protected onRegistTask = (methodName: string, taskFun: Function, funCompId?: number ) => {
@@ -66,6 +67,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                 let taskId: number
                 if(taskInfo.taskType === 'start') {
                     this.hasNewComponent = true
+                    this.curRun = this.runAll
                     const startFun = async () => {
                         const lastFunComponentId = this.curFunComponentId
                         this.curFunComponentId = funCompId
@@ -152,10 +154,12 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private onStart = () => {
         if(!this.isRunning){
-            const tempRun = this.run;
-            this.run = this.emptyRun;
-            this.emptyRun = tempRun;
-            this.run(performance.now() + performance.timeOrigin);
+            if(this.hasNewComponent) {
+                this.curRun = this.runAll
+            } else {
+                this.curRun = this.runLoop
+            }
+            this.curRun();
             this.isRunning = true;
         }
        
@@ -163,33 +167,45 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private onPause = () => {
         if(this.isRunning){
-            const tempRun = this.run;
-            this.run = this.emptyRun;
+            const tempRun = this.curRun;
+            this.curRun = this.emptyRun;
             this.emptyRun = tempRun;
             this.isRunning = false;
         }
     };
-    private run = async (time: number) => {
 
-    }
+    private emptyRun = () => {}
+
+    private curRun = this .emptyRun
 
     protected runStatrtTask = async (time: number) => {
-        if(this.hasNewComponent){
-            await this.start.runAsyncTask(time);
-            this.start.clearAll();
-            this.hasNewComponent = false;
-        }
+        this.hasNewComponent = false
+        this.curRun = this.runLoop
+        await this.start.runAsyncTask(time);
+        this.start.clearAll();
     }
-    private emptyRun = (time: number) => {
+
+    protected runAll = async () => {
         const now = Date.now()
-        return this.runStatrtTask(now).then(() => {
-            this.loop.runTask(now);
-            this.removingComponentList.forEach(c => {
-                this.removeComponent(c)
-            })
-            this.removingComponentList = []
-            window.requestAnimationFrame(this.run);
+        await this.runStatrtTask(now)
+        this.loop.runTask(now);
+        this.reomoveComp()
+        window.requestAnimationFrame(this.curRun);
+    }
+
+    protected reomoveComp = () => {
+        this.removingComponentList.forEach(c => {
+            this.removeComponent(c)
         })
+        this.removingComponentList = []
+    }
+
+
+    protected runLoop = () => {
+        const now = Date.now()
+        this.loop.runTask(now);
+        this.reomoveComp()
+        window.requestAnimationFrame(this.curRun);
     }
 
 
