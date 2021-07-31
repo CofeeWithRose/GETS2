@@ -1,10 +1,11 @@
 {
-  "name": "ge2",
-  "version": "0.0.1",
+  "name": "ecs-ge",
+  "version": "0.0.2",
   "main": "index.js",
   "files": [
     "lib"
   ],
+  "sideEffects": false,
   "dependencies": {
     "i-render": "^0.0.39"
   },

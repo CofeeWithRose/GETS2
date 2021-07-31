@@ -1,7 +1,6 @@
-import { ComponentInstance, FunComponent } from "../../../core/interface/AbstractComponentInterface";
-import {AbstractComponent} from "../../../core/implement/AbstractComponent";
+import { FunComponent } from "../../../core/interface/AbstractComponentInterface";
 import { Renderer } from "../../../managers/Renderer/implement/Renderer";
-import { Transform, TransformEvent, TransformInfer, Vec2 } from "../../Transform";
+import { Transform,  TransformInfer, Vec2 } from "../../Transform";
 import { Iimage } from "i-render";
 
 export interface Render2DCompInfer {
