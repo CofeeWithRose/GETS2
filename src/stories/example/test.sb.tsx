@@ -49,10 +49,10 @@ function createPlayers(game: GE, ind: number){
         player1.addComponent(Animation, anims)
         player1.addComponent(FuncComponent, KeyBoard.a, KeyBoard.d, 200)
         // player1.addComponent(MoveController, KeyBoard.a, KeyBoard.d, 200)
-        // player1.addComponent(HitTest, {
-        //   groupName: HIT_TEST_GROUP.A, 
-        //   size: { x: 15, y: 10 }
-        // })
+        player1.addComponent(HitTest, {
+          groupName: HIT_TEST_GROUP.A, 
+          size: { x: 15, y: 10 }
+        })
         game.stage.addChildren(player1)
 
         const player2 = game.craeteObj()
@@ -66,10 +66,10 @@ function createPlayers(game: GE, ind: number){
         player2.addComponent(Animation, anims)
         player2.addComponent(FuncComponent, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
         // player2.addComponent(MoveController, KeyBoard.LEFT, KeyBoard.RIGHT, 200)
-        // player2.addComponent(HitTest, {
-        //   groupName: HIT_TEST_GROUP.A, 
-        //   size: { x: 15, y: 10 }
-        // })
+        player2.addComponent(HitTest, {
+          groupName: HIT_TEST_GROUP.B, 
+          size: { x: 15, y: 10 }
+        })
 }
 
 
@@ -84,9 +84,9 @@ export function Run() {
     useEffect(() => {
         
         const canvas = canvasRef.current
-        const game = gameRef.current = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.A }]))
+        const game = gameRef.current = new GE(createConfig(canvas,[{ groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.B }]))
         game.start()
-        for (let index = 0; index < 3000; index++) {
+        for (let index = 0; index < 100; index++) {
           createPlayers(game, index)
         }
         return () => game.destroy()

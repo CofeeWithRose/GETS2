@@ -116,11 +116,11 @@ export class HitTester extends AbstractMnager {
   }
 
   afterUpdated = () => {
-    // this.#config.forEach( ({groupB, groupA}) => {
-    //   const gA = this.#hitInfoMap.get(groupA)
-    //   const gB = this.#hitInfoMap.get(groupB)
-    //   if(gA && gB) this.chekHitTest( this.#timer.DealTime ,gA, gB)
-    // })
+    this.#config.forEach( ({groupB, groupA}) => {
+      const gA = this.#hitInfoMap.get(groupA)
+      const gB = this.#hitInfoMap.get(groupB)
+      if(gA && gB) this.chekHitTest( this.#timer.DealTime ,gA, gB)
+    })
   }
 
   protected chekHitTest(deltaTime: number, groupA: ObjectPhysicalInfo[], groupB: ObjectPhysicalInfo[]): HitResult[]{

@@ -28,9 +28,14 @@ export interface ShapInfo {
 
 }
 
+export interface HitTestInfer {
+  size: Vec2
+  on: <E extends keyof HitTestEvent>(name: E, listener: HitTestEvent[E]) => void
+  off: <E extends keyof HitTestEvent>(name: E, listener: HitTestEvent[E]) => void
+}
 
-// FIXME  transform removed event. 
-export const HitTest: FunComponent = function HitHest(ge, obj, shapInfo: ShapInfo) {
+
+export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, shapInfo: ShapInfo) {
   const _shapInfo = {...shapInfo}
   let _hitTester: HitTester
 
@@ -66,14 +71,14 @@ export const HitTest: FunComponent = function HitHest(ge, obj, shapInfo: ShapInf
     const rotation = _transform.getRotation()
     _lastPosition = {..._transform.getPosition()}
     const info =  _getHitTestInfo(position, rotation, scale )
-
+    _hitTester.addTestInfo(_shapInfo.groupName, obj.id, info)
     const _handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
       const info =  _getHitTestInfo(position, rotation, scale )
       _hitTester.updateTestInfo(_shapInfo.groupName, obj.id, info)
     }
 
     obj.regist('update', () => {
-
+      _handleTransformChange(position, rotation, scale)
     })
 
   })
@@ -138,6 +143,6 @@ export const HitTest: FunComponent = function HitHest(ge, obj, shapInfo: ShapInf
   }
 
   return {
-    on, off
+    on, off, size: _shapInfo.size
   }
 }

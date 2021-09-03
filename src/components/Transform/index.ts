@@ -114,10 +114,10 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
       _children.forEach(c => {
         const _transform = c.getComponent(TransFormFun)
         if (_transform) {
-          const postion = _transform.getPosition()
+          const cpostion = _transform.getPosition()
           _transform.setPosition(
-            postion.x + x - _transform.position.x,
-            postion.y + y - _transform.position.y,
+            cpostion.x + x - position.x,
+            cpostion.y + y - position.y,
           )
         }
       })
