@@ -150,6 +150,9 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         instance._id = this.curFunCompInfo.id
         this.curFunCompInfo = lastFunCompInfo
         componentList.push(instance)
+        if(this.isActive){
+            this.game.sendMessage(GEEvents.ADD_FUNC_COMPONENT, this, instance, componentClass);
+        }
         return instance
     }
 

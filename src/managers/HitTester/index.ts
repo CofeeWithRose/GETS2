@@ -132,29 +132,24 @@ export class HitTester extends AbstractMnager {
       groupB.forEach( infoB => {
         if(infoA.gameObjectId === infoB.gameObjectId) return
         const { position: posA, offset: offA, size: sA } = infoA
-        
         const pA = {
           x: posA.x + offA.x,
           y: posA.y + offA.y,
         }
-        const halfSizeAX = sA.x * 0.5
-        const halfSizeAY = sA.y * 0.5
-        const leftA = pA.x - halfSizeAX
-        const rightA = pA.x + halfSizeAX
-        const topA = pA.y - halfSizeAY
-        const bottomA = pA.y + halfSizeAY
+        const leftA = pA.x
+        const rightA = pA.x + sA.x
+        const topA = pA.y
+        const bottomA = pA.y + sA.y
         
         const { position: posB, offset: offB, size: sB } = infoB
-        const halfSizeBX = sB.x * 0.5
-        const halfSizeBY = sB.y * 0.5
         const pB = {
           x: posB.x + offB.x,
           y: posB.y + offB.y,
         }
-        const leftB = pB.x - halfSizeBX
-        const rightB = pB.x + halfSizeBX
-        const topB = pB.y - halfSizeBY
-        const bottomB = pB.y + halfSizeBY
+        const leftB = pB.x
+        const rightB = pB.x + sB.x
+        const topB = pB.y
+        const bottomB = pB.y + sB.y
 
         if(this.isHit(
           leftA, rightA, topA, bottomA,
@@ -214,9 +209,9 @@ export class HitTester extends AbstractMnager {
     lA: number, rA: number, tA: number, bA: number,
     lB: number, rB: number, tB: number, bB: number,
   ){
-    const isXHit = (lA >= lB && lA <= rB) || (rA >= lB && rA <= rB)
-    const isYHIt = (tA >= tB && tA <= bB) || (bA >= tB && bA <= bB)
-    return isXHit && isYHIt
+    const isXNotHit = lB > rA || lA > rB
+    const isYNotHIt = bA < tB || tB < tA
+    return !(isXNotHit || isYNotHIt)
   }
 
   on<E extends keyof HitTesterEvent>(eventName: E, objId: number, cb: HitTesterEvent[E]){

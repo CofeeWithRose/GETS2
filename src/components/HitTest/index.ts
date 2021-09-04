@@ -1,11 +1,9 @@
-import { ComponentInstance, FunComponent } from "src/core/interface/AbstractComponentInterface";
-import { AbstractComponent } from "../../core/implement/AbstractComponent";
+import { FunComponent } from "src/core/interface/AbstractComponentInterface";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import GameObjectManager from "../../managers/gameobject/implement/GameObjectManager";
 import { HitTester, PhysicalInfo, MoveInfo } from "../../managers/HitTester";
 import { HIT_TEST_GROUP } from "../../managers/HitTester/infer";
 import EventEmitor from "../../util/event/EventEmitor";
-import { Render2DComp } from "../render2D/implement/Render2DComp";
 import { Transform, TransformInfer, Vec2 } from "../Transform";
 
 export interface HitTestEvent {
@@ -30,13 +28,16 @@ export interface ShapInfo {
 
 export interface HitTestInfer {
   size: Vec2
+  offset: Vec2
   on: <E extends keyof HitTestEvent>(name: E, listener: HitTestEvent[E]) => void
   off: <E extends keyof HitTestEvent>(name: E, listener: HitTestEvent[E]) => void
 }
 
 
-export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, shapInfo: ShapInfo) {
-  const _shapInfo = {...shapInfo}
+export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, {groupName, offset, size}: ShapInfo) {
+  // const _shapInfo = {...shapInfo}
+  offset = offset?? {x: 0, y: 0}
+  size = size?? { x: 10, y:10 }
   let _hitTester: HitTester
 
   let _objManager :GameObjectManager
@@ -50,14 +51,7 @@ export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, sha
 
   let _lastPosition: Vec2
 
-  function _completeShapInfo(){
-    const { offset, size } = _shapInfo
-    if(!offset) _shapInfo.offset = { x: 0, y: 0 }
-    if(!size) _shapInfo.size = obj.getComponent(Render2DComp)?.getsize()||{ x: 11, y: 11}
-  }
-
   obj.regist('start', () => {
-    _completeShapInfo()
     _objManager = ge.getManager(GameObjectManager)
     _hitTester = ge.getManager(HitTester)
     _hitTester.on('hitBegin', obj.id, _handleHitBegin )
@@ -71,10 +65,10 @@ export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, sha
     const rotation = _transform.getRotation()
     _lastPosition = {..._transform.getPosition()}
     const info =  _getHitTestInfo(position, rotation, scale )
-    _hitTester.addTestInfo(_shapInfo.groupName, obj.id, info)
+    _hitTester.addTestInfo(groupName, obj.id, info)
     const _handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
       const info =  _getHitTestInfo(position, rotation, scale )
-      _hitTester.updateTestInfo(_shapInfo.groupName, obj.id, info)
+      _hitTester.updateTestInfo(groupName, obj.id, info)
     }
 
     obj.regist('update', () => {
@@ -94,7 +88,6 @@ export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, sha
 
 
   function _getHitTestInfo(position: Vec2, rotation: number, scale: Vec2 ): PhysicalInfo {
-    const { size, offset } = _shapInfo
     const info: PhysicalInfo =  {
       position: position,
       offset,
@@ -143,6 +136,6 @@ export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, sha
   }
 
   return {
-    on, off, size: _shapInfo.size
+    on, off, size, offset
   }
 }

@@ -1,6 +1,6 @@
 import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
-import {AbstractComponentInterface, ComponentInstance, ComponentType} from "../../core/interface/AbstractComponentInterface";
+import {AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent} from "../../core/interface/AbstractComponentInterface";
 import { AbstractManagerInterface } from "../../core/interface/AbstractManagerInterface";
 import GameObjectInterface from "../../managers/gameobject/interface/data/GameObjectInterface";
 
@@ -41,5 +41,6 @@ export interface GEEventsMap {
     [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
 
     [GEEvents.REMOVE_FUNC_COMPONENT]: (funCompId: number) => void
+    [GEEvents.ADD_FUNC_COMPONENT]: (gameObject:AbstractComponentLoader, component: ComponentInstance<ComponentType>, componentClass: FunComponent) => void
 
 }
