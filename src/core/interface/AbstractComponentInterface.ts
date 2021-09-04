@@ -34,18 +34,18 @@ export interface AbstractComponentConstructor {
     new (game: GE): AbstractComponentInterface
 }
 
-export type FunComponent<T extends {} = {}> = (  ge: GE, obj: AbstractComponentLoader,  ...params: any[] ) => T
+export type FunComponent<T extends {} = {}, Props extends {}=any> = (  ge: GE, obj: AbstractComponentLoader,  props: Props) => T
 
-export type ComponentType = AbstractComponentConstructor| FunComponent<any>
+export type ComponentType = AbstractComponentConstructor| FunComponent<any, any>
 
-export type FuncCompParams<FunC>  = FunC extends  (  ge: GE, obj: AbstractComponentLoader,  ...params: infer P) => any? P : never
+export type FuncCompProps<FunC>  = FunC extends  FunComponent<any, infer P>? P : never
 
-export type ResetParams<C extends ComponentType> = C extends AbstractComponentConstructor? Parameters<InstanceType<C>['init']> : FuncCompParams<C>
+export type CompProps<C extends ComponentType> = C extends AbstractComponentConstructor? Parameters<InstanceType<C>['init']> : FuncCompProps<C>
 
 export type ComponentInstance<ComponentType> =  ComponentType extends AbstractComponentConstructor? InstanceType<ComponentType>: 
-ComponentType extends FunComponent<infer T>? T : never
+ComponentType extends FunComponent<infer T, any>? T : never
 
-export type ComponentInfo<C extends ComponentType> = {componentClass: C, params:  ResetParams<C>[]}
+export type ComponentInfo<C extends ComponentType> = {componentClass: C, props: CompProps<C>}
 
 
 

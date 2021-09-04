@@ -1,13 +1,12 @@
 import AbstractGEObject from "./AbstractGEObject";
 import {
-    AbstractComponentConstructor, AbstractComponentInterface, ResetParams, FunComponent, ComponentType, ComponentInstance, ComponentInfo
+    AbstractComponentConstructor, AbstractComponentInterface, CompProps, FunComponent, ComponentType, ComponentInstance, ComponentInfo
 } from "../interface/AbstractComponentInterface";
 import { GEEvents } from "../../util/enums/GEEvent";
 import { GE } from "./GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import { AbstractComponent } from "./AbstractComponent";
-import { Component, FunctionComponent } from "react";
 
 
 let componentLoaderBaseId = 1
@@ -105,31 +104,31 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * @param component 
      */
     addComponent<C extends ComponentType> (
-        componentClass: C, ...params:  ResetParams<C>
+        componentClass: C, props: CompProps<C>
     ): void {
         if (this.hasLoaded) {
-            this.loadComponent(componentClass, ...params)
+            this.loadComponent(componentClass, props)
         } else {
-            this.offlineComponents.push({ componentClass, params })
+            this.offlineComponents.push({ componentClass, props })
         }
        
     }
 
     protected loadOffineComponents() {
-        this.offlineComponents.forEach( ({ componentClass, params }) => {
-            this.loadComponent(componentClass, ...params)
+        this.offlineComponents.forEach( ({ componentClass, props }) => {
+            this.loadComponent(componentClass, props)
         })
         this.offlineComponents = []
         this.children.forEach( child => child.loadOffineComponents() )
     }
 
     protected loadComponent<C extends ComponentType> (
-        componentClass: C, ...params:  ResetParams<C>
+        componentClass: C, params:CompProps<C>
     ): ComponentInstance<C> {
         if(this.isClassComponentClass(componentClass)) {
             return this.loadClassComponent(componentClass as any, ...params )
         }else {
-           return this.loadFunComponent(componentClass as FunComponent<any>, ...params)
+           return this.loadFunComponent(componentClass as FunComponent<any>, params)
         }
        
     }
@@ -138,7 +137,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         return Object.getPrototypeOf(componentClass) === AbstractComponent
     }
 
-    protected loadFunComponent<C>(componentClass: FunComponent<C>, ...params:any): ReturnType<FunComponent<C>> {
+    protected loadFunComponent<C>(componentClass: FunComponent<C>, params:any): ReturnType<FunComponent<C>> {
         const lastFunCompInfo = this.curFunCompInfo
         this.curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
         let componentList = this.funComponentMap.get(componentClass)
@@ -146,7 +145,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
             componentList = []
             this.funComponentMap.set(componentClass, componentList)
         }
-        const instance: any =  componentClass( this.game, this, ...params )
+        const instance: any =  componentClass( this.game, this, params )
         instance._id = this.curFunCompInfo.id
         this.curFunCompInfo = lastFunCompInfo
         componentList.push(instance)
@@ -157,7 +156,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     }
 
     protected loadClassComponent<C extends AbstractComponentConstructor> (
-        componentClass: C, ...params:  ResetParams<C>
+        componentClass: C, ...params:  CompProps<C>
     ): InstanceType<C> {
         const component = new componentClass(this.game)
         component.init(...params)

@@ -1,3 +1,4 @@
+import { GameObject } from "src/managers/gameobject/implement/data/GameObject";
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
 
 export interface Vec2 {
@@ -5,6 +6,11 @@ export interface Vec2 {
   y: number
 }
 
+export interface TransformProps {
+  position: Vec2,
+  scale :Vec2,
+  rotation : number
+}
 
 export interface TransformInfer {
 
@@ -16,11 +22,11 @@ export interface TransformInfer {
 
   setScale(newScale: Vec2): void
 
-  getPosition(): Readonly<Vec2>
+  getPosition(): Vec2
 
   setPosition(x: number, y: number): void
 
-  positionChanged: boolean,
+  positionChanged: number,
   
   rotationChanged: boolean,
   
@@ -31,18 +37,24 @@ export interface TransformInfer {
   rotation: number
 
 }
-
-export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
-  _, obj,  
-  positionParam: Vec2 = { x: 0, y: 0 },
-  scale = { x: 1.0, y: 1.0 },
-  rotation = 0.0
-) {
+const a = {
+  positionParam: { x: 0, y: 0 },
+  scale: { x: 1, y: 1.0 },
+  rotation: 0.0
+}
+export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> =  function TransFormFun(
+  _, obj, props) {
+    props = {
+      position: { x: 0, y: 0 },
+      scale: { x: 1, y: 1.0 },
+      rotation: 0.0,
+      ...props,
+    }
+    const { position: positionParam, scale, rotation } = props
     const _children = obj.Children
     const position: Vec2 = {x: positionParam.x, y: positionParam.y}
-    scale = {...scale}
     const transform: Partial<TransformInfer> = {
-      positionChanged: false,
+      positionChanged: 1,
       rotationChanged:false,
       scaleChanged:false
     }
@@ -110,28 +122,23 @@ export const Transform: FunComponent<TransformInfer> =  function TransFormFun(
       return position
     }
     function setPosition(x: number, y: number) {
-      
-      _children.forEach(c => {
+      const dtx = x - position.x
+      const dty = y - position.y
+      const children: GameObject[] = [..._children]
+      for(let i=0; i< children.length; i++) {
+        const c = children[i]
         const _transform = c.getComponent(TransFormFun)
-        if (_transform) {
-          const cpostion = _transform.getPosition()
-          _transform.setPosition(
-            cpostion.x + x - position.x,
-            cpostion.y + y - position.y,
-          )
-        }
-      })
-    
+        const cpostion = _transform.getPosition()
+        cpostion.x += dtx
+        cpostion.y += dty
+        _transform.positionChanged++
+        children.push(...c.Children)
+      }
       position.x = x
       position.y = y
-      transform.positionChanged = true
+      transform.positionChanged++
     }
 
-    obj.regist('beforeUpdate', function beforeUpdate() {
-      transform.positionChanged = false
-      transform.rotationChanged = false
-      transform.scaleChanged = false
-    })
 
     transform.getPosition = getPosition,
     transform.setPosition = setPosition

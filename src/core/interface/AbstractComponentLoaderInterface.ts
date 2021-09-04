@@ -1,5 +1,5 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
-import {AbstractComponentConstructor, AbstractComponentInterface, ComponentInstance, ComponentType, ResetParams} from "./AbstractComponentInterface";
+import {AbstractComponentConstructor, AbstractComponentInterface, ComponentInstance, ComponentType, CompProps} from "./AbstractComponentInterface";
 import { GE } from "../implement/GE";
 import AbstractComponentLoader from "../implement/AbstractComponentLoader";
 
@@ -34,7 +34,7 @@ export interface AbstractComponentLoaderInterface extends AbstractGEObjectInterf
      * @param component 
      */
     addComponent<C extends AbstractComponentConstructor> (
-        componentClass: C, ...params:  ResetParams<C>
+        componentClass: C, ...params:  CompProps<C>
     ): InstanceType<C>
 
     /**

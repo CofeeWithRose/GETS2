@@ -34,7 +34,7 @@ export interface HitTestInfer {
 }
 
 
-export const HitTest: FunComponent<HitTestInfer> = function HitHest(ge, obj, {groupName, offset, size}: ShapInfo) {
+export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge, obj, {groupName, offset, size}) {
   // const _shapInfo = {...shapInfo}
   offset = offset?? {x: 0, y: 0}
   size = size?? { x: 10, y:10 }

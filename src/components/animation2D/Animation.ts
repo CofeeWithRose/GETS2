@@ -1,9 +1,7 @@
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
-import { AbstractComponent } from "../../core/implement/AbstractComponent";
 import { Renderer } from "../../managers/Renderer/implement/Renderer";
 import {TimerManager} from "../../managers/timer/implement/TimerManager";
 import { Render2DComp } from "../render2D/implement/Render2DComp";
-import { Vec2 } from "../Transform";
 
 
 export interface AnimationInfo {
