@@ -8,6 +8,7 @@ import { Renderer } from "../managers/Renderer/implement/Renderer";
 import { HitTester, HitGroup } from "../managers/HitTester";
 import { HIT_TEST_GROUP } from "../managers/HitTester/infer";
 import { Fps } from "../managers/Fps";
+import { Transformer } from "../managers/Transformer";
 
 export const createConfig = (
   canvas: HTMLCanvasElement, 
@@ -19,6 +20,7 @@ export const createConfig = (
             manager: TaskManager,
             config: taskConig,
         },
+     
         {
             manager: TimerManager,
             config: {},
@@ -35,6 +37,10 @@ export const createConfig = (
           manager: HitTester,
           config: hitGroup,
         } as ManagerInfo<typeof HitTester>,
+        {
+          manager: Transformer,
+          config: {},
+        },
         {
           manager: Renderer,
           config: { canvas, maxSize: 25000 },

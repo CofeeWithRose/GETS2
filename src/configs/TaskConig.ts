@@ -42,7 +42,7 @@ import TaskMnagerConfigInterface from "../managers/task/interface/config/TaskMna
     ],
     end: [
         {
-            methodName: 'destory',
+            methodName: 'destroy',
             scope: [ AbstractComponent ],
         },
         {

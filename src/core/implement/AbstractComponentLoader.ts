@@ -7,6 +7,7 @@ import { GE } from "./GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import { AbstractComponent } from "./AbstractComponent";
+import { TransformInfer } from "src/components/Transform";
 
 
 let componentLoaderBaseId = 1
@@ -16,6 +17,8 @@ let funCompBaseId = 1
 export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected game: GE
+
+    transform: TransformInfer
 
     protected hasLoaded = false
 

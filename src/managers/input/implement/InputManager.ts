@@ -4,7 +4,6 @@ import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig
 import { KeyBoard, InputType } from "../interface/data/enum";
 import InputEvent from "../interface/data/InputEvent";
 import { GE } from "../../../core/implement/GE";
-import { Vec2 } from "src/components/Transform";
 
 export class InputManager extends AbstractMnager implements InputManagerInterface {
 

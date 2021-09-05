@@ -36,6 +36,10 @@ export interface TransformInfer {
   scale:Vec2
   rotation: number
 
+  // offsetX: number
+
+  // offsetY: number
+
 }
 const a = {
   positionParam: { x: 0, y: 0 },
@@ -56,7 +60,9 @@ export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> = 
     const transform: Partial<TransformInfer> = {
       positionChanged: 1,
       rotationChanged:false,
-      scaleChanged:false
+      scaleChanged:false,
+      // offsetX: 0,
+      // offsetY: 0,
     }
 
     function getRotation(){
@@ -127,7 +133,7 @@ export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> = 
       const children: GameObject[] = [..._children]
       for(let i=0; i< children.length; i++) {
         const c = children[i]
-        const _transform = c.getComponent(TransFormFun)
+        const _transform = c.transform?? c.getComponent(TransFormFun)
         const cpostion = _transform.getPosition()
         cpostion.x += dtx
         cpostion.y += dty
@@ -136,8 +142,14 @@ export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> = 
       }
       position.x = x
       position.y = y
+      // transform.offsetX += dtx
+      // transform.offsetY += dty
       transform.positionChanged++
     }
+
+    obj.regist('start', () => {
+      obj.transform = transform as TransformInfer
+    })
 
 
     transform.getPosition = getPosition,
