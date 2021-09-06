@@ -2,13 +2,19 @@ import {
   AbstractComponentLoader, GE, KeyBoard, InputManager,
     Animation,  TimerManager, HitTest, Transform, GameObject, MoveInfo
 } from 'ge'
-
+export interface MoveProps {
+  left: KeyBoard,
+  right: KeyBoard,
+  speed: number
+}
 export  function FuncComponent( 
     ge: GE,
     obj: AbstractComponentLoader,  
-    left: KeyBoard=KeyBoard.a,
-    right: KeyBoard=KeyBoard.d, 
+   {
+    left=KeyBoard.a,
+    right=KeyBoard.d, 
     speed = 150 
+   }
 ) {
 
     // const component = {}
@@ -32,7 +38,7 @@ export  function FuncComponent(
           }
         }
 
-        // hitTest.on('hitting', handleHitting)
+        hitTest.on('hitting', handleHitting)
         
         
         obj.regist('update', () => {
@@ -56,6 +62,8 @@ export  function FuncComponent(
               position.x + (v.x * deltaTime), 
               position.y + (v.y * deltaTime),
             )
+            // console.log('v.x * deltaTime', v.x * deltaTime);
+            
 
             // if(hitInfo){
             //   const {direction: otherDirection, deltaTime, position: otherPosition, size: otherSize } = hitInfo.other

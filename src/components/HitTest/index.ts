@@ -67,8 +67,23 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
     const info =  _getHitTestInfo(position, rotation, scale )
     _hitTester.addTestInfo(groupName, obj.id, info)
     const _handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
-      const info =  _getHitTestInfo(position, rotation, scale )
-      _hitTester.updateTestInfo(groupName, obj.id, info)
+      // const info =  _getHitTestInfo(position, rotation, scale )
+      // _hitTester.updateTestInfo(groupName, obj.id, info)
+      info.rotation = rotation
+      info.deltaPosition.x = position.x -  _lastPosition.x
+      info.deltaPosition.y = position.y - _lastPosition.y,
+      info.size.x = Math.abs(size.x * scale.x)
+      info.size.y = Math.abs(size.y * scale.y)
+      // deltaPosition: {
+      //   x: position.x -  _lastPosition.x, 
+      //   y: position.y - _lastPosition.y
+      // },
+      // size: {
+      //   x: Math.abs(size.x * scale.x),
+      //   y: Math.abs(size.y * scale.y)
+      // },
+
+      
     }
 
     obj.regist('update', () => {
