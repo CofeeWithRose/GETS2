@@ -56,7 +56,7 @@ export const Render2DComp: FunComponent<Render2DCompInfer> = function Render2DCo
     return _sprite.size
   }
   
-  obj.regist('destory',  () => {
+  obj.regist('destroy',  () => {
     _renderer.destroySpirit(_sprite)
   })
 

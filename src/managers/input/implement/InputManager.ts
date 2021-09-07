@@ -10,6 +10,7 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
     constructor(game: GE,config: AbstractManagerConfig){
         super(game, config);
         window.addEventListener('keydown', event => {
+            console.log(event.key);
           this.handleKeyDown(<KeyBoard>event.key);
         });
 

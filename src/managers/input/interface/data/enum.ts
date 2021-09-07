@@ -57,6 +57,7 @@ export  enum KeyBoard {
     RIGHT='ArrowRight',
     UP='ArrowUp',
     DOWN='ArrowDown',
+    Backspace='Backspace',
 }
 
 

@@ -92,7 +92,7 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
 
   })
 
-  obj.regist('destory', () => {
+  obj.regist('destroy', () => {
 
     _hitTester.off('hitBegin', obj.id, _handleHitBegin )
     _hitTester.off('hitEnd', obj.id, _handleHitEnd )

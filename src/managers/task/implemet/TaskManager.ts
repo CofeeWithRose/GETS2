@@ -7,9 +7,7 @@ import MutiValueMap, { MutiValueMapInfer } from "../../../util/map/implement/Mut
 import ConfigParser from "./ConfigParser";
 import { TaskFlow } from "../taskflow/implement/TaskFlow";
 import { TaskType } from "../interface/data/enum";
-import SimpleMap from "../../../util/map/implement/SimpleMap";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
-import {AbstractComponentLoaderInterface} from "../../../core/interface/AbstractComponentLoaderInterface";
 import { GE } from "../../../core/implement/GE";
 import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
@@ -46,7 +44,9 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private isRunning = false;
 
-    private removingComponentList: AbstractComponentInterface[] = []
+    private removingClassComponentList: AbstractComponentInterface[] = []
+
+    private removingFuncCompIdList: number[] = []
 
     private curFunComponentId: number
 
@@ -58,9 +58,6 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     protected onRegistTask = (methodName: string, taskFun: Function, funCompId?: number ) => {
         const tarskInfoArray = this.configParser.getFuncTaskInfoArray()
-
-        
-       
         for(let i =0; i< tarskInfoArray.length; i++) {
             const taskInfo = tarskInfoArray[i]
             if(taskInfo.taskNames === methodName){
@@ -89,7 +86,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     protected onRemoveFunComponent = (funcCompId: number) => {
-        this.removeInstanceTask(this.funCompTaskId.get(funcCompId))
+        this.removingFuncCompIdList.push(funcCompId)
     }
 
     protected recordFunTask(taskId: number, taskType: TaskType, componentId?: number) {
@@ -141,7 +138,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     private onRemoveComponent = (_: AbstractComponentLoader, component: ComponentInstance<ComponentType>) => {
-      this.removingComponentList.push(component)
+      this.removingClassComponentList.push(component)
     };
 
     private removeComponent = (component: AbstractComponentInterface) => {
@@ -194,10 +191,21 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     protected reomoveComp = () => {
-        this.removingComponentList.forEach(c => {
+        this.removingClassComponentList.forEach(c => {
             this.removeComponent(c)
         })
-        this.removingComponentList = []
+        this.removingFuncCompIdList.forEach( cid => {
+            this.removeFunComponent(cid)
+        })
+        this.removingFuncCompIdList = []
+        this.removingClassComponentList = []
+    }
+
+    protected removeFunComponent(cid: number) {
+        const info = this.funCompTaskId.get(cid)
+        const endArray = info.get(TaskType.END)
+        this.end.runTasks(endArray)
+        this.removeInstanceTask(info)
     }
 
 

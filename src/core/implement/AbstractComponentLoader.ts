@@ -67,7 +67,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     private componentList: AbstractComponentInterface[] = []
 
-    private funComponentMap = new Map<Function, any[]>() 
+    private funComponentMap = new Map<Function, ComponentInstance<any>[]>() 
 
     private activeAllComponent() {
         const allComponents = [ ...this.componentList ]
@@ -149,7 +149,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
             this.funComponentMap.set(componentClass, componentList)
         }
         const instance: any =  componentClass( this.game, this, params )
-        instance._id = this.curFunCompInfo.id
+        instance.Id = this.curFunCompInfo.id
         this.curFunCompInfo = lastFunCompInfo
         componentList.push(instance)
         if(this.isActive){
@@ -180,7 +180,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      */
     getComponent<C extends ComponentType> (
         componentClass: C,
-    ): ComponentInstance<C> {
+    ): ComponentInstance<C>|undefined {
         if(this.isClassComponentClass(componentClass)) {
             return this.getClassComponent(componentClass)
         } else {
@@ -224,16 +224,16 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     /**
      * 获取所有装载的 component.
      */
-    getAllComponents(): AbstractComponentInterface[] {
+    getAllComponents(): (AbstractComponentInterface|{Id: number})[] {
         return [...this.componentList, ...this.getAllFunCompoents()]
     }
 
-    protected getAllFunCompoents(): any[] {
+    protected getAllFunCompoents(): {Id: number}[] {
         const funcComponentList = []
         const valuseIt = this.funComponentMap.values()
         while (true) {
           const next =  valuseIt.next()
-          if(next.value) funcComponentList.push(next.value)
+          if(next.value) funcComponentList.push(...next.value)
           if(next.done) return funcComponentList
         }
     }
@@ -256,7 +256,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         const componentList = this.funComponentMap.get(componentClass)
         if (componentList?.length) {
             const c = componentList.shift()
-            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c._id)
+            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c.Id)
         }
     }
 
@@ -329,8 +329,10 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected removeAllFuncComponents(): void {
         const funCompArray = this.getAllFunCompoents()
+        console.log('funCompArray', funCompArray);
+        
         funCompArray.forEach( c => {
-            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c)
+            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c.Id)
         })
         this.funComponentMap.clear()
     }
