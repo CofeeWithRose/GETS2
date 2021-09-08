@@ -58,7 +58,9 @@ export  enum KeyBoard {
     DOWN='ArrowDown',
     Backspace='Backspace',
     Tab='Tab',
-    Enter='Enter'
+    Enter='Enter',
+    Space=' ',
+    Escape='Escape',
 }
 
 

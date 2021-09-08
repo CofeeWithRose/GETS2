@@ -5,13 +5,21 @@ import { KeyBoard, InputType } from "../interface/data/enum";
 import InputEvent from "../interface/data/InputEvent";
 import { GE } from "../../../core/implement/GE";
 
+export interface InputConfig {
+    // 需要 preventDefault的按键.
+    defaultKeys?: KeyBoard[]
+}
 export class InputManager extends AbstractMnager implements InputManagerInterface {
 
-    constructor(game: GE,config: AbstractManagerConfig){
+    constructor(game: GE,config: InputConfig){
         super(game, config);
         window.addEventListener('keydown', event => {
+            const defaultKeys = config.defaultKeys||[]
             console.log(event.key);
-          this.handleKeyDown(<KeyBoard>event.key);
+            if(defaultKeys.includes(event.key as KeyBoard)) {
+                event.preventDefault()
+            }
+            this.handleKeyDown(<KeyBoard>event.key);
         });
 
         window.addEventListener('keyup', event => {

@@ -9,10 +9,12 @@ import { HitTester, HitGroup } from "../managers/HitTester";
 import { HIT_TEST_GROUP } from "../managers/HitTester/infer";
 import { Fps } from "../managers/Fps";
 import { Transformer } from "../managers/Transformer";
+import { KeyBoard } from "src/managers/input/interface/data/enum";
 
 export const createConfig = (
   canvas: HTMLCanvasElement, 
   hitGroup: HitGroup[]= [ {groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.B} ],
+  {defaultKeys}: {defaultKeys: KeyBoard[]}
 ): InitConfigInterface =>  ({
 
     managerInfoArray:[
@@ -27,7 +29,7 @@ export const createConfig = (
         },
         {
             manager: InputManager,
-            config: {},
+            config: {defaultKeys},
         },
         {
             manager: GameObjectManager,
