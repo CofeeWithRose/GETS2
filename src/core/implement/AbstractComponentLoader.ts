@@ -37,9 +37,9 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     readonly id = componentLoaderBaseId++
 
-    name = `default${this.Id}`
+    readonly name: string
 
-    tag = 'default'
+    readonly tag: string
 
     get IsActive() {
         return this.isActive;
@@ -329,8 +329,6 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected removeAllFuncComponents(): void {
         const funCompArray = this.getAllFunCompoents()
-        console.log('funCompArray', funCompArray);
-        
         funCompArray.forEach( c => {
             this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c.Id)
         })

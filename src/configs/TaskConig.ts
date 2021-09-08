@@ -14,7 +14,7 @@ import TaskMnagerConfigInterface from "../managers/task/interface/config/TaskMna
         },
         {
             methodName: 'start',
-            scope: [ AbstractComponent ],
+            scope: [AbstractMnager, AbstractComponent ],
         },
     ],
     loop: [

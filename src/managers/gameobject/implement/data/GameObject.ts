@@ -2,12 +2,23 @@ import AbstractComponentLoader from "../../../../core/implement/AbstractComponen
 import {GE} from "../../../../core/implement/GE";
 import { GEEvents } from "../../../../util/enums/GEEvent";
 
+export interface GameObjectOptions {
+    tag?: string
+    name?: string
+    hadLoaded: boolean
+}
+const defaultOptions: GameObjectOptions = {
+    hadLoaded: false
+}
 export  class GameObject extends AbstractComponentLoader {
 
-    constructor(game: GE, hadLoaded = false) {
+    constructor(game: GE, options?:GameObjectOptions) {
         super(game);
-        game.sendMessage( GEEvents.ADD_GAMEOBJECT, this);
-        this.hasLoaded = hadLoaded
+        options = {...defaultOptions, ...options}
+        this.hasLoaded = options.hadLoaded
+        this.name = options.name
+        this.tag = options.tag
+        this.game.sendMessage( GEEvents.ADD_GAMEOBJECT, this );
     }
 
     get Parent(): GameObject{

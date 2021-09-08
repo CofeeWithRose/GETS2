@@ -2,7 +2,7 @@ import  { InitConfigInterface,  ManagerInfo} from "../interface/InitConfigInterf
 import {AbstractManagerConstructor, AbstractManagerInterface} from "../interface/AbstractManagerInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
+import { GameObject, GameObjectOptions } from "../../managers/gameobject/implement/data/GameObject";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
 
@@ -31,7 +31,7 @@ export  class GE {
 
         this.initManagers(initConfigs.managerInfoArray);
 
-        this.stage = new GameObject(this, true)
+        this.stage = new GameObject(this, {hadLoaded: true})
         this.stage.addComponent(Transform,{})
     };
 
@@ -136,9 +136,10 @@ export  class GE {
         return new componentLoader(this);
     } 
 
-    craeteObj(transformProps: Partial<TransformProps>): GameObject{
-        const obj = new GameObject(this)
+    craeteObj(transformProps: Partial<TransformProps>, options?: Omit<GameObjectOptions, 'hadLoaded'>): GameObject{
+        const obj = new GameObject(this, {hadLoaded: false, ...options})
         obj.addComponent(Transform, transformProps)
+        this.sendMessage( GEEvents.ADD_GAMEOBJECT, this.stage );
         return obj
     }
 

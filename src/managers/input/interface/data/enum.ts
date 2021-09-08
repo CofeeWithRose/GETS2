@@ -1,5 +1,4 @@
 export  enum KeyBoard {
-
     A='A',
     B='B',
     C='C',
@@ -58,6 +57,8 @@ export  enum KeyBoard {
     UP='ArrowUp',
     DOWN='ArrowDown',
     Backspace='Backspace',
+    Tab='Tab',
+    Enter='Enter'
 }
 
 
