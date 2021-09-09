@@ -210,7 +210,7 @@ export class HitTester extends AbstractMnager {
     lB: number, rB: number, tB: number, bB: number,
   ){
     const isXNotHit = lB > rA || lA > rB
-    const isYNotHIt = bA < tB || tB < tA
+    const isYNotHIt = bA < tB || bB < tA
     return !(isXNotHit || isYNotHIt)
   }
 

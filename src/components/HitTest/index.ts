@@ -73,6 +73,7 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
       info.deltaPosition.x = position.x -  _lastPosition.x
       info.deltaPosition.y = position.y - _lastPosition.y,
       info.size.x = Math.abs(size.x * scale.x)
+      
       info.size.y = Math.abs(size.y * scale.y)
       // deltaPosition: {
       //   x: position.x -  _lastPosition.x, 
