@@ -8,6 +8,7 @@ import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import { AbstractComponent } from "./AbstractComponent";
 import { TransformInfer } from "src/components/Transform";
+import { checkIsClassComponentClass } from "../util";
 
 
 let componentLoaderBaseId = 1
@@ -128,17 +129,17 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     protected loadComponent<C extends ComponentType> (
         componentClass: C, params:CompProps<C>
     ): ComponentInstance<C> {
-        if(this.isClassComponentClass(componentClass)) {
-            return this.loadClassComponent(componentClass as any, ...params )
+        if(checkIsClassComponentClass(componentClass)) {
+            return this.loadClassComponent(componentClass as any, params )
         }else {
            return this.loadFunComponent(componentClass as FunComponent<any>, params)
         }
        
     }
 
-    protected isClassComponentClass(componentClass: ComponentType): boolean {
-        return Object.getPrototypeOf(componentClass) === AbstractComponent
-    }
+    // protected isClassComponentClass(componentClass: ComponentType): boolean {
+    //     return Object.getPrototypeOf(componentClass) === AbstractComponent
+    // }
 
     protected loadFunComponent<C>(componentClass: FunComponent<C>, params:any): ReturnType<FunComponent<C>> {
         const lastFunCompInfo = this.curFunCompInfo
@@ -150,6 +151,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         }
         const instance: any =  componentClass( this.game, this, params )
         instance.Id = this.curFunCompInfo.id
+        instance.type = componentClass
         this.curFunCompInfo = lastFunCompInfo
         componentList.push(instance)
         if(this.isActive){
@@ -162,7 +164,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         componentClass: C, ...params:  CompProps<C>
     ): InstanceType<C> {
         const component = new componentClass(this.game)
-        component.init(...params)
+        component.init(params)
         this.componentList.push( component);
         component.GameObject = <any>this;
         if(this.isActive){
@@ -181,7 +183,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     getComponent<C extends ComponentType> (
         componentClass: C,
     ): ComponentInstance<C>|undefined {
-        if(this.isClassComponentClass(componentClass)) {
+        if(checkIsClassComponentClass(componentClass)) {
             return this.getClassComponent(componentClass)
         } else {
             return this.getFunComponent(componentClass)
@@ -213,7 +215,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     getComponents<C extends ComponentType> (
         componentClass: C
     ): ComponentInstance<C>[] {
-        if(this.isClassComponentClass(componentClass)) {
+        if(checkIsClassComponentClass(componentClass)) {
             return this.componentList.filter( c => c instanceof componentClass ) as ComponentInstance<C>[]
             
         }else {
@@ -243,33 +245,33 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     * @param component 
     */
     removeComponent<C extends ComponentType> (
-        componentClass: C
+        component: ComponentInstance<C>
     ): void {
-       if(this.isClassComponentClass(componentClass)) {
-           return this.removeClassComponent(componentClass)
-       } 
+       if((component as any) instanceof AbstractComponent) {
+           return this.removeClassComponent(component)
+       } else {
+           return this.removeFunComponent(component)
+       }
     }
 
-    protected removeFuncComponent<C extends ComponentType> (
-        componentClass: C
+    protected removeFunComponent<C extends ComponentType> (
+        component: ComponentInstance<C>
     ): void {
-        const componentList = this.funComponentMap.get(componentClass)
+        const componentList = this.funComponentMap.get(component.type)
         if (componentList?.length) {
-            const c = componentList.shift()
-            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c.Id)
+            const index = componentList.indexOf(component)
+            componentList.splice(index, 1)
+            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, component.Id)
         }
     }
 
     protected removeClassComponent<C extends ComponentType> (
-        componentClass: C
+        component: ComponentInstance<C>
     ): void {
-        for(let i =0; i< this.componentList.length; i++ ){
-            const c = this.componentList[i]
-            if( c instanceof componentClass ) {
-                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c);
-                this.componentList.splice(i, 1)
-                return
-            }
+        const index = this.componentList.indexOf(component)
+        if(index > -1) {
+            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, component);
+            this.componentList.splice(index, 1)
         }
     }
 
@@ -280,7 +282,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     removeComponents<C extends ComponentType> (
         componentClass: C
     ): void {
-        if(this.isClassComponentClass(componentClass)) {
+        if(checkIsClassComponentClass(componentClass)) {
             return this.removeClassComponents(componentClass as AbstractComponentConstructor)
         } else {
             return this.removeFunComponents(componentClass as FunComponent<any>)
@@ -292,7 +294,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         const componentArray = this.funComponentMap.get(componentClass)
         if(componentArray) {
             componentArray.forEach( c => {
-                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c)
+                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c.Id)
             })
             componentArray.splice(0)
         }

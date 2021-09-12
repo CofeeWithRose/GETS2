@@ -63,7 +63,7 @@ export interface AbstractComponentLoaderInterface extends AbstractGEObjectInterf
      * @param componentClass 
      */
     removeComponent<C extends AbstractComponentConstructor> (
-        componentClass: C, component: InstanceType<C>
+        component: ComponentInstance<C>
     ): void;
 
     /**

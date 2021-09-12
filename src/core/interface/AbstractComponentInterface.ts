@@ -11,21 +11,21 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
     getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C ): InstanceType<C>
 
-    destory(): void
+    destory?(): void
 
-    init(...params: any[]): void
+    init?(...params: any[]): void
 
-    awake(): void
+    awake?(): void
 
-    start(): void
+    start?(): void
 
-    update(): void
+    update?(): void
 
-    willUpdate(): void
+    willUpdate?(): void
 
-    update(): void
+    update?(): void
 
-    updated(): void
+    updated?(): void
 
 };
 
@@ -40,10 +40,10 @@ export type ComponentType = AbstractComponentConstructor| FunComponent<any, any>
 
 export type FuncCompProps<FunC>  = FunC extends  FunComponent<any, infer P>? P : never
 
-export type CompProps<C extends ComponentType> = C extends AbstractComponentConstructor? Parameters<InstanceType<C>['init']> : FuncCompProps<C>
+export type CompProps<C extends ComponentType> = C extends AbstractComponentConstructor? (InstanceType<C>['init'] extends ((p:infer P ) => any) ? P : never) : FuncCompProps<C>
 
 export type ComponentInstance<ComponentType> =  ComponentType extends AbstractComponentConstructor? InstanceType<ComponentType>: 
-ComponentType extends FunComponent<infer T, any>? T : never
+ComponentType extends FunComponent<infer T, any>? {Id: number, funcType: Function}&T : never
 
 export type ComponentInfo<C extends ComponentType> = {componentClass: C, props: CompProps<C>}
 
