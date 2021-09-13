@@ -61,6 +61,8 @@ export  enum KeyBoard {
     Enter='Enter',
     Space=' ',
     Escape='Escape',
+    Control='Control',
+    Meta='Meta',
 }
 
 

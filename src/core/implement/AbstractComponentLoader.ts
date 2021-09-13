@@ -71,6 +71,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     private funComponentMap = new Map<Function, ComponentInstance<any>[]>() 
 
     private activeAllComponent() {
+        // TODO func component
         const allComponents = [ ...this.componentList ]
         for( let i = 0; i< allComponents.length; i++){
             this.game.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, allComponents[i]);
@@ -78,7 +79,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     };
 
     private disActiveAllComponent(){
-
+        // TODO func component
         const allComponents: Array<AbstractComponentInterface> = [...this.componentList]
         for( let i = 0; i< allComponents.length; i++){
             this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponents[i]);
@@ -161,7 +162,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     }
 
     protected loadClassComponent<C extends AbstractComponentConstructor> (
-        componentClass: C, ...params:  CompProps<C>
+        componentClass: C, params:  CompProps<C>
     ): InstanceType<C> {
         const component = new componentClass(this.game)
         component.init(params)
@@ -199,8 +200,6 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     protected getClassComponent<C extends ComponentType> (
         componentClass: C,
     ): ComponentInstance<C> {
-        
-        // support func component.
         for(let i =0; i< this.componentList.length; i++){
             if(this.componentList[i] instanceof componentClass){
                 return this.componentList[i] as ComponentInstance<C>
