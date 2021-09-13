@@ -227,7 +227,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
 
     protected runLoop = () => {
-        this.flushAddedtask()
+        // this.flushAddedtask()
         const now = Date.now()
         this.loop.runTask(now);
         this.reomoveComp()
