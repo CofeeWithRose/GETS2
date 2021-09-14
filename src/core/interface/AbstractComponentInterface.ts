@@ -13,7 +13,7 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
     destory?(): void
 
-    init?(...params: any[]): void
+    init(...params: any[]): void
 
     awake?(): void
 
