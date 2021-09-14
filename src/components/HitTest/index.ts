@@ -94,7 +94,7 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
   })
 
   obj.regist('destroy', () => {
-
+    _hitTester.removeTestInfo(groupName, obj.id)
     _hitTester.off('hitBegin', obj.id, _handleHitBegin )
     _hitTester.off('hitEnd', obj.id, _handleHitEnd )
     _hitTester.off('hitting', obj.id, _handleHitting )

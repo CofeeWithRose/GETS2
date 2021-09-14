@@ -109,6 +109,12 @@ export class HitTester extends AbstractMnager {
     this.#hitInfoMap.add(groupName, { gameObjectId, ... hitTestInfo } )
   }
 
+  removeTestInfo(groupName: HIT_TEST_GROUP, gameObjectId: number) {
+    const array = this.#hitInfoMap.get(groupName)
+    const index =  array.findIndex(({gameObjectId: objectId}) => gameObjectId == objectId )
+    if(index > -1) array.splice(index, 1)
+  }
+
   updateTestInfo( groupName: HIT_TEST_GROUP, objectId: number, hitTestInfo: PhysicalInfo){
     const array = this.#hitInfoMap.get(groupName)
     const index =  array.findIndex(({gameObjectId}) => gameObjectId == objectId )
