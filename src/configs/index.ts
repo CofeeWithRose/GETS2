@@ -44,10 +44,6 @@ export const createConfig = (
           config: {},
         },
         {
-          manager: Renderer,
-          config: { canvas, maxSize: 25000 },
-        } as ManagerInfo<typeof Renderer>,
-        {
           manager: Fps,
           config: {}
         }
