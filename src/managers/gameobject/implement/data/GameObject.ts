@@ -26,7 +26,7 @@ export  class GameObject extends AbstractComponentLoader {
     }
 
     addChildren(obj: GameObject): void {
-        if(obj.hasLoaded) throw new Error('repeat load')
+        if(obj.parent) throw new Error('repeat load')
         obj.hasLoaded = true
         this.children.push(obj)
         obj.parent = this
@@ -49,11 +49,11 @@ export  class GameObject extends AbstractComponentLoader {
     }
 
     destory = () => {
-        this.children.forEach( c => c.destory() )
-        this.removeAllComponents()
         const parentChildren = this.parent.Children
         const index = parentChildren.indexOf(this)
         if(index >-1) parentChildren.splice(index, 1)
+        this.children.forEach( c => c.destory() )
+        this.removeAllComponents()
         this.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
     };
 

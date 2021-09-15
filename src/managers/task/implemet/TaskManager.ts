@@ -12,6 +12,7 @@ import { GE } from "../../../core/implement/GE";
 import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
+
 export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
 
     constructor(game: GE, config: TaskMnagerConfigInterface) {
@@ -74,7 +75,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                         this.curFunComponentId = lastFunComponentId
                     }
                     this.addedTask.push({ 
-                        cId: funCompId,
+                        cId: funCompId||this.curFunComponentId,
                         func: () => {
                             taskId = this[taskInfo.taskType].addTask(startFun, { 
                                 priority: taskInfo.taskPriority, 
@@ -87,7 +88,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
                 } else {
                     this.addedTask.push({
-                        cId: funCompId,
+                        cId: funCompId||this.curFunComponentId,
                         func: () => {
                             taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
                             this.recordFunTask(taskId, taskInfo.taskType, funCompId)
@@ -216,12 +217,12 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     protected reomoveComp = () => {
         this.removingClassComponentList.forEach(c => {
-            this.removeComponent(c)
             this.removeAddedTask(c.Id)
+            this.removeComponent(c)
         })
         this.removingFuncCompIdList.forEach( cid => {
-            this.removeFunComponent(cid)
             this.removeAddedTask(cid)
+            this.removeFunComponent(cid)
         })
         this.removingFuncCompIdList = []
         this.removingClassComponentList = []
@@ -229,7 +230,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     protected removeAddedTask(id: number) {
         const index = this.addedTask.findIndex(({cId}) => cId === id )
-        this.addedTask.splice(index, 1)
+        if(index>-1) this.addedTask.splice(index, 1)
     }
 
     protected removeFunComponent(cid: number) {
@@ -244,7 +245,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         // this.flushAddedtask()
         const now = Date.now()
         this.loop.runTask(now);
-        this.reomoveComp()
+        // this.reomoveComp()
         window.requestAnimationFrame(this.curRun);
     }
 
