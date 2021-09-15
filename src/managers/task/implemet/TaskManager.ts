@@ -48,13 +48,13 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private removingFuncCompIdList: number[] = []
 
-    private addedTask: Function[] = []
+    private addedTask: { cId: number, func: Function}[] = []
 
     private curFunComponentId: number
 
     private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponent) => {
         this.hasNewComponent = true;
-        this.addedTask.push(() => this.addInstanceTask(component) )
+        this.addedTask.push({ cId:component.Id,  func: () => this.addInstanceTask(component)} )
         this.curRun = this.runAll
     };
 
@@ -67,25 +67,31 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                 if(taskInfo.taskType === 'start') {
                     this.hasNewComponent = true
                     this.curRun = this.runAll
-                    const startFun = async () => {
+                    const startFun = () => {
                         const lastFunComponentId = this.curFunComponentId
                         this.curFunComponentId = funCompId
-                        await taskFun()
+                        taskFun()
                         this.curFunComponentId = lastFunComponentId
                     }
-                    this.addedTask.push(() => {
-                        taskId = this[taskInfo.taskType].addTask(startFun, { 
-                            priority: taskInfo.taskPriority, 
-                            sequence: taskInfo.sequence 
-                        })
-                        this.recordFunTask(taskId, taskInfo.taskType, funCompId)
+                    this.addedTask.push({ 
+                        cId: funCompId,
+                        func: () => {
+                            taskId = this[taskInfo.taskType].addTask(startFun, { 
+                                priority: taskInfo.taskPriority, 
+                                sequence: taskInfo.sequence 
+                            })
+                            this.recordFunTask(taskId, taskInfo.taskType, funCompId)
+                        }
                     })
                    
 
                 } else {
-                    this.addedTask.push(() => {
-                        taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
-                        this.recordFunTask(taskId, taskInfo.taskType, funCompId)
+                    this.addedTask.push({
+                        cId: funCompId,
+                        func: () => {
+                            taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
+                            this.recordFunTask(taskId, taskInfo.taskType, funCompId)
+                        }
                     })
                 }
                
@@ -95,7 +101,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     protected flushAddedtask = () => {
-        this.addedTask.forEach( task => task() )
+        this.addedTask.forEach( task => task.func() )
         this.addedTask = []
     }
     protected onRemoveFunComponent = (funcCompId: number) => {
@@ -156,7 +162,8 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private removeComponent = (component: AbstractComponentInterface) => {
         const idInfo = this.instanceTaskId.get(component.Id);
-        const endIdList  = idInfo.get(TaskType.END)
+        if(!idInfo) return
+        const endIdList = idInfo.get(TaskType.END)
         this.end.runTasks(endIdList)
         this.removeInstanceTask(idInfo);
         this.instanceTaskId.delete(component.Id);
@@ -198,7 +205,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         this.start.clearAll();
     }
 
-    protected runAll = async () => {
+    protected runAll = () => {
         const now = Date.now()
         this.flushAddedtask()
         this.runStatrtTask(now)
@@ -210,12 +217,19 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     protected reomoveComp = () => {
         this.removingClassComponentList.forEach(c => {
             this.removeComponent(c)
+            this.removeAddedTask(c.Id)
         })
         this.removingFuncCompIdList.forEach( cid => {
             this.removeFunComponent(cid)
+            this.removeAddedTask(cid)
         })
         this.removingFuncCompIdList = []
         this.removingClassComponentList = []
+    }
+
+    protected removeAddedTask(id: number) {
+        const index = this.addedTask.findIndex(({cId}) => cId === id )
+        this.addedTask.splice(index, 1)
     }
 
     protected removeFunComponent(cid: number) {
