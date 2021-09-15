@@ -220,7 +220,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     protected removeFunComponent(cid: number) {
         const info = this.funCompTaskId.get(cid)
-        const endArray = info.get(TaskType.END)
+        const endArray = info?.get(TaskType.END)||[]
         this.end.runTasks(endArray)
         this.removeInstanceTask(info)
     }

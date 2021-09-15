@@ -51,6 +51,9 @@ export  class GameObject extends AbstractComponentLoader {
     destory = () => {
         this.children.forEach( c => c.destory() )
         this.removeAllComponents()
+        const parentChildren = this.parent.Children
+        const index = parentChildren.indexOf(this)
+        if(index >-1) parentChildren.splice(index, 1)
         this.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
     };
 

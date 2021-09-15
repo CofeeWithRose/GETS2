@@ -22,6 +22,8 @@ export interface ShapInfo {
 
   offset?: Vec2
 
+  extend?: Vec2
+
   groupName: HIT_TEST_GROUP
 
 }
@@ -34,10 +36,11 @@ export interface HitTestInfer {
 }
 
 
-export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge, obj, {groupName, offset, size}) {
+export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge, obj, {groupName, offset, size, extend}) {
   // const _shapInfo = {...shapInfo}
   offset = offset?? {x: 0, y: 0}
   size = size?? { x: 10, y:10 }
+  extend = extend?? {x:0, y:0}
   let _hitTester: HitTester
 
   let _objManager :GameObjectManager
@@ -72,9 +75,8 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
       info.rotation = rotation
       info.deltaPosition.x = position.x -  _lastPosition.x
       info.deltaPosition.y = position.y - _lastPosition.y,
-      info.size.x = Math.abs(size.x * scale.x)
-      
-      info.size.y = Math.abs(size.y * scale.y)
+      info.size.x = Math.abs(size.x * scale.x) + extend.x
+      info.size.y = Math.abs(size.y * scale.y) + extend.y
       // deltaPosition: {
       //   x: position.x -  _lastPosition.x, 
       //   y: position.y - _lastPosition.y
