@@ -191,17 +191,17 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
 
     private curRun = this .emptyRun
 
-    protected runStatrtTask = async (time: number) => {
+    protected runStatrtTask = (time: number) => {
         this.hasNewComponent = false
         this.curRun = this.runLoop
-        await this.start.runAsyncTask(time);
+        this.start.runTask(time);
         this.start.clearAll();
     }
 
     protected runAll = async () => {
         const now = Date.now()
         this.flushAddedtask()
-        await this.runStatrtTask(now)
+        this.runStatrtTask(now)
         this.loop.runTask(now);
         this.reomoveComp()
         window.requestAnimationFrame(this.curRun);
