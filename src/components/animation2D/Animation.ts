@@ -1,7 +1,7 @@
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
 import { Renderer } from "../../managers/Renderer/implement/Renderer";
 import {TimerManager} from "../../managers/timer/implement/TimerManager";
-import { Render2DComp } from "../render2D/implement/Render2DComp";
+import { Render2DComp, Render2DCompInfer } from "../render2D/implement/Render2DComp";
 
 
 export interface AnimationInfo {
@@ -143,7 +143,7 @@ export const Animation: FunComponent<AnimationInfer> = function AnimationFun(
   let _lastAnimationName = ''
 
   let timer: TimerManager
-
+let render: Render2DCompInfer| undefined
   obj.regist('start', async () => {
       const renderer = ge.getManager(Renderer)
       async function _loadSource(name: string, info: AnimationInfo) {
@@ -152,31 +152,34 @@ export const Animation: FunComponent<AnimationInfer> = function AnimationFun(
       }
       timer = ge.getManager(TimerManager)
       await Promise.all( Object.keys( animationInfo ).map( animName => _loadSource(animName, animationInfo[animName]) ) )
-      const render = obj.getComponent(Render2DComp)
+      render = obj.getComponent(Render2DComp)
 
-      function _updateAnim(){
+      
 
-        const { animationName, isLoop, startPlayTime } = curPalyingState
-        const _animationInfo = animationInfo[animationName]
-        const _sourceList = sourceList[animationName]
-        const curTime = (timer.StartFromNow - startPlayTime)%_animationInfo.duration
-        const index = Math.floor((curTime/_animationInfo.duration)*_sourceList.length)
-        
-        if(_lastIndex !==index || _lastAnimationName !==animationName) {
-          _lastIndex = index
-          _lastAnimationName = animationName
-          // console.log('animationName',animationName, index)
-          render.setSourceId(_sourceList[index])
-        }
     
-        if(index === _sourceList.length -1&& !isLoop) {
-          curPalyingState.isPlaying = false
-        }
-      }
+  })
 
-      obj.regist('update', () => {
-        if(curPalyingState.isPlaying) _updateAnim()
-      })
+  function _updateAnim(){
+
+    const { animationName, isLoop, startPlayTime } = curPalyingState
+    const _animationInfo = animationInfo[animationName]
+    const _sourceList = sourceList[animationName]
+    const curTime = (timer.StartFromNow - startPlayTime)%_animationInfo.duration
+    const index = Math.floor((curTime/_animationInfo.duration)*_sourceList.length)
+    
+    if(_lastIndex !==index || _lastAnimationName !==animationName) {
+      _lastIndex = index
+      _lastAnimationName = animationName
+      // console.log('animationName',animationName, index)
+      render.setSourceId(_sourceList[index])
+    }
+
+    if(index === _sourceList.length -1&& !isLoop) {
+      curPalyingState.isPlaying = false
+    }
+  }
+  obj.regist('update', () => {
+    if(curPalyingState.isPlaying) _updateAnim()
   })
 
   

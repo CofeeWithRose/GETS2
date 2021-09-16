@@ -53,7 +53,10 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
 
 
   let _lastPosition: Vec2
-
+let info: PhysicalInfo
+let position: Vec2
+let scale: Vec2
+let rotation: number
   obj.regist('start', () => {
     _objManager = ge.getManager(GameObjectManager)
     _hitTester = ge.getManager(HitTester)
@@ -61,38 +64,40 @@ export const HitTest: FunComponent<HitTestInfer, ShapInfo> = function HitHest(ge
     _hitTester.on('hitEnd', obj.id, _handleHitEnd )
     _hitTester.on('hitting', obj.id, _handleHitting )
 
-
     _transform = obj.getComponent(Transform)
-    const position = _transform.getPosition()
-    const scale = _transform.getScale()
-    const rotation = _transform.getRotation()
+    position = _transform.getPosition()
+    scale = _transform.getScale()
+    rotation = _transform.getRotation()
     _lastPosition = {..._transform.getPosition()}
-    const info =  _getHitTestInfo(position, rotation, scale )
+    info =  _getHitTestInfo(position, rotation, scale )
     _hitTester.addTestInfo(groupName, obj.id, info)
-    const _handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
-      // const info =  _getHitTestInfo(position, rotation, scale )
-      // _hitTester.updateTestInfo(groupName, obj.id, info)
-      info.rotation = rotation
-      info.deltaPosition.x = position.x -  _lastPosition.x
-      info.deltaPosition.y = position.y - _lastPosition.y,
-      info.size.x = Math.abs(size.x * scale.x) + extend.x
-      info.size.y = Math.abs(size.y * scale.y) + extend.y
-      // deltaPosition: {
-      //   x: position.x -  _lastPosition.x, 
-      //   y: position.y - _lastPosition.y
-      // },
-      // size: {
-      //   x: Math.abs(size.x * scale.x),
-      //   y: Math.abs(size.y * scale.y)
-      // },
+   
 
-      
-    }
+   
 
-    obj.regist('update', () => {
-      _handleTransformChange(position, rotation, scale)
-    })
+  })
 
+  const _handleTransformChange = (position: Vec2, rotation: number, scale: Vec2 ) => {
+    // const info =  _getHitTestInfo(position, rotation, scale )
+    // _hitTester.updateTestInfo(groupName, obj.id, info)
+    info.rotation = rotation
+    info.deltaPosition.x = position.x -  _lastPosition.x
+    info.deltaPosition.y = position.y - _lastPosition.y,
+    info.size.x = Math.abs(size.x * scale.x) + extend.x
+    info.size.y = Math.abs(size.y * scale.y) + extend.y
+    // deltaPosition: {
+    //   x: position.x -  _lastPosition.x, 
+    //   y: position.y - _lastPosition.y
+    // },
+    // size: {
+    //   x: Math.abs(size.x * scale.x),
+    //   y: Math.abs(size.y * scale.y)
+    // },
+
+    
+  }
+  obj.regist('update', () => {
+    _handleTransformChange(position, rotation, scale)
   })
 
   obj.regist('destroy', () => {

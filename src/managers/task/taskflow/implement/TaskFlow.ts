@@ -136,7 +136,13 @@ export class TaskFlow implements TaskFolwInterface{
             return this.idTaskMap.get(taskId);
         })
         taskRecordList.sort(({priority: p1}, {priority: p2}) => p1-p2 )
-        .forEach(({task}) => task() )
+        .forEach(({task}) => {
+            try{
+                task() 
+            }catch(e){
+                console.error(e);
+            }
+        })
         this.isRunning = false;
         this.flushDeadTaskArray();
     };

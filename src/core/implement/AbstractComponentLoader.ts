@@ -98,12 +98,12 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     abstract destory(): void
 
-    protected curFunCompInfo: { type: ComponentType, id: number}
+    // protected curFunCompInfo: { type: ComponentType, id: number}
 
     protected offlineComponents: ComponentInfo<any>[] = []
 
     regist(name: string, fun: () => void) {
-        this.game.sendMessage(GEEvents.REGIST_TASK, name, fun, this.curFunCompInfo?.id );
+        // this.game.sendMessage(GEEvents.REGIST_TASK, name, fun, this.curFunCompInfo.id );
     }
 
     /**
@@ -145,17 +145,17 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     // }
 
     protected loadFunComponent<C>(componentClass: FunComponent<C>, params:any): ReturnType<FunComponent<C>> {
-        const lastFunCompInfo = this.curFunCompInfo
-        this.curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
+        // const lastFunCompInfo = this.curFunCompInfo
+        const curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
         let componentList = this.funComponentMap.get(componentClass)
         if(!componentList) {
             componentList = []
             this.funComponentMap.set(componentClass, componentList)
         }
+        this.regist = (name: string, fun: () => void) => this.game.sendMessage(GEEvents.REGIST_TASK, name, fun, curFunCompInfo.id );
         const instance: any =  componentClass( this.game, this, params )
-        instance.Id = this.curFunCompInfo.id
+        instance.Id = curFunCompInfo.id
         instance.type = componentClass
-        this.curFunCompInfo = lastFunCompInfo
         componentList.push(instance)
         if(this.isActive){
             this.game.sendMessage(GEEvents.ADD_FUNC_COMPONENT, this, instance, componentClass);

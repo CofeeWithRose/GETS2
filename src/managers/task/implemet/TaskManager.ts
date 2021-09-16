@@ -59,12 +59,12 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         this.curRun = this.runAll
     };
 
-    protected onRegistTask = (methodName: string, taskFun: Function, funCompId?: number ) => {
+    protected onRegistTask = (methodName: string, taskFun: Function, funCompId: number ) => {
+        if(!funCompId) throw 'No comp Id'
         const tarskInfoArray = this.configParser.getFuncTaskInfoArray()
         for(let i =0; i< tarskInfoArray.length; i++) {
             const taskInfo = tarskInfoArray[i]
             if(taskInfo.taskNames === methodName){
-                let taskId: number
                 if(taskInfo.taskType === 'start') {
                     this.hasNewComponent = true
                     this.curRun = this.runAll
@@ -75,23 +75,23 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                         this.curFunComponentId = lastFunComponentId
                     }
                     this.addedTask.push({ 
-                        cId: funCompId||this.curFunComponentId,
+                        cId: funCompId,
                         func: () => {
-                            taskId = this[taskInfo.taskType].addTask(startFun, { 
+                            console.log('add task start', taskInfo.taskType, funCompId, this.curFunComponentId);
+                            const taskId = this[taskInfo.taskType].addTask(startFun, { 
                                 priority: taskInfo.taskPriority, 
                                 sequence: taskInfo.sequence 
                             })
-                            this.recordFunTask(taskId, taskInfo.taskType, funCompId)
+                            this.recordFunTask(taskId, taskInfo.taskType, funCompId||this.curFunComponentId)
                         }
                     })
-                   
-
                 } else {
                     this.addedTask.push({
                         cId: funCompId||this.curFunComponentId,
                         func: () => {
-                            taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
-                            this.recordFunTask(taskId, taskInfo.taskType, funCompId)
+                            console.log('add task !start', taskInfo.taskType, funCompId, this.curFunComponentId);
+                            const taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
+                            this.recordFunTask(taskId, taskInfo.taskType, funCompId||this.curFunComponentId)
                         }
                     })
                 }
@@ -245,7 +245,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         // this.flushAddedtask()
         const now = Date.now()
         this.loop.runTask(now);
-        // this.reomoveComp()
+        this.reomoveComp()
         window.requestAnimationFrame(this.curRun);
     }
 
