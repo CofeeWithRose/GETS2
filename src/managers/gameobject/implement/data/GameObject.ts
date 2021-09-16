@@ -49,12 +49,19 @@ export  class GameObject extends AbstractComponentLoader {
     }
 
     destory = () => {
-        const parentChildren = this.parent.Children
-        const index = parentChildren.indexOf(this)
-        if(index >-1) parentChildren.splice(index, 1)
-        this.children.forEach( c => c.destory() )
-        this.removeAllComponents()
-        this.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, this);
+        const objs: GameObject[] = [this]
+        for(let i =0 ;i< objs.length; i++) {
+            objs.push(...objs[i].children)
+        }
+        objs.reverse().forEach( obj => {
+            if(obj.hasDestroy) return
+            obj.hasDestroy = true
+            obj.removeAllComponents()
+            obj.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, obj);
+            const slib = obj.parent.Children
+            const index = slib.indexOf(obj)
+            if(index >-1) slib.splice(index, 1)
+        })
     };
 
 

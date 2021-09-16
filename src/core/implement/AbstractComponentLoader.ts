@@ -23,6 +23,8 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected hasLoaded = false
 
+    protected hasDestroy = false
+
     constructor(game: GE) {
         super();
         this.game = game
