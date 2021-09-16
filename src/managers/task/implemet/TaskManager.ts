@@ -77,7 +77,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                     this.addedTask.push({ 
                         cId: funCompId,
                         func: () => {
-                            console.log('add task start', taskInfo.taskType, funCompId, this.curFunComponentId);
+                            
                             const taskId = this[taskInfo.taskType].addTask(startFun, { 
                                 priority: taskInfo.taskPriority, 
                                 sequence: taskInfo.sequence 
@@ -89,7 +89,6 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
                     this.addedTask.push({
                         cId: funCompId||this.curFunComponentId,
                         func: () => {
-                            console.log('add task !start', taskInfo.taskType, funCompId, this.curFunComponentId);
                             const taskId = this[taskInfo.taskType].addTask(taskFun, { priority: taskInfo.taskPriority, sequence: taskInfo.sequence })
                             this.recordFunTask(taskId, taskInfo.taskType, funCompId||this.curFunComponentId)
                         }
@@ -229,8 +228,12 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     protected removeAddedTask(id: number) {
-        const index = this.addedTask.findIndex(({cId}) => cId === id )
-        if(index>-1) this.addedTask.splice(index, 1)
+        for(let i=0; i<this.addedTask.length; i++) {
+            if(this.addedTask[i].cId === id) {
+                this.addedTask.splice(i,1)
+                i--
+            }
+        }
     }
 
     protected removeFunComponent(cid: number) {

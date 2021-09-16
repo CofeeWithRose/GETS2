@@ -170,7 +170,6 @@ let render: Render2DCompInfer| undefined
     if(_lastIndex !==index || _lastAnimationName !==animationName) {
       _lastIndex = index
       _lastAnimationName = animationName
-      // console.log('animationName',animationName, index)
       render.setSourceId(_sourceList[index])
     }
 

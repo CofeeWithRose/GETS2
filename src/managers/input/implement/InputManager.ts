@@ -15,7 +15,6 @@ export class InputManager extends AbstractMnager implements InputManagerInterfac
         super(game, config);
         window.addEventListener('keydown', event => {
             const defaultKeys = config.defaultKeys||[]
-            console.log(event.key);
             if(defaultKeys.includes(event.key as KeyBoard)) {
                 event.preventDefault()
             }

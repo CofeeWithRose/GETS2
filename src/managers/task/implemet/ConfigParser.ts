@@ -33,7 +33,6 @@ export default class ConfigParser {
         let result: TaskInfo[] = this.taskInfoCache.get(constructor);
         if(result) return result
         result = []
-        console.log('produce task', instance)
         for(let i = 0; i< typesArray.length; i++){
             if( instance instanceof typesArray[i] ){
                 result.push( ...this.classTypeTasksMap.get(typesArray[i]));

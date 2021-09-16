@@ -97,6 +97,7 @@ let rotation: number
     
   }
   obj.regist('update', () => {
+    if(!info) console.log('hittest update....', (hitTest as any).Id);
     _handleTransformChange(position, rotation, scale)
   })
 
@@ -158,7 +159,8 @@ let rotation: number
     _eventEmiter.emit(eventName, ...params)
   }
 
-  return {
+  const hitTest = {
     on, off, size, offset
   }
+  return hitTest
 }
