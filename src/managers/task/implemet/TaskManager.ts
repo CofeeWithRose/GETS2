@@ -230,8 +230,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     protected removeAddedTask(id: number) {
         for(let i=0; i<this.addedTask.length; i++) {
             if(this.addedTask[i].cId === id) {
-                this.addedTask.splice(i,1)
-                i--
+                this.addedTask.splice(i--,1)
             }
         }
     }
