@@ -37,4 +37,8 @@ export class Fps extends AbstractMnager {
         }
 
     }
+
+    destroy() {
+        document.body.removeChild(this.container)
+    }
 }

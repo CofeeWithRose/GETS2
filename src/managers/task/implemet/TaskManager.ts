@@ -12,9 +12,7 @@ import { GE } from "../../../core/implement/GE";
 import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
-
 export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
-
     constructor(game: GE, config: TaskMnagerConfigInterface) {
         super(game, config);
         this.configParser = new ConfigParser(config);
@@ -251,5 +249,8 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
         window.requestAnimationFrame(this.curRun);
     }
 
+    destroy() {
+        this.curRun = () => {}
+    }
 
 }
