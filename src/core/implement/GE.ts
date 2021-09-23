@@ -54,8 +54,11 @@ export  class GE {
 
     destroy() {
         // TODO enable start.
-        this.emitor.emit(GEEvents.DESTROY)
         this.isRunning = false
+        this.managerList.forEach(system => {
+            system.destroy()
+        })
+        this.emitor.emit(GEEvents.DESTROY)
     }
 
     

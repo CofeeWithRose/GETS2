@@ -17,6 +17,7 @@ export interface AbstractManagerInterface extends AbstractGEObjectInterface {
 
     afterUpdated(): void
 
+    destroy(): void
 }
 
 export interface AbstractManagerConstructor<P extends any[]> {
