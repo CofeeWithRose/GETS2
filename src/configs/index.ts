@@ -5,15 +5,12 @@ import TaskManager from "../managers/task/implemet/TaskManager";
 import {taskConig} from "./TaskConig";
 import { InitConfigInterface, ManagerInfo } from "../core/interface/InitConfigInterface";
 import { Renderer } from "../managers/Renderer/implement/Renderer";
-import { HitTester, HitGroup } from "../managers/HitTester";
-import { HIT_TEST_GROUP } from "../managers/HitTester/infer";
 import { Fps } from "../managers/Fps";
 import { Transformer } from "../managers/Transformer";
 import { KeyBoard } from "src/managers/input/interface/data/enum";
 
 export const createConfig = (
   canvas: HTMLCanvasElement, 
-  hitGroup: HitGroup[]= [ {groupA: HIT_TEST_GROUP.A, groupB: HIT_TEST_GROUP.B} ],
   {defaultKeys}: {defaultKeys: KeyBoard[]}
 ): InitConfigInterface =>  ({
 
@@ -35,10 +32,6 @@ export const createConfig = (
             manager: GameObjectManager,
             config: {},
         } as ManagerInfo<typeof GameObjectManager>,
-        {
-          manager: HitTester,
-          config: hitGroup,
-        } as ManagerInfo<typeof HitTester>,
         {
           manager: Transformer,
           config: {},

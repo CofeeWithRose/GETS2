@@ -1,6 +1,3 @@
-
-export { HitResult, MoveInfo } from "./managers/HitTester";
-
 export { GE } from "./core/implement/GE";
 export { createConfig } from './configs'
 export {InitConfigInterface} from "./core/interface/InitConfigInterface";
@@ -14,8 +11,6 @@ export { Render2DComp, Render2DCompInfer } from './components/render2D/implement
 export * from './components/animation2D/Animation'
 export { Transform, Vec2, TransformInfer } from './components/Transform'
 
-export * from './components/HitTest'
-export {HIT_TEST_GROUP, } from './managers/HitTester/infer'
 export { TimerManager} from "./managers/timer/implement/TimerManager";
 
 export { Fps } from './managers/Fps'

@@ -250,6 +250,7 @@ export default class TaskManager extends AbstractMnager implements TaskManagerIn
     }
 
     destroy() {
+        this.end.runTask(Date.now())
         this.curRun = () => {}
     }
 
