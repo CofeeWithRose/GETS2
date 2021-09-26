@@ -1,5 +1,5 @@
 import {AbstractSystem} from "../../../core/implement/AbstractSystem";
-import GameObjectManagerInterface from "../interface/GameObjectManagerInterface";
+import EntityManagerSystemInterface from "../interface/EntityManagerSystemInterface";
 import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig";
 import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
@@ -7,7 +7,7 @@ import SimpleMap from "../../../util/map/implement/SimpleMap";
 import { GameObject } from "./data/GameObject";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 
-export default class GameObjectManager extends AbstractSystem implements GameObjectManagerInterface {
+export default class EntityManagerSystem extends AbstractSystem implements EntityManagerSystemInterface {
 
     constructor(game: GE,config: AbstractManagerConfig){
         super(game, config);

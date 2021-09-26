@@ -1,4 +1,4 @@
-import { GameObject } from "src/managers/gameobject/implement/data/GameObject";
+import { GameObject } from "src/managers/entity/implement/data/GameObject";
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
 
 export interface Vec2 {

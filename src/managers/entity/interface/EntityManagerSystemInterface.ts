@@ -3,7 +3,7 @@ import { GameObject } from "../implement/data/GameObject";
 import GameObjectInterface from "./data/GameObjectInterface";
 
 
-export default interface GameObjectManagerInterface extends AbstractSystemInterface {
+export default interface EntityManagerSystemInterface extends AbstractSystemInterface {
 
     findGameObjectById(gameObjectId: number): GameObject;
     

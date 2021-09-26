@@ -2,7 +2,7 @@ import  { InitConfigInterface,  ManagerInfo} from "../interface/InitConfigInterf
 import {AbstractManagerConstructor, AbstractSystemInterface} from "../interface/AbstractManagerInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { GameObject, GameObjectOptions } from "../../managers/gameobject/implement/data/GameObject";
+import { GameObject, GameObjectOptions } from "../../managers/entity/implement/data/GameObject";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
 

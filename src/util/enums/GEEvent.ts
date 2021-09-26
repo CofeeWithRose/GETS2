@@ -1,4 +1,4 @@
-import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
+import { GameObject } from "../../managers/entity/implement/data/GameObject";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../core/interface/AbstractComponentInterface";
 import { AbstractSystemInterface } from "../../core/interface/AbstractManagerInterface";

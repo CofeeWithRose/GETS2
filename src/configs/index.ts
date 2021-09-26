@@ -1,4 +1,4 @@
-import GameObjectManager from "../managers/gameobject/implement/GameObjectManager";
+import EntityManagerSystem from "../managers/entity/implement/EntityManagerSystem";
 import {InputSystem} from "../managers/input/implement/InputSystem";
 import {TimerManager} from "../managers/timer/implement/TimerManager";
 import TaskManager from "../managers/task/implemet/TaskManager";
@@ -29,9 +29,9 @@ export const createConfig = (
             config: {defaultKeys},
         },
         {
-            manager: GameObjectManager,
+            manager: EntityManagerSystem,
             config: {},
-        } as ManagerInfo<typeof GameObjectManager>,
+        } as ManagerInfo<typeof EntityManagerSystem>,
         {
           manager: Transformer,
           config: {},
