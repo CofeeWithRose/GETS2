@@ -1,7 +1,6 @@
 import {AbstractMnager} from "../../../core/implement/AbstractManager";
 import GameObjectManagerInterface from "../interface/GameObjectManagerInterface";
 import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig";
-import GameObjectInterface from "../interface/data/GameObjectInterface";
 import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
@@ -20,22 +19,14 @@ export default class GameObjectManager extends AbstractMnager implements GameObj
 
     protected nameMap = MutiValueMap<string, GameObject>()
 
-    protected tagMap = MutiValueMap<string, GameObject>()
-
     addGameObject = (gameObject: GameObject) => {
         this.idMap.set(gameObject.Id, gameObject);
         this.nameMap.add(gameObject.name, gameObject)
-        if(gameObject.tag) this.tagMap.add(gameObject.tag, gameObject)
     };
 
     removeGameObject = ( gameObject: GameObject) => {
         this.idMap.remove( gameObject.Id );
         this.nameMap.removeValue(gameObject.name, gameObject)
-        this.tagMap.removeValue(gameObject.tag, gameObject)
-    }
-
-    findGameObjectsBytag(tag: string): GameObject[] {
-        return this.tagMap.get(tag)||[];
     }
 
     findGameObjectById( gameObjectId: number): GameObject {
