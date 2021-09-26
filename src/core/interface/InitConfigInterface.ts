@@ -1,19 +1,19 @@
 import {AbstractSystem} from "../implement/AbstractSystem";
-import AbstractManagerConfig from "./AbstractManagerConfig";
-import { AbstractManagerConstructor } from "./AbstractManagerInterface";
+import AbstractSystemConfig from "./AbstractSystemConfig";
+import { AbstractSystemConstructor } from "./AbstractSystemInterface";
 
 
 export interface InitConfigInterface {
     
 
-    readonly managerInfoArray: ManagerInfo<AbstractManagerConstructor<any>>[];
+    readonly systemConfig: SystemConfig<AbstractSystemConstructor<any>>[];
 
 }
 
-export interface ManagerInfo<M extends AbstractManagerConstructor<any>> {
+export interface SystemConfig<M extends AbstractSystemConstructor<any>> {
 
 
-    readonly manager: M;
+    readonly systemConstructor: M;
 
     readonly config: ConstructorParameters<M>[1];
 

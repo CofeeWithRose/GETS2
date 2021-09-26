@@ -1,15 +1,15 @@
 import AbstractGEObject from "./AbstractGEObject";
-import {AbstractManagerConstructor, AbstractSystemInterface} from "../interface/AbstractManagerInterface";
-import AbstractManagerConfig from "../interface/AbstractManagerConfig";
+import {AbstractSystemConstructor, AbstractSystemInterface} from "../interface/AbstractSystemInterface";
+import AbstractSystemConfig from "../interface/AbstractSystemConfig";
 import { GEEventsMap } from "../../util/enums/GEEvent";
 import {GE} from "./GE";
-import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
+import { EMPTY_TASK } from "../../systems/task/interface/TaskSystemInterface";
 
 export class AbstractSystem extends AbstractGEObject implements AbstractSystemInterface {
 
     protected world: GE
     
-    constructor( world: GE, config: AbstractManagerConfig){
+    constructor( world: GE, config: AbstractSystemConfig){
         super();
         this.world = world
     }
@@ -19,8 +19,8 @@ export class AbstractSystem extends AbstractGEObject implements AbstractSystemIn
         this.world.subscribeMssage(eventName, fun);
     };
 
-    getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C): InstanceType<C>{
-      return this.world.getManager(managerConstructor)
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C>{
+      return this.world.getSystem(systemConstructor)
     }
 
     init = EMPTY_TASK

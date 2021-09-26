@@ -1,4 +1,4 @@
-import { Entity } from "src/managers/entity/implement/data/Entity";
+import { Entity } from "src/systems/entity/implement/data/Entity";
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
 
 export interface Vec2 {

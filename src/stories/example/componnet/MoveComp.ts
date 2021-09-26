@@ -47,10 +47,10 @@ export class MoveController extends AbstractComponent {
   }
 
   start = () => {
-    this.input = this.getManager(InputManager)
+    this.input = this.getSystem(InputManager)
     this.transform = this.Entity.getComponent(Transform)
     this.anim = this.Entity.getComponent(Animation)
-    this.timer = this.getManager(TimerManager)
+    this.timer = this.getSystem(TimerManager)
     this.hitTest = this.Entity.getComponent(HitTest)
     this.hitTest && this.hitTest.on('hitting', this.handleHitting)
     this.position = this.transform.getPosition()

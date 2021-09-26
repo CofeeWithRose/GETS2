@@ -1,15 +1,15 @@
-import  { InitConfigInterface,  ManagerInfo} from "../interface/InitConfigInterface";
-import {AbstractManagerConstructor, AbstractSystemInterface} from "../interface/AbstractManagerInterface";
+import  { InitConfigInterface,  SystemConfig} from "../interface/InitConfigInterface";
+import {AbstractSystemConstructor, AbstractSystemInterface} from "../interface/AbstractSystemInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { Entity, EntityOptions } from "../../managers/entity/implement/data/Entity";
+import { Entity, EntityOptions } from "../../systems/entity/implement/data/Entity";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
 
 
 export  class GE {
 
-    private  managerList: AbstractSystemInterface[] = [];
+    private  systemList: AbstractSystemInterface[] = [];
     
     private  emitor = EventEmitor();
 
@@ -22,14 +22,14 @@ export  class GE {
     stage: Entity
 
     /**
-     * 根据配置注入 manager.
+     * 根据配置注入 system.
      * @param initConfigs 
      */
      constructor( initConfigs: InitConfigInterface) {
 
         this.checkStarted( this.INIT_ERROR );
 
-        this.initManagers(initConfigs.managerInfoArray);
+        this.initSystemList(initConfigs.systemConfig);
 
         this.stage = new Entity(this, {hadLoaded: true})
         this.stage.addComponent(Transform,{})
@@ -55,7 +55,7 @@ export  class GE {
     destroy() {
         // TODO enable start.
         this.isRunning = false
-        this.managerList.forEach(system => {
+        this.systemList.forEach(system => {
             system.destroy()
         })
         this.emitor.emit(GEEvents.DESTROY)
@@ -64,15 +64,15 @@ export  class GE {
     
 
     /**
-     * 注入一个 managerInfo.
-     * @param managerInfo 
+     * 注入一个 systemConfig.
+     * @param systemConfig 
      */
-    initManager( managerInfo: ManagerInfo<any>){
+    initSystem( systemConfig: SystemConfig<any>){
 
         this.checkStarted( this.INIT_ERROR );
-        const manager = new managerInfo.manager(this, managerInfo.config);
-        this.managerList.push(manager)
-        this.emitor.emit(GEEvents.ADD_MANAGER, manager)
+        const system = new systemConfig.systemConstructor(this, systemConfig.config);
+        this.systemList.push(system)
+        this.emitor.emit(GEEvents.ADD_SYSTEM, system)
     };
 
 
@@ -82,22 +82,22 @@ export  class GE {
         }
     }
 
-    private  initManagers(managerInfos: Array<ManagerInfo<any>>) {
+    private  initSystemList(systemConfig: Array<SystemConfig<any>>) {
 
-        for(let i = 0; i <managerInfos.length; i++){
-            this.initManager( managerInfos[i] );
+        for(let i = 0; i <systemConfig.length; i++){
+            this.initSystem( systemConfig[i] );
         }
     }
 
     /**
-     * 获取实例化的 manager.
-     * @param managerNameSpace 
+     * 获取实例化的 system.
+     * @param systemConstructor 
      */
-    getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C): InstanceType<C> {
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C> {
 
-        for(let i=0; i<this.managerList.length; i++){
-            if(this.managerList[i] instanceof managerConstructor){
-                return this.managerList[i] as InstanceType<C>
+        for(let i=0; i<this.systemList.length; i++){
+            if(this.systemList[i] instanceof systemConstructor){
+                return this.systemList[i] as InstanceType<C>
             }
         }
     };

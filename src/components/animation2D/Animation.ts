@@ -1,6 +1,6 @@
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
-import { Renderer } from "../../managers/Renderer/implement/Renderer";
-import {TimerManager} from "../../managers/timer/implement/TimerManager";
+import { Renderer } from "../../systems/Renderer/implement/Renderer";
+import {TimerSystem} from "../../systems/timer/implement/TimerSystem";
 import { Render2DComp, Render2DCompInfer } from "../render2D/implement/Render2DComp";
 
 
@@ -55,15 +55,15 @@ export const Animation: FunComponent<AnimationInfer> = function AnimationFun(
 
   let _lastAnimationName = ''
 
-  let timer: TimerManager
+  let timer: TimerSystem
 let render: Render2DCompInfer| undefined
   obj.regist('start', async () => {
-      const renderer = ge.getManager(Renderer)
+      const renderer = ge.getSystem(Renderer)
       async function _loadSource(name: string, info: AnimationInfo) {
         const sourceIdList = await Promise.all(info.sourceList.map(  ({url}) =>  renderer.loadSource(url) ) )
         sourceList[name] = sourceIdList
       }
-      timer = ge.getManager(TimerManager)
+      timer = ge.getSystem(TimerSystem)
       await Promise.all( Object.keys( animationInfo ).map( animName => _loadSource(animName, animationInfo[animName]) ) )
       render = obj.getComponent(Render2DComp)
 

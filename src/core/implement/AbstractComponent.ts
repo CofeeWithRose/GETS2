@@ -2,8 +2,8 @@ import AbstractGEObject from "./AbstractGEObject";
 import {AbstractComponentInterface} from "../interface/AbstractComponentInterface";
 import {AbstractComponentLoaderInterface} from "../interface/AbstractComponentLoaderInterface";
 import {GE} from "./GE";
-import { AbstractManagerConstructor } from "../interface/AbstractManagerInterface";
-import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
+import { AbstractSystemConstructor } from "../interface/AbstractSystemInterface";
+import { EMPTY_TASK } from "../../systems/task/interface/TaskSystemInterface";
 
 
 export  class  AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
@@ -26,8 +26,8 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
         this.componentLoader = componentLoader;
     }
 
-    getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C): InstanceType<C>{
-        return this.game.getManager( managerConstructor);
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C>{
+        return this.game.getSystem( systemConstructor);
     }
 
     init = EMPTY_TASK

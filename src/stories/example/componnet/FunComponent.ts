@@ -1,6 +1,6 @@
 import { 
   AbstractComponentLoader, GE, KeyBoard, InputManager,
-    Animation,  TimerManager, HitTest, Transform, Entity, MoveInfo
+    Animation,  TimerManager, HitTest, Transform, GameObject, MoveInfo
 } from 'ge'
 export interface MoveProps {
   left: KeyBoard,
@@ -31,7 +31,7 @@ export  function FuncComponent(
         const hitTest = obj.getComponent(HitTest)
 
         let hitInfo: {self: MoveInfo, other: MoveInfo}
-        const handleHitting = (other: Entity, otherM: MoveInfo, selfM: MoveInfo) => {
+        const handleHitting = (other: GameObject, otherM: MoveInfo, selfM: MoveInfo) => {
           hitInfo = {
             self: selfM,
             other: otherM,

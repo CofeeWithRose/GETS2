@@ -1,6 +1,6 @@
 import {AbstractComponent} from "../core/implement/AbstractComponent";
 import {AbstractSystem} from "../core/implement/AbstractSystem";
-import TaskMnagerConfigInterface from "../managers/task/interface/config/TaskMnagerConfigInterface";
+import TaskMnagerConfigInterface from "../systems/task/interface/config/TaskMnagerConfigInterface";
 
  export const taskConig: TaskMnagerConfigInterface = {
     start: [

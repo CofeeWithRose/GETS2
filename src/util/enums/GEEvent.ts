@@ -1,7 +1,7 @@
-import { Entity } from "../../managers/entity/implement/data/Entity";
+import { Entity } from "../../systems/entity/implement/data/Entity";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../core/interface/AbstractComponentInterface";
-import { AbstractSystemInterface } from "../../core/interface/AbstractManagerInterface";
+import { AbstractSystemInterface } from "../../core/interface/AbstractSystemInterface";
 
 export enum GEEvents {
     
@@ -9,7 +9,7 @@ export enum GEEvents {
     PAUSE = 'PAUSE',
     DESTROY = 'DESTROY',
     
-    ADD_MANAGER = 'ADD_MANAGER',
+    ADD_SYSTEM = 'ADD_SYSTEM',
 
     ADD_CLASS_COMPONENT = 'ADD_COMPONENT',
     REMOVE_CLASS_COMPONENT =  'REMOVE_CLASS_COMPONENT',
@@ -35,7 +35,7 @@ export interface GEEventsMap {
     [GEEvents.ADD_ENTITY]: (entity:Entity) => void
     [GEEvents.REMOVE_Entity]: (entity:Entity) => void
 
-    [GEEvents.ADD_MANAGER]: (entity: AbstractSystemInterface) => void
+    [GEEvents.ADD_SYSTEM]: (entity: AbstractSystemInterface) => void
 
     [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
 

@@ -1,5 +1,5 @@
 import { FunComponent } from "../../../core/interface/AbstractComponentInterface";
-import { Renderer } from "../../../managers/Renderer/implement/Renderer";
+import { Renderer } from "../../../systems/Renderer/implement/Renderer";
 import { Transform,  TransformInfer, Vec2 } from "../../Transform";
 import { Iimage } from "i-render";
 
@@ -31,7 +31,7 @@ export const Render2DComp: FunComponent<Render2DCompInfer> = function Render2DCo
    
     const _scale = _tansform.getScale()
 
-    _renderer = ge.getManager(Renderer)
+    _renderer = ge.getSystem(Renderer)
 
     _sourceId = await _renderer.loadSource(sourceUrl)
     _sprite =  _renderer.craeteSpirit(_sourceId, {

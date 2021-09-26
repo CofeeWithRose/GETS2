@@ -1,43 +1,42 @@
-import EntityManagerSystem from "../managers/entity/implement/EntityManagerSystem";
-import {InputSystem} from "../managers/input/implement/InputSystem";
-import {TimerManager} from "../managers/timer/implement/TimerManager";
-import TaskManager from "../managers/task/implemet/TaskManager";
+import EntityManagerSystem from "../systems/entity/implement/EntityManagerSystem";
+import {InputSystem} from "../systems/input/implement/InputSystem";
+import {TimerSystem} from "../systems/timer/implement/TimerSystem";
+import TaskSystem from "../systems/task/implemet/TaskSystem";
 import {taskConig} from "./TaskConig";
-import { InitConfigInterface, ManagerInfo } from "../core/interface/InitConfigInterface";
-import { Renderer } from "../managers/Renderer/implement/Renderer";
-import { Fps } from "../managers/Fps";
-import { Transformer } from "../managers/Transformer";
-import { KeyBoard } from "src/managers/input/interface/data/enum";
+import { InitConfigInterface, SystemConfig } from "../core/interface/InitConfigInterface";
+import { Fps } from "../systems/Fps";
+import { Transformer } from "../systems/Transformer";
+import { KeyBoard } from "src/systems/input/interface/data/enum";
 
 export const createConfig = (
   canvas: HTMLCanvasElement, 
   {defaultKeys}: {defaultKeys: KeyBoard[]}
 ): InitConfigInterface =>  ({
 
-    managerInfoArray:[
+    systemConfig:[
         {
-            manager: TaskManager,
+            systemConstructor: TaskSystem,
             config: taskConig,
         },
      
         {
-            manager: TimerManager,
+            systemConstructor: TimerSystem,
             config: {},
         },
         {
-            manager: InputSystem,
+            systemConstructor: InputSystem,
             config: {defaultKeys},
         },
         {
-            manager: EntityManagerSystem,
+            systemConstructor: EntityManagerSystem,
             config: {},
-        } as ManagerInfo<typeof EntityManagerSystem>,
+        } as SystemConfig<typeof EntityManagerSystem>,
         {
-          manager: Transformer,
+          systemConstructor: Transformer,
           config: {},
         },
         {
-          manager: Fps,
+          systemConstructor: Fps,
           config: {}
         }
     ],

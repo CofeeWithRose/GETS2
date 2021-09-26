@@ -1,7 +1,7 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import {AbstractComponentLoaderInterface} from "./AbstractComponentLoaderInterface";
 import { GE } from "../implement/GE";
-import { AbstractManagerConstructor } from "./AbstractManagerInterface";
+import { AbstractSystemConstructor } from "./AbstractSystemInterface";
 import AbstractComponentLoader from "../implement/AbstractComponentLoader";
 import { Transform } from "../../components/Transform";
 
@@ -9,7 +9,7 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
     Entity: AbstractComponentLoaderInterface;
 
-    getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C ): InstanceType<C>
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C ): InstanceType<C>
 
     destory?(): void
 
