@@ -1,16 +1,16 @@
 import {AbstractComponentLoaderInterface} from "../../../../core/interface/AbstractComponentLoaderInterface";
 
-export default interface GameObjectInterface extends AbstractComponentLoaderInterface {
+export default interface EntityInterface extends AbstractComponentLoaderInterface {
 
     destory():void;
 
-    readonly Parent: GameObjectInterface
+    readonly Parent: EntityInterface
 
-    addChildren(obj: GameObjectInterface): void
+    addChildren(obj: EntityInterface): void
 
-    removeChildren(obj: GameObjectInterface): void
+    removeChildren(obj: EntityInterface): void
 
-    findChildren(id: number): GameObjectInterface
+    findChildren(id: number): EntityInterface
 
     
 };

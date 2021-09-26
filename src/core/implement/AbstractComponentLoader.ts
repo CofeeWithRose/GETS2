@@ -167,7 +167,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         const component = new componentClass(this.world)
         component.init(params)
         this.componentList.push( component);
-        component.GameObject = <any>this;
+        component.Entity = <any>this;
         if(this.isActive){
             this.world.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, component);
         }

@@ -18,11 +18,11 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
         this.game = game
     }
 
-    get GameObject(){
+    get Entity(){
         return this.componentLoader;
     };
 
-    set GameObject(componentLoader: AbstractComponentLoaderInterface){
+    set Entity(componentLoader: AbstractComponentLoaderInterface){
         this.componentLoader = componentLoader;
     }
 

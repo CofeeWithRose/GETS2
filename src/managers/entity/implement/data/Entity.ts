@@ -2,30 +2,30 @@ import AbstractComponentLoader from "../../../../core/implement/AbstractComponen
 import {GE} from "../../../../core/implement/GE";
 import { GEEvents } from "../../../../util/enums/GEEvent";
 
-export interface GameObjectOptions {
+export interface EntityOptions {
     tag?: string
     name?: string
     hadLoaded: boolean
 }
-const defaultOptions: GameObjectOptions = {
+const defaultOptions: EntityOptions = {
     hadLoaded: false
 }
-export  class GameObject extends AbstractComponentLoader {
+export  class Entity extends AbstractComponentLoader {
 
-    constructor(game: GE, options?:GameObjectOptions) {
+    constructor(game: GE, options?:EntityOptions) {
         super(game);
         options = {...defaultOptions, ...options}
         this.hasLoaded = options.hadLoaded
         this.name = options.name
         this.tag = options.tag
-        this.world.sendMessage( GEEvents.ADD_GAMEOBJECT, this );
+        this.world.sendMessage( GEEvents.ADD_ENTITY, this );
     }
 
-    get Parent(): GameObject{
+    get Parent(): Entity{
         return this.parent
     }
 
-    addChildren(obj: GameObject): void {
+    addChildren(obj: Entity): void {
         if(obj.parent) throw new Error('repeat load')
         obj.hasLoaded = true
         this.children.push(obj)
@@ -35,7 +35,7 @@ export  class GameObject extends AbstractComponentLoader {
     }
 
 
-    removeChildren(obj: GameObject): void {
+    removeChildren(obj: Entity): void {
         const ind = this.children.indexOf(obj)
         if(ind > -1) {
             this.children.splice(ind, 1)
@@ -44,12 +44,12 @@ export  class GameObject extends AbstractComponentLoader {
         this.emit('removeChild', obj)
     }
 
-    findChildren(id: number): GameObject {
+    findChildren(id: number): Entity {
         return this.children.find( ({Id}) => Id === id )
     }
 
     destory = () => {
-        const objs: GameObject[] = [this]
+        const objs: Entity[] = [this]
         for(let i =0 ;i< objs.length; i++) {
             objs.push(...objs[i].children)
         }
@@ -57,7 +57,7 @@ export  class GameObject extends AbstractComponentLoader {
             if(obj.hasDestroy) return
             obj.hasDestroy = true
             obj.removeAllComponents()
-            obj.world.sendMessage( GEEvents.REMOVE_GAMEOBJECT, obj);
+            obj.world.sendMessage( GEEvents.REMOVE_Entity, obj);
             const slib = obj.parent.Children
             const index = slib.indexOf(obj)
             if(index >-1) slib.splice(index, 1)

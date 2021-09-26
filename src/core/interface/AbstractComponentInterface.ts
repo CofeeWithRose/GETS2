@@ -7,7 +7,7 @@ import { Transform } from "../../components/Transform";
 
 export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
-    GameObject: AbstractComponentLoaderInterface;
+    Entity: AbstractComponentLoaderInterface;
 
     getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C ): InstanceType<C>
 

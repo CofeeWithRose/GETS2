@@ -4,7 +4,7 @@ import EntityManagerSystem  from './managers/entity/implement/EntityManagerSyste
 export { GE } from "./core/implement/GE";
 export { createConfig } from './configs'
 export {InitConfigInterface} from "./core/interface/InitConfigInterface";
-export {GameObject} from "./managers/entity/implement/data/GameObject";
+export {Entity} from "./managers/entity/implement/data/Entity";
 export { InputSystem } from "./managers/input/implement/InputSystem";
 export { KeyBoard } from "./managers/input/interface/data/enum";
 export { AbstractComponent } from "./core/implement/AbstractComponent";

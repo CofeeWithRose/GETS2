@@ -1,4 +1,4 @@
-import { GameObject } from "../../managers/entity/implement/data/GameObject";
+import { Entity } from "../../managers/entity/implement/data/Entity";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../core/interface/AbstractComponentInterface";
 import { AbstractSystemInterface } from "../../core/interface/AbstractManagerInterface";
@@ -20,8 +20,8 @@ export enum GEEvents {
 
     REGIST_TASK = 'REGIST_TASK',
 
-    ADD_GAMEOBJECT = 'ADD_GAMEOBJECT',
-    REMOVE_GAMEOBJECT = 'REMOVE_GAMEOBJECT',
+    ADD_ENTITY = 'ADD_ENTITY',
+    REMOVE_Entity = 'REMOVE_Entity',
 }
 
 export interface GEEventsMap {
@@ -29,17 +29,17 @@ export interface GEEventsMap {
     [GEEvents.START]: () => void
     [GEEvents.PAUSE]: () => void
 
-    [GEEvents.ADD_CLASS_COMPONENT]: (gameObject:AbstractComponentLoader, component: ComponentInstance<ComponentType>) => void
-    [GEEvents.REMOVE_CLASS_COMPONENT]: (gameObject:AbstractComponentLoader, component: AbstractComponentInterface) => void
+    [GEEvents.ADD_CLASS_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>) => void
+    [GEEvents.REMOVE_CLASS_COMPONENT]: (entity:AbstractComponentLoader, component: AbstractComponentInterface) => void
 
-    [GEEvents.ADD_GAMEOBJECT]: (gameObject:GameObject) => void
-    [GEEvents.REMOVE_GAMEOBJECT]: (gameObject:GameObject) => void
+    [GEEvents.ADD_ENTITY]: (entity:Entity) => void
+    [GEEvents.REMOVE_Entity]: (entity:Entity) => void
 
-    [GEEvents.ADD_MANAGER]: (gameObject: AbstractSystemInterface) => void
+    [GEEvents.ADD_MANAGER]: (entity: AbstractSystemInterface) => void
 
     [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
 
     [GEEvents.REMOVE_FUNC_COMPONENT]: (funCompId: number) => void
-    [GEEvents.ADD_FUNC_COMPONENT]: (gameObject:AbstractComponentLoader, component: ComponentInstance<ComponentType>, componentClass: FunComponent) => void
+    [GEEvents.ADD_FUNC_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>, componentClass: FunComponent) => void
 
 }

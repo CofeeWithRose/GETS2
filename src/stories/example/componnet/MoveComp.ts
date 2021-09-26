@@ -2,7 +2,7 @@ import {
   Animation, AnimationInfer,
   Transform, TransformInfer,
   AbstractComponent, InputManager, KeyBoard,
-  HitTest, GameObject, Vec2, MoveInfo, TimerManager, 
+  HitTest, Entity, Vec2, MoveInfo, TimerManager, 
 } from 'ge'
 
 
@@ -48,10 +48,10 @@ export class MoveController extends AbstractComponent {
 
   start = () => {
     this.input = this.getManager(InputManager)
-    this.transform = this.GameObject.getComponent(Transform)
-    this.anim = this.GameObject.getComponent(Animation)
+    this.transform = this.Entity.getComponent(Transform)
+    this.anim = this.Entity.getComponent(Animation)
     this.timer = this.getManager(TimerManager)
-    this.hitTest = this.GameObject.getComponent(HitTest)
+    this.hitTest = this.Entity.getComponent(HitTest)
     this.hitTest && this.hitTest.on('hitting', this.handleHitting)
     this.position = this.transform.getPosition()
   }
@@ -60,7 +60,7 @@ export class MoveController extends AbstractComponent {
     this.hitTest && this.hitTest.off('hitting', this.handleHitting)
   }
 
-  protected handleHitting = (other: GameObject, otherM: MoveInfo, selfM: MoveInfo) => {
+  protected handleHitting = (other: Entity, otherM: MoveInfo, selfM: MoveInfo) => {
       this.hitInfo = {
         self: selfM,
         other: otherM,

@@ -1,10 +1,9 @@
 import {AbstractSystemInterface} from "../../../core/interface/AbstractManagerInterface";
-import { GameObject } from "../implement/data/GameObject";
-import GameObjectInterface from "./data/GameObjectInterface";
+import { Entity } from "../implement/data/Entity";
 
 
 export default interface EntityManagerSystemInterface extends AbstractSystemInterface {
 
-    findGameObjectById(gameObjectId: number): GameObject;
+    findEntityById(entityId: number): Entity;
     
 }

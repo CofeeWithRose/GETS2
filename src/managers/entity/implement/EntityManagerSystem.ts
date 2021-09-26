@@ -4,40 +4,40 @@ import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig
 import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import SimpleMap from "../../../util/map/implement/SimpleMap";
-import { GameObject } from "./data/GameObject";
+import { Entity } from "./data/Entity";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 
 export default class EntityManagerSystem extends AbstractSystem implements EntityManagerSystemInterface {
 
     constructor(game: GE,config: AbstractManagerConfig){
         super(game, config);
-        this.world.subscribeMssage( GEEvents.ADD_GAMEOBJECT, this.addGameObject );
-        this.world.subscribeMssage( GEEvents.REMOVE_GAMEOBJECT, this.removeGameObject);
+        this.world.subscribeMssage( GEEvents.ADD_ENTITY, this.addEntity );
+        this.world.subscribeMssage( GEEvents.REMOVE_Entity, this.removeEntity);
     };
 
-    protected idMap = new SimpleMap<number, GameObject>();
+    protected idMap = new SimpleMap<number, Entity>();
 
-    protected nameMap = MutiValueMap<string, GameObject>()
+    protected nameMap = MutiValueMap<string, Entity>()
 
-    addGameObject = (gameObject: GameObject) => {
-        this.idMap.set(gameObject.Id, gameObject);
-        this.nameMap.add(gameObject.name, gameObject)
+    addEntity = (entity: Entity) => {
+        this.idMap.set(entity.Id, entity);
+        this.nameMap.add(entity.name, entity)
     };
 
-    removeGameObject = ( gameObject: GameObject) => {
-        this.idMap.remove( gameObject.Id );
-        this.nameMap.removeValue(gameObject.name, gameObject)
+    removeEntity = ( entity: Entity) => {
+        this.idMap.remove( entity.Id );
+        this.nameMap.removeValue(entity.name, entity)
     }
 
-    findGameObjectById( gameObjectId: number): GameObject {
-        return this.idMap.get(gameObjectId);
+    findEntityById( entityId: number): Entity {
+        return this.idMap.get(entityId);
     }
 
-    findGameObjectByName(name: string): GameObject{
+    findEntityByName(name: string): Entity{
       return (this.nameMap.get(name)||[])[0]
     }
 
-    findGameObjectsByName(name: string): GameObject[]{
+    findEntitiesByName(name: string): Entity[]{
       return this.nameMap.get(name)||[]
     }
 

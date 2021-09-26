@@ -1,4 +1,4 @@
-import { GameObject } from "src/managers/entity/implement/data/GameObject";
+import { Entity } from "src/managers/entity/implement/data/Entity";
 import { FunComponent } from "../../core/interface/AbstractComponentInterface";
 
 export interface Vec2 {
@@ -130,7 +130,7 @@ export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> = 
     function setPosition(x: number, y: number) {
       const dtx = x - position.x
       const dty = y - position.y
-      const children: GameObject[] = [..._children]
+      const children: Entity[] = [..._children]
       for(let i=0; i< children.length; i++) {
         const c = children[i]
         const _transform = c.transform?? c.getComponent(TransFormFun)

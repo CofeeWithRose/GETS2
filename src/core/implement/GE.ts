@@ -2,7 +2,7 @@ import  { InitConfigInterface,  ManagerInfo} from "../interface/InitConfigInterf
 import {AbstractManagerConstructor, AbstractSystemInterface} from "../interface/AbstractManagerInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { GameObject, GameObjectOptions } from "../../managers/entity/implement/data/GameObject";
+import { Entity, EntityOptions } from "../../managers/entity/implement/data/Entity";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
 
@@ -19,7 +19,7 @@ export  class GE {
 
     isRunning = false
 
-    stage: GameObject
+    stage: Entity
 
     /**
      * 根据配置注入 manager.
@@ -31,7 +31,7 @@ export  class GE {
 
         this.initManagers(initConfigs.managerInfoArray);
 
-        this.stage = new GameObject(this, {hadLoaded: true})
+        this.stage = new Entity(this, {hadLoaded: true})
         this.stage.addComponent(Transform,{})
     };
 
@@ -139,10 +139,10 @@ export  class GE {
         return new componentLoader(this);
     } 
 
-    craeteObj(transformProps: Partial<TransformProps>, options?: Omit<GameObjectOptions, 'hadLoaded'>): GameObject{
-        const obj = new GameObject(this, {hadLoaded: false, ...options})
+    craeteObj(transformProps: Partial<TransformProps>, options?: Omit<EntityOptions, 'hadLoaded'>): Entity{
+        const obj = new Entity(this, {hadLoaded: false, ...options})
         obj.addComponent(Transform, transformProps)
-        this.sendMessage( GEEvents.ADD_GAMEOBJECT, this.stage );
+        this.sendMessage( GEEvents.ADD_ENTITY, this.stage );
         return obj
     }
 
