@@ -7,13 +7,11 @@ import { GE } from "./GE";
 import EventEmitor from "../../util/event/EventEmitor";
 import { AbstractComponentLoaderEvent } from "../interface/AbstractComponentLoaderInterface";
 import { AbstractComponent } from "./AbstractComponent";
-import { TransformInfer } from "src/components/Transform";
 import { checkIsClassComponentClass } from "../util";
+import { TransformInfer } from "../../components/Transform";
+import { Uuid } from "../../util/uuid";
 
 
-let componentLoaderBaseId = 1
-
-let funCompBaseId = 1
 
 export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
@@ -38,7 +36,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected isActive = true;
 
-    readonly id = componentLoaderBaseId++
+    readonly id = Uuid.getUuid()
 
     readonly name: string
 
@@ -146,7 +144,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected loadFunComponent<C>(componentClass: FunComponent<C>, params:any): ReturnType<FunComponent<C>> {
         // const lastFunCompInfo = this.curFunCompInfo
-        const curFunCompInfo = {type: componentClass, id: funCompBaseId++ }
+        const curFunCompInfo = {type: componentClass, id: Uuid.getUuid() }
         let componentList = this.funComponentMap.get(componentClass)
         if(!componentList) {
             componentList = []
@@ -261,6 +259,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         const componentList = this.funComponentMap.get(component.type)
         if (componentList?.length) {
             const index = componentList.indexOf(component)
+            if(index < 0) return
             componentList.splice(index, 1)
             this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, component.Id)
         }
