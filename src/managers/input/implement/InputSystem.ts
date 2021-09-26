@@ -1,6 +1,5 @@
-import {AbstractMnager} from "../../../core/implement/AbstractManager";
+import {AbstractSystem} from "../../../core/implement/AbstractSystem";
 import InputManagerInterface from "../interface/InputManagerInterface";
-import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig";
 import { KeyBoard, InputType } from "../interface/data/enum";
 import InputEvent from "../interface/data/InputEvent";
 import { GE } from "../../../core/implement/GE";
@@ -9,7 +8,7 @@ export interface InputConfig {
     // 需要 preventDefault的按键.
     defaultKeys?: KeyBoard[]
 }
-export class InputManager extends AbstractMnager implements InputManagerInterface {
+export class InputSystem extends AbstractSystem implements InputManagerInterface {
 
     constructor(game: GE,config: InputConfig){
         super(game, config);

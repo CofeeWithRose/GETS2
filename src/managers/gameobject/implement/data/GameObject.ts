@@ -18,7 +18,7 @@ export  class GameObject extends AbstractComponentLoader {
         this.hasLoaded = options.hadLoaded
         this.name = options.name
         this.tag = options.tag
-        this.game.sendMessage( GEEvents.ADD_GAMEOBJECT, this );
+        this.world.sendMessage( GEEvents.ADD_GAMEOBJECT, this );
     }
 
     get Parent(): GameObject{
@@ -57,7 +57,7 @@ export  class GameObject extends AbstractComponentLoader {
             if(obj.hasDestroy) return
             obj.hasDestroy = true
             obj.removeAllComponents()
-            obj.game.sendMessage( GEEvents.REMOVE_GAMEOBJECT, obj);
+            obj.world.sendMessage( GEEvents.REMOVE_GAMEOBJECT, obj);
             const slib = obj.parent.Children
             const index = slib.indexOf(obj)
             if(index >-1) slib.splice(index, 1)

@@ -1,12 +1,12 @@
 import {AbstractComponent} from "../core/implement/AbstractComponent";
-import {AbstractMnager} from "../core/implement/AbstractManager";
+import {AbstractSystem} from "../core/implement/AbstractSystem";
 import TaskMnagerConfigInterface from "../managers/task/interface/config/TaskMnagerConfigInterface";
 
  export const taskConig: TaskMnagerConfigInterface = {
     start: [
         {
           methodName: 'init',
-          scope: [ AbstractMnager ],
+          scope: [ AbstractSystem ],
         },
         {
             methodName: 'awake',
@@ -14,30 +14,30 @@ import TaskMnagerConfigInterface from "../managers/task/interface/config/TaskMna
         },
         {
             methodName: 'start',
-            scope: [AbstractMnager, AbstractComponent ],
+            scope: [AbstractSystem, AbstractComponent ],
         },
     ],
     loop: [
         {
           methodName: 'beforeUpdate',
-          scope: [ AbstractMnager ],
+          scope: [ AbstractSystem ],
         },
         {
             methodName: 'willUpdate',
-            scope: [ AbstractComponent, AbstractMnager],
+            scope: [ AbstractComponent, AbstractSystem],
         },
         {
             methodName: 'update',
-            scope: [ AbstractMnager, AbstractComponent ],
+            scope: [ AbstractSystem, AbstractComponent ],
         },
         {
             methodName: 'updated',
-            scope: [ AbstractComponent, AbstractMnager ],
+            scope: [ AbstractComponent, AbstractSystem ],
             sequence: 'negative',
         },
         {
             methodName: 'afterUpdated',
-            scope: [ AbstractMnager ],
+            scope: [ AbstractSystem ],
         },
     ],
     end: [

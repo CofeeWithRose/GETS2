@@ -1,4 +1,4 @@
-import {AbstractMnager} from "../../../core/implement/AbstractManager";
+import {AbstractSystem} from "../../../core/implement/AbstractSystem";
 import TaskManagerInterface, { EMPTY_TASK } from "../interface/TaskManagerInterface";
 import TaskMnagerConfigInterface from "../interface/config/TaskMnagerConfigInterface";
 import { GEEvents } from "../../../util/enums/GEEvent";
@@ -12,7 +12,7 @@ import { GE } from "../../../core/implement/GE";
 import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
-export default class TaskManager extends AbstractMnager implements TaskManagerInterface {
+export default class TaskManager extends AbstractSystem implements TaskManagerInterface {
     constructor(game: GE, config: TaskMnagerConfigInterface) {
         super(game, config);
         this.configParser = new ConfigParser(config);

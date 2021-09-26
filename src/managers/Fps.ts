@@ -1,7 +1,7 @@
-import { AbstractMnager } from "../core/implement/AbstractManager";
+import { AbstractSystem } from "../core/implement/AbstractSystem";
 import { TimerManager } from "./timer/implement/TimerManager";
 
-export class Fps extends AbstractMnager {
+export class Fps extends AbstractSystem {
 
 
     protected timer: TimerManager

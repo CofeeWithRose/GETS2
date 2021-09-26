@@ -1,7 +1,7 @@
 import { GameObject } from "../../managers/gameobject/implement/data/GameObject";
 import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../core/interface/AbstractComponentInterface";
-import { AbstractManagerInterface } from "../../core/interface/AbstractManagerInterface";
+import { AbstractSystemInterface } from "../../core/interface/AbstractManagerInterface";
 
 export enum GEEvents {
     
@@ -35,7 +35,7 @@ export interface GEEventsMap {
     [GEEvents.ADD_GAMEOBJECT]: (gameObject:GameObject) => void
     [GEEvents.REMOVE_GAMEOBJECT]: (gameObject:GameObject) => void
 
-    [GEEvents.ADD_MANAGER]: (gameObject: AbstractManagerInterface) => void
+    [GEEvents.ADD_MANAGER]: (gameObject: AbstractSystemInterface) => void
 
     [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
 

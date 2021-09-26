@@ -3,7 +3,7 @@ export { createConfig } from './configs'
 export {InitConfigInterface} from "./core/interface/InitConfigInterface";
 export {GameObject} from "./managers/gameobject/implement/data/GameObject";
 
-export { InputManager } from "./managers/input/implement/InputManager";
+export { InputSystem } from "./managers/input/implement/InputSystem";
 export { KeyBoard } from "./managers/input/interface/data/enum";
 
 export { AbstractComponent } from "./core/implement/AbstractComponent";
@@ -18,7 +18,7 @@ export { Fps } from './managers/Fps'
 import  AbstractComponentLoader from './core/implement/AbstractComponentLoader'
 
 export type { FunComponent } from './core/interface/AbstractComponentInterface'
-
+export { AbstractSystem } from './core/implement/AbstractSystem'
 
 export { AbstractComponentLoader }
 

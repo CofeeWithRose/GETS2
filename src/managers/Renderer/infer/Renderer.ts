@@ -1,5 +1,5 @@
 import { Vec2 } from "../../../components/Transform";
-import { AbstractManagerInterface } from "../../../core/interface/AbstractManagerInterface";
+import { AbstractSystemInterface } from "../../../core/interface/AbstractManagerInterface";
 
 
 export interface SpiritAttr {
@@ -9,7 +9,7 @@ export interface SpiritAttr {
   rotation?: number
 }
 
-export interface RendererInfer extends AbstractManagerInterface {
+export interface RendererInfer extends AbstractSystemInterface {
 
   craeteSpirit(sourceId: number, attr: SpiritAttr ): string
 

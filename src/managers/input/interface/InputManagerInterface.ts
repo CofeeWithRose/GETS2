@@ -1,8 +1,8 @@
-import {AbstractManagerInterface} from "../../../core/interface/AbstractManagerInterface";
+import {AbstractSystemInterface} from "../../../core/interface/AbstractManagerInterface";
 import { KeyBoard, InputType } from "./data/enum";
 import InputEvent from "./data/InputEvent";
 
-export default interface InputManagerInterface extends AbstractManagerInterface {
+export default interface InputManagerInterface extends AbstractSystemInterface {
 
     keyDown(keyBoard: KeyBoard): boolean;
 

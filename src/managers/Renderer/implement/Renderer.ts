@@ -1,10 +1,10 @@
-import { AbstractMnager } from "../../../core/implement/AbstractManager";
+import { AbstractSystem } from "../../../core/implement/AbstractSystem";
 import { RendererCfg, RendererInfer, SpiritAttr } from "../infer/Renderer";
 import {IRender, Vec2, Iimage} from 'i-render'
 import { GE } from "../../../core/implement/GE";
 
 
-export class Renderer extends AbstractMnager {
+export class Renderer extends AbstractSystem {
 
     private irender: IRender
 

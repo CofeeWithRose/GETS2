@@ -1,8 +1,8 @@
 // import { Transform } from "../components/Transform";
-import { AbstractMnager } from "..//core/implement/AbstractManager";
+import { AbstractSystem } from "../core/implement/AbstractSystem";
 // import { GameObject } from "./gameobject/implement/data/GameObject";
 
-export class Transformer extends AbstractMnager {
+export class Transformer extends AbstractSystem {
 
     // update = () => {
     //     const entities: GameObject[] = [...this.game.stage.Children]

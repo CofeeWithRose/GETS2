@@ -1,4 +1,4 @@
-import {AbstractMnager} from "./../implement/AbstractManager";
+import {AbstractSystem} from "../implement/AbstractSystem";
 import AbstractManagerConfig from "./AbstractManagerConfig";
 import { AbstractManagerConstructor } from "./AbstractManagerInterface";
 

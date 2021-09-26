@@ -1,26 +1,26 @@
 import AbstractGEObject from "./AbstractGEObject";
-import {AbstractManagerConstructor, AbstractManagerInterface} from "../interface/AbstractManagerInterface";
+import {AbstractManagerConstructor, AbstractSystemInterface} from "../interface/AbstractManagerInterface";
 import AbstractManagerConfig from "../interface/AbstractManagerConfig";
 import { GEEventsMap } from "../../util/enums/GEEvent";
 import {GE} from "./GE";
 import { EMPTY_TASK } from "../../managers/task/interface/TaskManagerInterface";
 
-export class AbstractMnager extends AbstractGEObject implements AbstractManagerInterface {
+export class AbstractSystem extends AbstractGEObject implements AbstractSystemInterface {
 
-    protected game: GE
+    protected world: GE
     
-    constructor( game: GE, config: AbstractManagerConfig){
+    constructor( world: GE, config: AbstractManagerConfig){
         super();
-        this.game = game
+        this.world = world
     }
 
 
     addGEEvemtListener <T extends keyof GEEventsMap>(eventName: T, fun: GEEventsMap[T]) {
-        this.game.subscribeMssage(eventName, fun);
+        this.world.subscribeMssage(eventName, fun);
     };
 
     getManager<C extends AbstractManagerConstructor<any[]>>(managerConstructor: C): InstanceType<C>{
-      return this.game.getManager(managerConstructor)
+      return this.world.getManager(managerConstructor)
     }
 
     init = EMPTY_TASK

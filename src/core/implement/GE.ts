@@ -1,5 +1,5 @@
 import  { InitConfigInterface,  ManagerInfo} from "../interface/InitConfigInterface";
-import {AbstractManagerConstructor, AbstractManagerInterface} from "../interface/AbstractManagerInterface";
+import {AbstractManagerConstructor, AbstractSystemInterface} from "../interface/AbstractManagerInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import { GameObject, GameObjectOptions } from "../../managers/gameobject/implement/data/GameObject";
@@ -9,7 +9,7 @@ import { Transform, TransformProps } from "../../components/Transform";
 
 export  class GE {
 
-    private  managerList: AbstractManagerInterface[] = [];
+    private  managerList: AbstractSystemInterface[] = [];
     
     private  emitor = EventEmitor();
 

@@ -1,6 +1,6 @@
-import {AbstractManagerInterface} from "../../../core/interface/AbstractManagerInterface";
+import {AbstractSystemInterface} from "../../../core/interface/AbstractManagerInterface";
 
-export default interface TimerManagerInterfce extends AbstractManagerInterface {
+export default interface TimerManagerInterfce extends AbstractSystemInterface {
 
     readonly DealTime:number;
 

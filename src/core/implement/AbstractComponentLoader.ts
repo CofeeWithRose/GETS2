@@ -15,7 +15,7 @@ import { Uuid } from "../../util/uuid";
 
 export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
-    protected game: GE
+    protected world: GE
 
     transform: TransformInfer
 
@@ -23,9 +23,9 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     protected hasDestroy = false
 
-    constructor(game: GE) {
+    constructor(world: GE) {
         super();
-        this.game = game
+        this.world = world
     };
 
     protected parent: AbstractComponentLoader
@@ -74,7 +74,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         // TODO func component
         const allComponents = [ ...this.componentList ]
         for( let i = 0; i< allComponents.length; i++){
-            this.game.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, allComponents[i]);
+            this.world.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, allComponents[i]);
         }
     };
 
@@ -82,7 +82,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         // TODO func component
         const allComponents: Array<AbstractComponentInterface> = [...this.componentList]
         for( let i = 0; i< allComponents.length; i++){
-            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponents[i]);
+            this.world.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponents[i]);
         }
     };
 
@@ -150,13 +150,13 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
             componentList = []
             this.funComponentMap.set(componentClass, componentList)
         }
-        this.regist = (name: string, fun: () => void) => this.game.sendMessage(GEEvents.REGIST_TASK, name, fun, curFunCompInfo.id );
-        const instance: any =  componentClass( this.game, this, params )
+        this.regist = (name: string, fun: () => void) => this.world.sendMessage(GEEvents.REGIST_TASK, name, fun, curFunCompInfo.id );
+        const instance: any =  componentClass( this.world, this, params )
         instance.Id = curFunCompInfo.id
         instance.type = componentClass
         componentList.push(instance)
         if(this.isActive){
-            this.game.sendMessage(GEEvents.ADD_FUNC_COMPONENT, this, instance, componentClass);
+            this.world.sendMessage(GEEvents.ADD_FUNC_COMPONENT, this, instance, componentClass);
         }
         return instance
     }
@@ -164,12 +164,12 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     protected loadClassComponent<C extends AbstractComponentConstructor> (
         componentClass: C, params:  CompProps<C>
     ): InstanceType<C> {
-        const component = new componentClass(this.game)
+        const component = new componentClass(this.world)
         component.init(params)
         this.componentList.push( component);
         component.GameObject = <any>this;
         if(this.isActive){
-            this.game.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, component);
+            this.world.sendMessage(GEEvents.ADD_CLASS_COMPONENT, this, component);
         }
         
         return component as InstanceType<C>;
@@ -261,7 +261,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
             const index = componentList.indexOf(component)
             if(index < 0) return
             componentList.splice(index, 1)
-            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, component.Id)
+            this.world.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, component.Id)
         }
     }
 
@@ -270,7 +270,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     ): void {
         const index = this.componentList.indexOf(component)
         if(index > -1) {
-            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, component);
+            this.world.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, component);
             this.componentList.splice(index, 1)
         }
     }
@@ -294,7 +294,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         const componentArray = this.funComponentMap.get(componentClass)
         if(componentArray) {
             componentArray.forEach( c => {
-                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c.Id)
+                this.world.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c.Id)
             })
             componentArray.splice(0)
         }
@@ -306,7 +306,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         for ( let i =0; i< this.componentList.length; i++ ) {
             const c = this.componentList[i]
             if ( c instanceof componentClass ) {
-                this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c);
+                this.world.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, c);
                 this.componentList.splice( i, 1 );
                 i--;
             }
@@ -324,7 +324,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     protected  removeAllClassComponents(): void {
         const allComponentArray: Array<AbstractComponentInterface> = [...this.componentList]
         for (let i = 0; i < allComponentArray.length; i++) {
-            this.game.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponentArray[i]);
+            this.world.sendMessage(GEEvents.REMOVE_CLASS_COMPONENT, this, allComponentArray[i]);
         }
         this.componentList = []
     }
@@ -332,7 +332,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     protected removeAllFuncComponents(): void {
         const funCompArray = this.getAllFunCompoents()
         funCompArray.forEach( c => {
-            this.game.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c.Id)
+            this.world.sendMessage(GEEvents.REMOVE_FUNC_COMPONENT, c.Id)
         })
         this.funComponentMap.clear()
     }

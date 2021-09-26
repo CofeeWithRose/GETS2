@@ -1,4 +1,4 @@
-import {AbstractMnager} from "../../../core/implement/AbstractManager";
+import {AbstractSystem} from "../../../core/implement/AbstractSystem";
 import GameObjectManagerInterface from "../interface/GameObjectManagerInterface";
 import AbstractManagerConfig from "../../../core/interface/AbstractManagerConfig";
 import {GE} from "../../../core/implement/GE";
@@ -7,12 +7,12 @@ import SimpleMap from "../../../util/map/implement/SimpleMap";
 import { GameObject } from "./data/GameObject";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 
-export default class GameObjectManager extends AbstractMnager implements GameObjectManagerInterface {
+export default class GameObjectManager extends AbstractSystem implements GameObjectManagerInterface {
 
     constructor(game: GE,config: AbstractManagerConfig){
         super(game, config);
-        this.game.subscribeMssage( GEEvents.ADD_GAMEOBJECT, this.addGameObject );
-        this.game.subscribeMssage( GEEvents.REMOVE_GAMEOBJECT, this.removeGameObject);
+        this.world.subscribeMssage( GEEvents.ADD_GAMEOBJECT, this.addGameObject );
+        this.world.subscribeMssage( GEEvents.REMOVE_GAMEOBJECT, this.removeGameObject);
     };
 
     protected idMap = new SimpleMap<number, GameObject>();

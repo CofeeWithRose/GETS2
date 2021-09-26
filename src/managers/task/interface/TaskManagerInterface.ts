@@ -1,6 +1,6 @@
-import {AbstractManagerInterface} from "../../../core/interface/AbstractManagerInterface";
+import {AbstractSystemInterface} from "../../../core/interface/AbstractManagerInterface";
 
-export default interface TaskManagerInterface extends AbstractManagerInterface {
+export default interface TaskManagerInterface extends AbstractSystemInterface {
     
 }
 
