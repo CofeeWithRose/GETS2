@@ -13,8 +13,8 @@ import AbstractComponentLoader from "../../../core/implement/AbstractComponentLo
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
 export default class TaskSystem extends AbstractSystem implements TaskSystemInterface {
-    constructor(game: GE, config: TaskMnagerConfigInterface) {
-        super(game, config);
+    constructor(world: GE, config: TaskMnagerConfigInterface) {
+        super(world, config);
         this.configParser = new ConfigParser(config);
         this.addGEEvemtListener(GEEvents.ADD_SYSTEM, this.addInstanceTask)
         this.addGEEvemtListener(GEEvents.START, this.onStart);

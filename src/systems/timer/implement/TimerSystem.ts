@@ -6,8 +6,8 @@ import { GE } from "../../../core/implement/GE";
 
 export class TimerSystem extends AbstractSystem implements TimerSystemInterfce {
 
-    constructor(game: GE ,config: AbstractSystemConfig){
-        super(game, config);
+    constructor(world: GE ,config: AbstractSystemConfig){
+        super(world, config);
     }
 
     //单位秒(s).

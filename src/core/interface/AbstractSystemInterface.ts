@@ -21,5 +21,5 @@ export interface AbstractSystemInterface extends AbstractGEObjectInterface {
 }
 
 export interface AbstractSystemConstructor<P extends any[]> {
-    new ( game: GE, ...params:P): AbstractSystemInterface
+    new ( world: GE, ...params:P): AbstractSystemInterface
 }

@@ -10,8 +10,8 @@ export interface InputConfig {
 }
 export class InputSystem extends AbstractSystem implements InputSystemInterface {
 
-    constructor(game: GE,config: InputConfig){
-        super(game, config);
+    constructor(world: GE,config: InputConfig){
+        super(world, config);
         window.addEventListener('keydown', event => {
             const defaultKeys = config.defaultKeys||[]
             if(defaultKeys.includes(event.key as KeyBoard)) {

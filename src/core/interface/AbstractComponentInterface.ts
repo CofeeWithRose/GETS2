@@ -3,7 +3,6 @@ import {AbstractComponentLoaderInterface} from "./AbstractComponentLoaderInterfa
 import { GE } from "../implement/GE";
 import { AbstractSystemConstructor } from "./AbstractSystemInterface";
 import AbstractComponentLoader from "../implement/AbstractComponentLoader";
-import { Transform } from "../../components/Transform";
 
 export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
@@ -31,7 +30,7 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
 
 export interface AbstractComponentConstructor {
-    new (game: GE): AbstractComponentInterface
+    new (world: GE, props: any): AbstractComponentInterface
 }
 
 export type FunComponent<T extends {} = {}, Props extends {}=any> = (  ge: GE, obj: AbstractComponentLoader,  props: Props) => T
@@ -40,7 +39,7 @@ export type ComponentType = AbstractComponentConstructor| FunComponent<any, any>
 
 export type FuncCompProps<FunC>  = FunC extends  FunComponent<any, infer P>? P : never
 
-export type CompProps<C extends ComponentType> = C extends AbstractComponentConstructor? (InstanceType<C>['init'] extends ((p:infer P ) => any) ? P : never) : FuncCompProps<C>
+export type CompProps<C extends ComponentType> = C extends AbstractComponentConstructor? ConstructorParameters<C>[1] : FuncCompProps<C>
 
 export type ComponentInstance<ComponentType> =  ComponentType extends AbstractComponentConstructor? InstanceType<ComponentType>: 
 ComponentType extends FunComponent<infer T, any>? {Id: number, funcType: Function}&T : never

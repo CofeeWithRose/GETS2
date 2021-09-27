@@ -12,8 +12,8 @@ const defaultOptions: EntityOptions = {
 }
 export  class Entity extends AbstractComponentLoader {
 
-    constructor(game: GE, options?:EntityOptions) {
-        super(game);
+    constructor(world: GE, options?:EntityOptions) {
+        super(world);
         options = {...defaultOptions, ...options}
         this.hasLoaded = options.hadLoaded
         this.name = options.name

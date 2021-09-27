@@ -11,11 +11,11 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
   
     private componentLoader: AbstractComponentLoaderInterface;
 
-    private game: GE
+    private world: GE
 
-    constructor(game: GE){
+    constructor(world: GE, props: any){
         super()
-        this.game = game
+        this.world = world
     }
 
     get Entity(){
@@ -27,7 +27,7 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
     }
 
     getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C>{
-        return this.game.getSystem( systemConstructor);
+        return this.world.getSystem( systemConstructor);
     }
 
     init = EMPTY_TASK

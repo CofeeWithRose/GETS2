@@ -1,6 +1,6 @@
 {
   "name": "ecs-ge",
-  "version": "0.0.37",
+  "version": "0.0.40",
   "main": "lib/index.js",
   "files": [
     "lib"

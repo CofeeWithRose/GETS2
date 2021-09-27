@@ -13,8 +13,8 @@ export class Renderer extends AbstractSystem {
 
     protected pixiSourceId: number
 
-    constructor(game:GE, config: RendererCfg) {
-        super(game, config);
+    constructor(world:GE, config: RendererCfg) {
+        super(world, config);
         this.irender = new IRender(config.canvas, { maxNumber:  config.maxSize, autoUpdate:false })
         this.loadAPixi()
     }

@@ -81,5 +81,5 @@ export interface AbstractComponentLoaderInterface extends AbstractGEObjectInterf
 };
 
 export interface AbstractComponentLoaderConstructor {
-    new (game: GE): AbstractComponentLoaderInterface
+    new (world: GE): AbstractComponentLoaderInterface
 }

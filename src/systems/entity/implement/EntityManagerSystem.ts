@@ -9,8 +9,8 @@ import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 
 export default class EntityManagerSystem extends AbstractSystem implements EntityManagerSystemInterface {
 
-    constructor(game: GE,config: AbstractSystemConfig){
-        super(game, config);
+    constructor(world: GE,config: AbstractSystemConfig){
+        super(world, config);
         this.world.subscribeMssage( GEEvents.ADD_ENTITY, this.addEntity );
         this.world.subscribeMssage( GEEvents.REMOVE_Entity, this.removeEntity);
     };

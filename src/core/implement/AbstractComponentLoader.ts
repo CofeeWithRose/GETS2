@@ -162,10 +162,9 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     }
 
     protected loadClassComponent<C extends AbstractComponentConstructor> (
-        componentClass: C, params:  CompProps<C>
+        componentClass: C, props:  CompProps<C>
     ): InstanceType<C> {
-        const component = new componentClass(this.world)
-        component.init(params)
+        const component = new componentClass(this.world, props)
         this.componentList.push( component);
         component.Entity = <any>this;
         if(this.isActive){
