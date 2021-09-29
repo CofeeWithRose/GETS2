@@ -20,7 +20,7 @@ export interface TransformInfer {
 
   getScale(): Readonly<Vec2>
 
-  setScale(newScale: Vec2): void
+  setScale(x: number, y: number): void
 
   getPosition(): Vec2
 
@@ -97,18 +97,15 @@ export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> = 
     function getScale(): Readonly<Vec2> {
       return scale
     }
-    function setScale(newScale: Vec2) {
+    function setScale(x: number, y: number) {
       _children.forEach((child) => {
         const _transform = child.getComponent(TransFormFun)
         if (_transform) {
           const childScale = _transform.getScale()
 
-          const scaledX = newScale.x/_transform.scale.x
-          const scaledY = newScale.y/_transform.scale.y
-          _transform.setScale({
-            x: childScale.x * scaledX,
-            y: childScale.y * scaledY,
-          })
+          const scaledX = x/_transform.scale.x
+          const scaledY = y/_transform.scale.y
+          _transform.setScale(x, y)
 
           const childPosition = _transform.getPosition()
           const distX = childPosition.x - _transform.position.x
@@ -119,8 +116,8 @@ export const Transform: FunComponent<TransformInfer, Partial<TransformProps>> = 
           )
         }
       })
-      scale.x = newScale.x
-      scale.y = newScale.y
+      scale.x = x
+      scale.y = y
       transform.scaleChanged = true
       
     }
