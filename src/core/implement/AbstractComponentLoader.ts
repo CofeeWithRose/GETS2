@@ -94,7 +94,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
 
     abstract findChildren(id: number): AbstractComponentLoader
 
-    abstract destory(): void
+    abstract destroy(): void
 
     // protected curFunCompInfo: { type: ComponentType, id: number}
 

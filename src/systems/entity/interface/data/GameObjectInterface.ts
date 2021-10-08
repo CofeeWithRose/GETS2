@@ -2,7 +2,7 @@ import {AbstractComponentLoaderInterface} from "../../../../core/interface/Abstr
 
 export default interface EntityInterface extends AbstractComponentLoaderInterface {
 
-    destory():void;
+    destroy():void;
 
     readonly Parent: EntityInterface
 

@@ -48,7 +48,7 @@ export  class Entity extends AbstractComponentLoader {
         return this.children.find( ({Id}) => Id === id )
     }
 
-    destory = () => {
+    destroy = () => {
         const objs: Entity[] = [this]
         for(let i =0 ;i< objs.length; i++) {
             objs.push(...objs[i].children)

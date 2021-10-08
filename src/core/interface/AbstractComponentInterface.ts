@@ -10,7 +10,7 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
 
     getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C ): InstanceType<C>
 
-    destory?(): void
+    destroy?(): void
 
     init(...params: any[]): void
 

@@ -56,7 +56,7 @@ export class MoveController extends AbstractComponent {
     this.position = this.transform.getPosition()
   }
 
-  destory = ()  => {
+  destroy = ()  => {
     this.hitTest && this.hitTest.off('hitting', this.handleHitting)
   }
 
