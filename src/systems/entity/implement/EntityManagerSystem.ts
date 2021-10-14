@@ -86,7 +86,6 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     }
 
     protected removeType(compType: ComponentType, entity: Entity) {
-        if(entity.tag !== 'EVENT') debugger
         let entities: Entity[] = this.componentEntityMap.get(compType)
         // check wheather has more than one same type component.
         if(!entities|| entity.getComponent(compType)) return
