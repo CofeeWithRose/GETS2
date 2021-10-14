@@ -4,8 +4,6 @@ export default abstract class AbstractGEObject {
     
     readonly id = Uuid.getUuid();
 
-    
-
     get Id(){
         return this.id;
     }

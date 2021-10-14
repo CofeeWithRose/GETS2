@@ -5,6 +5,8 @@ import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import { Entity, EntityOptions } from "../../systems/entity/implement/data/Entity";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
+import { ComponentType } from "../interface/AbstractComponentInterface";
+import EntityManagerSystem from "../../systems/entity/implement/EntityManagerSystem";
 
 
 export  class GE {
@@ -61,14 +63,15 @@ export  class GE {
         this.emitor.emit(GEEvents.DESTROY)
     }
 
-    
+    findEntities(componnetType: ComponentType ): Entity[]  {
+       return this.getSystem(EntityManagerSystem).findEntities(componnetType) 
+    }
 
     /**
      * 注入一个 systemConfig.
      * @param systemConfig 
      */
     initSystem( systemConfig: SystemConfig<any>){
-
         this.checkStarted( this.INIT_ERROR );
         const system = new systemConfig.systemConstructor(this, systemConfig.config);
         this.systemList.push(system)
@@ -93,8 +96,7 @@ export  class GE {
      * 获取实例化的 system.
      * @param systemConstructor 
      */
-    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C> {
-
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): undefined|InstanceType<C> {
         for(let i=0; i<this.systemList.length; i++){
             if(this.systemList[i] instanceof systemConstructor){
                 return this.systemList[i] as InstanceType<C>

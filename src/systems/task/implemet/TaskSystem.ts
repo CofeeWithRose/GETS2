@@ -102,8 +102,8 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         this.addedTask.forEach( task => task.func() )
         this.addedTask = []
     }
-    protected onRemoveFunComponent = (funcCompId: number) => {
-        this.removingFuncCompIdList.push(funcCompId)
+    protected onRemoveFunComponent = (_, component: ComponentInstance<ComponentType>) => {
+        this.removingFuncCompIdList.push(component.Id)
     }
 
     protected recordFunTask(taskId: number, taskType: TaskType, componentId?: number) {

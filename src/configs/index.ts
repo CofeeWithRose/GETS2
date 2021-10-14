@@ -6,7 +6,7 @@ import {taskConig} from "./TaskConig";
 import { InitConfigInterface, SystemConfig } from "../core/interface/InitConfigInterface";
 import { Fps } from "../systems/Fps";
 import { Transformer } from "../systems/Transformer";
-import { KeyBoard } from "src/systems/input/interface/data/enum";
+import { KeyBoard } from "../systems/input/interface/data/enum";
 
 export const createConfig = (
   canvas: HTMLCanvasElement, 

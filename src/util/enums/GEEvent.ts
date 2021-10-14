@@ -39,7 +39,7 @@ export interface GEEventsMap {
 
     [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
 
-    [GEEvents.REMOVE_FUNC_COMPONENT]: (funCompId: number) => void
+    [GEEvents.REMOVE_FUNC_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>) => void
     [GEEvents.ADD_FUNC_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>, componentClass: FunComponent) => void
 
 }

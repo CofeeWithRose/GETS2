@@ -42,7 +42,7 @@ export type FuncCompProps<FunC>  = FunC extends  FunComponent<any, infer P>? P :
 export type CompProps<C extends ComponentType> = C extends AbstractComponentConstructor? ConstructorParameters<C>[1] : FuncCompProps<C>
 
 export type ComponentInstance<ComponentType> =  ComponentType extends AbstractComponentConstructor? InstanceType<ComponentType>: 
-ComponentType extends FunComponent<infer T, any>? {Id: number, funcType: Function}&T : never
+ComponentType extends FunComponent<infer T, any>? {Id: number, funcType: FunComponent}&T : never
 
 export type ComponentInfo<C extends ComponentType> = {componentClass: C, props: CompProps<C>}
 
