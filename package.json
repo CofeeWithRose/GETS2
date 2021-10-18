@@ -1,12 +1,13 @@
 {
   "name": "ecs-ge",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "sideEffects": false,
   "dependencies": {
+    "ecs-ge": "^0.0.46",
     "i-render": "^0.0.39"
   },
   "devDependencies": {

@@ -255,7 +255,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     protected removeFunComponent<C extends ComponentType> (
         component: ComponentInstance<C>
     ): void {
-        const componentList = this.funComponentMap.get(component.type)
+        const componentList = this.funComponentMap.get(component.funcType)
         if (componentList?.length) {
             const index = componentList.indexOf(component)
             if(index < 0) return
