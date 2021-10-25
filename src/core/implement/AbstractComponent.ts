@@ -11,7 +11,7 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
   
     private componentLoader: AbstractComponentLoaderInterface;
 
-    private world: GE
+    protected world: GE
 
     constructor(world: GE, props: any){
         super()
@@ -26,7 +26,7 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
         this.componentLoader = componentLoader;
     }
 
-    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C>{
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): undefined|InstanceType<C>{
         return this.world.getSystem( systemConstructor);
     }
 

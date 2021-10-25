@@ -8,7 +8,7 @@ export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
     Entity: AbstractComponentLoaderInterface;
 
-    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C ): InstanceType<C>
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C ): undefined|InstanceType<C>
 
     destroy?(): void
 
