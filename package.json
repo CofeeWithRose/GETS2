@@ -1,6 +1,6 @@
 {
   "name": "ecs-ge",
-  "version": "0.0.51",
+  "version": "0.0.53",
   "main": "lib/index.js",
   "files": [
     "lib"
@@ -45,5 +45,8 @@
     "url": "https://github.com/CofeeWithRose/GETS2/issues"
   },
   "homepage": "https://github.com/CofeeWithRose/GETS2#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "ecs-ge": "^0.0.50"
+  }
 }

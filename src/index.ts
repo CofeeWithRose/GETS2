@@ -5,7 +5,6 @@ export { GE } from "./core/implement/GE";
 export { createConfig } from './configs'
 export {InitConfigInterface} from "./core/interface/InitConfigInterface";
 export {Entity} from "./systems/entity/implement/data/Entity";
-export { KeyBoard } from "./systems/input/interface/data/enum";
 export { AbstractComponent } from "./core/implement/AbstractComponent";
 // export { Render2DComp, Render2DCompInfer } from './components/render2D/implement/Render2DComp'
 // export * from './components/animation2D/Animation'
