@@ -10,7 +10,6 @@ export { AbstractComponent } from "./core/implement/AbstractComponent";
 // export * from './components/animation2D/Animation'
 export { Transform, Vec2, TransformInfer } from './components/Transform'
 export { TimerSystem as TimerManager} from "./systems/timer/implement/TimerSystem";
-export { Fps } from './systems/Fps'
 export type { FunComponent } from './core/interface/AbstractComponentInterface'
 export { AbstractSystem } from './core/implement/AbstractSystem'
 export { AbstractComponentLoader, EntityManagerSystem }
