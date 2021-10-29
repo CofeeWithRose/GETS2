@@ -5,35 +5,14 @@ import TaskMnagerConfigInterface from "../systems/task/interface/config/TaskMnag
  export const taskConig: TaskMnagerConfigInterface = {
     start: [
         {
-          methodName: 'init',
-          scope: [ AbstractSystem ],
-        },
-        {
-            methodName: 'awake',
-            scope: [ AbstractComponent ],
-        },
-        {
             methodName: 'start',
             scope: [AbstractSystem, AbstractComponent ],
         },
     ],
     loop: [
         {
-          methodName: 'beforeUpdate',
-          scope: [ AbstractSystem ],
-        },
-        {
-            methodName: 'willUpdate',
-            scope: [ AbstractComponent, AbstractSystem],
-        },
-        {
             methodName: 'update',
-            scope: [ AbstractSystem, AbstractComponent ],
-        },
-        {
-            methodName: 'updated',
-            scope: [ AbstractComponent, AbstractSystem ],
-            sequence: 'negative',
+            scope: [ AbstractSystem ],
         },
         {
             methodName: 'afterUpdated',
@@ -43,10 +22,6 @@ import TaskMnagerConfigInterface from "../systems/task/interface/config/TaskMnag
     end: [
         {
             methodName: 'destroy',
-            scope: [ AbstractComponent ],
-        },
-        {
-            methodName: 'destroyed',
             scope: [ AbstractComponent ],
         },
     ],

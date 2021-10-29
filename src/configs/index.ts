@@ -6,9 +6,7 @@ import { InitConfigInterface, SystemConfig } from "../core/interface/InitConfigI
 import { Fps } from "../systems/Fps";
 import { Transformer } from "../systems/Transformer";
 
-export const createConfig = (
-  canvas: HTMLCanvasElement, 
-): InitConfigInterface =>  ({
+export const createConfig = (): InitConfigInterface =>  ({
     systemConfig:[
         {
             systemConstructor: TaskSystem,
