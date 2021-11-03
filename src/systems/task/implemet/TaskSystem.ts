@@ -107,7 +107,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
     }
 
     protected recordFunTask(taskId: number, taskType: TaskType, componentId?: number) {
-        const compId= isNaN(componentId)? this.curFunComponentId : componentId
+        const compId= componentId?? this.curFunComponentId
         let muiMap = this.funCompTaskId.get(compId)
         if(!muiMap) {
             muiMap =  MutiValueMap<TaskType, number>()
@@ -136,13 +136,13 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         }
     };
 
-    private removeInstanceTask(idInfo: MutiValueMapInfer<TaskType, number> ){
-        this.removeTasks(idInfo, TaskType.START);
-        this.removeTasks(idInfo, TaskType.LOOP);
-        this.removeTasks(idInfo, TaskType.END);
+    private removeInstanceTask(idInfo?: MutiValueMapInfer<TaskType, number> ){
+        this.removeTasks(TaskType.START, idInfo);
+        this.removeTasks(TaskType.LOOP, idInfo);
+        this.removeTasks(TaskType.END, idInfo);
     };
 
-    private removeTasks( idInfo: MutiValueMapInfer<TaskType, number>, taskType: TaskType ){
+    private removeTasks(taskType: TaskType, idInfo?: MutiValueMapInfer<TaskType, number> ){
         if(idInfo){
             const taskIdArray = idInfo.get(taskType);
             if(taskIdArray){
@@ -238,6 +238,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         const endArray = info?.get(TaskType.END)||[]
         this.end.runTasks(endArray)
         this.removeInstanceTask(info)
+        this.funCompTaskId.delete(cid)
     }
 
 

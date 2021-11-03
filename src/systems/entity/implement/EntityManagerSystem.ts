@@ -3,7 +3,6 @@ import EntityManagerSystemInterface from "../interface/EntityManagerSystemInterf
 import AbstractSystemConfig from "../../../core/interface/AbstractSystemConfig";
 import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
-import SimpleMap from "../../../util/map/implement/SimpleMap";
 import { Entity } from "./data/Entity";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
 import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../../core/interface/AbstractComponentInterface";
@@ -11,7 +10,7 @@ import { getComponentTypeChain } from "../../../core/util";
 
 export default class EntityManagerSystem extends AbstractSystem implements EntityManagerSystemInterface {
 
-    protected idMap = new SimpleMap<number, Entity>();
+    protected idMap = new Map<number, Entity>();
 
     protected nameMap = MutiValueMap<string, Entity>()
 
@@ -42,11 +41,11 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     };
 
     removeEntity = ( entity: Entity) => {
-        this.idMap.remove( entity.Id );
+        this.idMap.delete( entity.Id );
         this.nameMap.removeValue(entity.name, entity)
     }
 
-    findEntityById( entityId: number): Entity {
+    findEntityById( entityId: number): Entity|undefined {
         return this.idMap.get(entityId);
     }
 
@@ -69,7 +68,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
 
     protected addTypeEntity(compType: ComponentType, entity: Entity) {
         if(!compType) console.warn('compType', compType);
-        let entities: Entity[] = this.componentEntityMap.get(compType)
+        let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
         if(!entities) {
             entities = []
             this.componentEntityMap.set(compType, entities)
@@ -86,7 +85,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     }
 
     protected removeType(compType: ComponentType, entity: Entity) {
-        let entities: Entity[] = this.componentEntityMap.get(compType)
+        let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
         // check wheather has more than one same type component.
         if(!entities|| entity.getComponent(compType)) return
         // rmove component.

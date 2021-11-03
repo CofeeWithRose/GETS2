@@ -1,5 +1,4 @@
 import TaskFolwInterface, { TaskOptions } from "../interface/TaskFlowInterface";
-import SimpleMap from "../../../../util/map/implement/SimpleMap";
 
 class TaskRecord {
 
@@ -23,7 +22,7 @@ export class TaskFlow implements TaskFolwInterface{
 
     private taskId: number = 1;
 
-    private idTaskMap: SimpleMap<number, TaskRecord> = new SimpleMap<number, TaskRecord>();
+    private idTaskMap = new Map<number, TaskRecord>();
 
     private tasks: Array<Array<Function>> = new Array<Array<Function>>();
 
@@ -76,7 +75,7 @@ export class TaskFlow implements TaskFolwInterface{
                 const taskInd: number = taskArray.indexOf(taskRecord.task);
                 if(taskInd > -1){
                     taskArray.splice(taskInd, 1);
-                    this.idTaskMap.remove(taskId);
+                    this.idTaskMap.delete(taskId);
                 }
             }
         }
@@ -133,7 +132,7 @@ export class TaskFlow implements TaskFolwInterface{
     public runTasks(taskIdList: number[]): void{
         this.isRunning = true;
         const taskRecordList = taskIdList.map( taskId => {
-            return this.idTaskMap.get(taskId);
+            return this.idTaskMap.get(taskId) as TaskRecord;
         })
         taskRecordList.sort(({priority: p1}, {priority: p2}) => p1-p2 )
         .forEach(({task}) => {
@@ -150,9 +149,9 @@ export class TaskFlow implements TaskFolwInterface{
 
     public clearAll(): void {
 
-        this.idTaskMap = new SimpleMap<number, TaskRecord>();
+        this.idTaskMap.clear();
 
-        this.tasks = new Array<Array<Function>>();
+        this.tasks = [];
     }
        
 }
