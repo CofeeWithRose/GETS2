@@ -104,6 +104,18 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
     }
     protected onRemoveFunComponent = (_, component: ComponentInstance<ComponentType>) => {
         this.removingFuncCompIdList.push(component.Id)
+        const info = this.funCompTaskId.get(component.Id)
+        const endArray = info?.get(TaskType.END)||[]
+        this.end.runTasks(endArray)
+        this.removeTasks(TaskType.END, info);
+    }
+
+    protected handleRemoveComp(compId: number) {
+        const idInfo = this.instanceTaskId.get(compId);
+        if(!idInfo) return
+        const endIdList = idInfo.get(TaskType.END)
+        this.end.runTasks(endIdList)
+        this.removeTasks(TaskType.END, idInfo);
     }
 
     protected recordFunTask(taskId: number, taskType: TaskType, componentId?: number) {
@@ -156,13 +168,11 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
     private onRemoveComponent = (_: AbstractComponentLoader, component: ComponentInstance<ComponentType>) => {
       this.removingClassComponentList.push(component)
+      this.handleRemoveComp(component.Id)
     };
 
     private removeComponent = (component: AbstractComponentInterface) => {
         const idInfo = this.instanceTaskId.get(component.Id);
-        if(!idInfo) return
-        const endIdList = idInfo.get(TaskType.END)
-        this.end.runTasks(endIdList)
         this.removeInstanceTask(idInfo);
         this.instanceTaskId.delete(component.Id);
     }
@@ -235,8 +245,8 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
     protected removeFunComponent(cid: number) {
         const info = this.funCompTaskId.get(cid)
-        const endArray = info?.get(TaskType.END)||[]
-        this.end.runTasks(endArray)
+        // const endArray = info?.get(TaskType.END)||[]
+        // this.end.runTasks(endArray)
         this.removeInstanceTask(info)
         this.funCompTaskId.delete(cid)
     }
