@@ -10,12 +10,12 @@ export function Canvas2dText() {
 
     const canvasRef = useRef<(HTMLCanvasElement|null)[]>([])
     const text = '杀害'
-    const fontSize = 150;
+    const fontSize = 12;
     const fontFamily = 'fantasy'
     const lineHeight = fontSize
     // fantasy
     // auto
-    const font = `bold ${fontSize}px/${lineHeight}px ${fontFamily}`
+    const font = `bold ${Math.max(fontSize, 12)}px/${lineHeight}px ${fontFamily}`
     const positioon = {x: 0, y: 50}
     const canvasSize= {width: 500, height: 500}
     const canvasStyleSize = { width: canvasSize.width/devicePixelRatio , height: canvasSize.height/devicePixelRatio }
@@ -33,6 +33,7 @@ export function Canvas2dText() {
             const {
                 fontBoundingBoxAscent, fontBoundingBoxDescent, 
                 actualBoundingBoxAscent, actualBoundingBoxDescent,
+                width
             } = textMetrics
 
             console.log('fontBoundingBoxAscent,  actualBoundingBoxAscent, ', fontBoundingBoxAscent, actualBoundingBoxAscent);
@@ -42,15 +43,20 @@ export function Canvas2dText() {
             console.log('height:', boundaryHeight);
             const offsetY = (lineHeight - boundaryHeight) * 0.5
             console.log('offsetY', offsetY);
-            
-            ctx.fillText( text, positioon.x, Math.floor(positioon.y + fontBoundingBoxAscent + offsetY))
+            // ctx.fillStyle = 'white'
+            // ctx.fillRect(positioon.x, (positioon.y), width,  boundaryHeight)
 
-            ctx.fillText( text, positioon.x, Math.floor(
+            ctx.fillStyle = 'blue'
+            ctx.fillText( text, positioon.x, (positioon.y + fontBoundingBoxAscent + offsetY))
+
+         
+
+            ctx.fillText( text, positioon.x, (
                 positioon.y + fontBoundingBoxAscent + offsetY + 
                 boundaryHeight + 2*offsetY
             ))
 
-            ctx.fillText( text, positioon.x, Math.floor(
+            ctx.fillText( text, positioon.x, (
                 positioon.y + fontBoundingBoxAscent + offsetY + 
                 boundaryHeight + 2*offsetY +
                 boundaryHeight +  2*offsetY
