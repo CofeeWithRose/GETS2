@@ -11,11 +11,11 @@ export function Canvas2dText() {
     const canvasRef = useRef<(HTMLCanvasElement|null)[]>([])
     const text = '杀害'
     const fontSize = 12;
-    const fontFamily = 'fantasy'
-    const lineHeight = fontSize
+    const fontFamily = 'auto'
+    const lineHeight = '2'
     // fantasy
     // auto
-    const font = `bold ${Math.max(fontSize, 12)}px/${lineHeight}px ${fontFamily}`
+    const font = `bold ${Math.max(fontSize, 12)}px/${lineHeight} ${fontFamily}`
     const positioon = {x: 0, y: 50}
     const canvasSize= {width: 500, height: 500}
     const canvasStyleSize = { width: canvasSize.width/devicePixelRatio , height: canvasSize.height/devicePixelRatio }
@@ -36,20 +36,12 @@ export function Canvas2dText() {
                 width
             } = textMetrics
 
-            console.log('fontBoundingBoxAscent,  actualBoundingBoxAscent, ', fontBoundingBoxAscent, actualBoundingBoxAscent);
-            console.log('fontBoundingBoxDescent, actualBoundingBoxDescent,', fontBoundingBoxDescent, actualBoundingBoxDescent,);
-          
             const boundaryHeight = fontBoundingBoxDescent + fontBoundingBoxAscent
-            console.log('height:', boundaryHeight);
-            const offsetY = (lineHeight - boundaryHeight) * 0.5
-            console.log('offsetY', offsetY);
-            // ctx.fillStyle = 'white'
-            // ctx.fillRect(positioon.x, (positioon.y), width,  boundaryHeight)
+            const realLineHeight = lineHeight.includes('px')? parseInt(lineHeight) : fontSize *  parseInt(lineHeight)
+            const offsetY = (realLineHeight - boundaryHeight) * 0.5
 
             ctx.fillStyle = 'blue'
             ctx.fillText( text, positioon.x, (positioon.y + fontBoundingBoxAscent + offsetY))
-
-         
 
             ctx.fillText( text, positioon.x, (
                 positioon.y + fontBoundingBoxAscent + offsetY + 
