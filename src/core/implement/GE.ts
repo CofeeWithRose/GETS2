@@ -5,7 +5,7 @@ import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import { Entity, EntityOptions } from "../../systems/entity/implement/data/Entity";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
-import { ComponentType } from "../interface/AbstractComponentInterface";
+import { AllComponentType, ComponentType } from "../interface/AbstractComponentInterface";
 import EntityManagerSystem from "../../systems/entity/implement/EntityManagerSystem";
 
 
@@ -63,8 +63,8 @@ export  class GE {
         this.emitor.emit(GEEvents.DESTROY)
     }
 
-    findEntities(componnetType: ComponentType ): Entity[]  {
-       return this.getSystem(EntityManagerSystem).findEntities(componnetType) 
+    findEntities(componnetType: AllComponentType ): Entity[]  {
+       return this.getSystem(EntityManagerSystem)?.findEntities(componnetType)||[]
     }
 
     /**

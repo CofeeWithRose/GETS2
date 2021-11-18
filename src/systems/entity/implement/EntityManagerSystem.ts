@@ -5,7 +5,7 @@ import {GE} from "../../../core/implement/GE";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import { Entity } from "./data/Entity";
 import MutiValueMap from "../../../util/map/implement/MutiValueMap";
-import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../../core/interface/AbstractComponentInterface";
+import { AbstractComponentInterface, AllComponentType, ComponentInstance, ComponentType, FunComponent } from "../../../core/interface/AbstractComponentInterface";
 import { getComponentTypeChain } from "../../../core/util";
 
 export default class EntityManagerSystem extends AbstractSystem implements EntityManagerSystemInterface {
@@ -14,7 +14,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
 
     protected nameMap = MutiValueMap<string, Entity>()
 
-    protected componentEntityMap = new Map<ComponentType, Entity[]>()
+    protected componentEntityMap = new Map<AllComponentType, Entity[]>()
 
     constructor(world: GE,config: AbstractSystemConfig){
         super(world, config);
@@ -57,7 +57,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
       return this.nameMap.get(name)||[]
     }
 
-    findEntities(componnetType: ComponentType ): Entity[] {
+    findEntities(componnetType: AllComponentType ): Entity[] {
         return this.componentEntityMap.get(componnetType)||[]
     }
     
@@ -66,7 +66,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
         componentTypes.forEach( compType => this.addTypeEntity(compType, entity))
     }
 
-    protected addTypeEntity(compType: ComponentType, entity: Entity) {
+    protected addTypeEntity(compType: AllComponentType, entity: Entity) {
         if(!compType) console.warn('compType', compType);
         let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
         if(!entities) {
@@ -79,12 +79,12 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     }
 
     protected handleRemoveClassComp = (entity: Entity, component: AbstractComponentInterface) => {
-        const componentTypes = getComponentTypeChain(component as ComponentInstance<ComponentType>)
+        const componentTypes = getComponentTypeChain(component as ComponentInstance<AllComponentType>)
         componentTypes.forEach( compType => this.removeType(compType, entity))
         
     }
 
-    protected removeType(compType: ComponentType, entity: Entity) {
+    protected removeType(compType: AllComponentType, entity: Entity) {
         let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
         // check wheather has more than one same type component.
         if(!entities|| entity.getComponent(compType)) return

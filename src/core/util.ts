@@ -1,9 +1,9 @@
 import { AbstractComponent } from "./implement/AbstractComponent";
-import { ComponentType } from "./interface/AbstractComponentInterface";
+import { AllComponentType } from "./interface/AbstractComponentInterface";
 
-const isComponentCache = new Map<ComponentType, boolean> ()
+const isComponentCache = new Map<AllComponentType, boolean> ()
 
-export function checkIsClassComponentClass(componentClass: ComponentType): boolean {
+export function checkIsClassComponentClass(componentClass: AllComponentType): boolean {
     let res = isComponentCache.get(componentClass)
     if(res === undefined) {
         res = hasProtoType(componentClass)
@@ -13,7 +13,7 @@ export function checkIsClassComponentClass(componentClass: ComponentType): boole
 }
 
 
-function hasProtoType(componentClass: ComponentType): boolean {
+function hasProtoType(componentClass: AllComponentType): boolean {
     let type: any = componentClass;
     while(type) {
         type = Object.getPrototypeOf(type)
@@ -23,10 +23,10 @@ function hasProtoType(componentClass: ComponentType): boolean {
 }
 
 
-const typeChainCache = new Map<ComponentType, ComponentType[]>()
+const typeChainCache = new Map<AllComponentType, AllComponentType[]>()
 
-export function getComponentTypeChain(componnet: AbstractComponent): ComponentType[] {
-    let type: ComponentType = Object.getPrototypeOf(componnet).constructor
+export function getComponentTypeChain(componnet: AbstractComponent): AllComponentType[] {
+    let type: AllComponentType = Object.getPrototypeOf(componnet).constructor
     let res = typeChainCache.get(type)
     if(!res) {
         res = getPrototypeChain(type)
@@ -35,9 +35,9 @@ export function getComponentTypeChain(componnet: AbstractComponent): ComponentTy
     return res;
 }
 
-function getPrototypeChain(componentType: ComponentType): ComponentType[] {
+function getPrototypeChain(componentType: AllComponentType): AllComponentType[] {
     let type = componentType
-    const typeChain:  ComponentType[] = [type]
+    const typeChain:  AllComponentType[] = [type]
     while(type) {
         type = Object.getPrototypeOf(type)
         typeChain.push(type)

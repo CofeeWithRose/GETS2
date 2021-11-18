@@ -1,6 +1,6 @@
 import AbstractGEObject from "./AbstractGEObject";
 import {
-    AbstractComponentConstructor, AbstractComponentInterface, CompProps, FunComponent, ComponentType, ComponentInstance, ComponentInfo
+    AbstractComponentConstructor, AbstractComponentInterface, CompProps, FunComponent, ComponentType, ComponentInstance, ComponentInfo, AllComponentType
 } from "../interface/AbstractComponentInterface";
 import { GEEvents } from "../../util/enums/GEEvent";
 import { GE } from "./GE";
@@ -180,7 +180,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * 获取装载的 component.
      * @param componentConstructor 
      */
-    getComponent<C extends ComponentType> (
+    getComponent<C extends AllComponentType> (
         componentClass: C,
     ): ComponentInstance<C>|undefined {
         if(checkIsClassComponentClass(componentClass)) {
@@ -190,15 +190,15 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
         }
     }
 
-    protected getFunComponent<C extends ComponentType> (
+    protected getFunComponent<C extends AllComponentType> (
         componentClass: C,
     ): ComponentInstance<C> {
         return (this.funComponentMap.get(componentClass)||[])[0];
     }
 
-    protected getClassComponent<C extends ComponentType> (
+    protected getClassComponent<C extends AllComponentType> (
         componentClass: C,
-    ): ComponentInstance<C> {
+    ): ComponentInstance<C>|undefined {
         for(let i =0; i< this.componentList.length; i++){
             if(this.componentList[i] instanceof componentClass){
                 return this.componentList[i] as ComponentInstance<C>
@@ -229,7 +229,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
     }
 
     protected getAllFunCompoents(): {Id: number}[] {
-        const funcComponentList = []
+        const funcComponentList: {Id: number}[] = []
         const valuseIt = this.funComponentMap.values()
         while (true) {
           const next =  valuseIt.next()
