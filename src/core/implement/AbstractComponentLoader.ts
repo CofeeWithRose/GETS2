@@ -210,7 +210,7 @@ export default abstract class AbstractComponentLoader extends AbstractGEObject {
      * 获取该类型的所有 component.
      * @param componentConstructor 
      */
-    getComponents<C extends ComponentType> (
+    getComponents<C extends AllComponentType> (
         componentClass: C
     ): ComponentInstance<C>[] {
         if(checkIsClassComponentClass(componentClass)) {

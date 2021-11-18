@@ -60,6 +60,11 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     findEntities(componnetType: AllComponentType ): Entity[] {
         return this.componentEntityMap.get(componnetType)||[]
     }
+
+    findEntity(componnetType: AllComponentType ): Entity|undefined {
+        const entities = this.componentEntityMap.get(componnetType)
+        return entities? entities[0] : undefined
+    }
     
     protected handleAddClassComp = (entity: Entity, component: ComponentInstance<ComponentType>) => {
         const componentTypes = getComponentTypeChain(component)

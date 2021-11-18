@@ -5,7 +5,7 @@ import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
 import { Entity, EntityOptions } from "../../systems/entity/implement/data/Entity";
 import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
 import { Transform, TransformProps } from "../../components/Transform";
-import { AllComponentType, ComponentType } from "../interface/AbstractComponentInterface";
+import { AllComponentType, ComponentInstance, ComponentType } from "../interface/AbstractComponentInterface";
 import EntityManagerSystem from "../../systems/entity/implement/EntityManagerSystem";
 
 
@@ -63,8 +63,21 @@ export  class GE {
         this.emitor.emit(GEEvents.DESTROY)
     }
 
-    findEntities(componnetType: AllComponentType ): Entity[]  {
+    findEntities<C extends AllComponentType>(componnetType: C ): Entity[]  {
        return this.getSystem(EntityManagerSystem)?.findEntities(componnetType)||[]
+    }
+    
+    findEntity<C extends AllComponentType>(componnetType: C ): Entity|undefined  {
+        return this.getSystem(EntityManagerSystem)?.findEntity(componnetType)
+    }
+
+    findComponents<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>[]  {
+        const entities = this.getSystem(EntityManagerSystem)?.findEntities(componnetType)||[]
+        return entities.map(entity => entity.getComponents(componnetType)).flat(2) as ComponentInstance<C>[]
+    }
+
+    findComponent<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>|undefined  {
+        return this.getSystem(EntityManagerSystem)?.findEntity(componnetType)?.getComponent(componnetType)
     }
 
     /**
