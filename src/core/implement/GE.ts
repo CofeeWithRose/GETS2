@@ -72,8 +72,10 @@ export  class GE {
     }
 
     findComponents<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>[]  {
-        const entities = this.getSystem(EntityManagerSystem)?.findEntities(componnetType)||[]
-        return entities.map(entity => entity.getComponents(componnetType)).flat(2) as ComponentInstance<C>[]
+        const componentList: ComponentInstance<C>[] = []
+        const entities = this.getSystem(EntityManagerSystem)?.findEntities(componnetType)
+        entities?.forEach(entity =>componentList.push(...entity.getComponents(componnetType)))
+        return componentList
     }
 
     findComponent<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>|undefined  {
