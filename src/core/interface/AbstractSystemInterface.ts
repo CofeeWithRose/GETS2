@@ -7,17 +7,17 @@ export interface AbstractSystemInterface extends AbstractGEObjectInterface {
 
     addGEEvemtListener(ventName: GEEvents, fun : Function): void;
 
-    init(time?: number): void
+     init(): void
 
-    willUpdate(time?: number): void
+     beforeUpdate(): void
+    
+     willUpdate (): void
 
-    update(time?: number): void
+     update(): void
 
-    updated(time?: number): void
+     afterUpdated(): void
 
-    afterUpdated(): void
-
-    destroy(): void
+     destroy(): void
 }
 
 export interface AbstractSystemConstructor<P extends any[]> {

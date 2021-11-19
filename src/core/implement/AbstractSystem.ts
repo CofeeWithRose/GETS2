@@ -5,7 +5,7 @@ import { GEEventsMap } from "../../util/enums/GEEvent";
 import {GE} from "./GE";
 import { EMPTY_TASK } from "../../systems/task/interface/TaskSystemInterface";
 
-export class AbstractSystem extends AbstractGEObject implements AbstractSystemInterface {
+export abstract class AbstractSystem extends AbstractGEObject implements AbstractSystemInterface {
 
     protected world: GE
     
@@ -19,24 +19,20 @@ export class AbstractSystem extends AbstractGEObject implements AbstractSystemIn
         this.world.subscribeMssage(eventName, fun);
     };
 
-    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): InstanceType<C>{
+    getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C): undefined| InstanceType<C>{
       return this.world.getSystem(systemConstructor)
     }
 
-    init = EMPTY_TASK
+    abstract init(): void
 
-    beforeUpdate = EMPTY_TASK
+    abstract beforeUpdate(): void
     
-    willUpdate = EMPTY_TASK
+    abstract willUpdate (): void
 
-    update = EMPTY_TASK
+    abstract update(): void
 
-    updated = EMPTY_TASK
+    abstract afterUpdated(): void
 
-    afterUpdated = EMPTY_TASK
-
-    destroy(){}
-
-
+    abstract destroy(): void
 
 }

@@ -130,7 +130,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
 
     private addInstanceTask = ( component: AbstractGEObjectInterface) => {
-        
+        debugger
         const taskInfoArray = this.configParser.getTaskInfoArray(component);
         const componentTaskIdMap =  MutiValueMap<TaskType, number>();
         this.instanceTaskId.set(component.Id, componentTaskIdMap);
