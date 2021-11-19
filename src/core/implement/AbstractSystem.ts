@@ -23,16 +23,12 @@ export abstract class AbstractSystem extends AbstractGEObject implements Abstrac
       return this.world.getSystem(systemConstructor)
     }
 
-    abstract init(): void
+    start(): void{}
 
-    abstract beforeUpdate(): void
-    
-    abstract willUpdate (): void
+    update(): void{}
 
-    abstract update(): void
+    afterUpdated(): void{}
 
-    abstract afterUpdated(): void
-
-    abstract destroy(): void
+    destroy(): void{}
 
 }

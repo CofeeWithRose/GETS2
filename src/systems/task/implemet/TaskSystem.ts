@@ -29,7 +29,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
     private configParser: ConfigParser;
 
-    private start = new TaskFlow(TaskType.START);
+    private startFlow = new TaskFlow(TaskType.START);
 
     private loop = new TaskFlow(TaskType.LOOP);
 
@@ -63,7 +63,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         for(let i =0; i< tarskInfoArray.length; i++) {
             const taskInfo = tarskInfoArray[i]
             if(taskInfo.taskNames === methodName){
-                if(taskInfo.taskType === 'start') {
+                if(taskInfo.taskType === TaskType.START) {
                     this.hasNewComponent = true
                     this.curRun = this.runAll
                     const startFun = () => {
@@ -130,15 +130,14 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
 
     private addInstanceTask = ( component: AbstractGEObjectInterface) => {
-        debugger
         const taskInfoArray = this.configParser.getTaskInfoArray(component);
         const componentTaskIdMap =  MutiValueMap<TaskType, number>();
         this.instanceTaskId.set(component.Id, componentTaskIdMap);
         for (let i = 0; i < taskInfoArray.length; i++) {
             const taskInfo = taskInfoArray[i];
             const taskFun: Function = component[taskInfo.taskNames]
-            
-            if(taskFun && taskFun !== EMPTY_TASK && taskFun instanceof Function){
+            const emptyTask = AbstractSystem.prototype[taskInfo.taskNames]
+            if(taskFun && taskFun !== emptyTask && taskFun instanceof Function){
                 const taskId = this[taskInfo.taskType].addTask(taskFun.bind(component), { 
                   priority: taskInfo.taskPriority,
                   sequence: taskInfo.sequence,
@@ -209,8 +208,8 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
     protected runStatrtTask = (time: number) => {
         this.hasNewComponent = false
         this.curRun = this.runLoop
-        this.start.runTask(time);
-        this.start.clearAll();
+        this.startFlow.runTask(time);
+        this.startFlow.clearAll();
     }
 
     protected runAll = () => {

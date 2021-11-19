@@ -4,14 +4,9 @@ import { GE } from "../implement/GE";
 
 export interface AbstractSystemInterface extends AbstractGEObjectInterface {
     
-
     addGEEvemtListener(ventName: GEEvents, fun : Function): void;
 
-     init(): void
-
-     beforeUpdate(): void
-    
-     willUpdate (): void
+     start(): void
 
      update(): void
 

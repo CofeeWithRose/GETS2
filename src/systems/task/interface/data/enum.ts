@@ -1,5 +1,5 @@
 export enum TaskType {
-    START = 'start',
+    START = 'startFlow',
     LOOP = 'loop',
     END = 'end',
 }
