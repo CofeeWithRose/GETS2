@@ -34,7 +34,6 @@ export  class GE {
         this.checkStarted( this.INIT_ERROR );
         this.initSystemList(systemConfig);
         this.stage = new Entity(this, {hadLoaded: true})
-        this.stage.addComponent(Transform,{})
         if(logger)  this.logger = logger
     };
 
@@ -73,14 +72,11 @@ export  class GE {
     }
 
     findComponents<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>[]  {
-        const componentList: ComponentInstance<C>[] = []
-        const entities = this.getSystem(EntityManagerSystem)?.findEntities(componnetType)
-        entities?.forEach(entity =>componentList.push(...entity.getComponents(componnetType)))
-        return componentList
+        return this.getSystem(EntityManagerSystem)?.findComponents(componnetType)||[]
     }
 
     findComponent<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>|undefined  {
-        return this.getSystem(EntityManagerSystem)?.findEntity(componnetType)?.getComponent(componnetType)
+        return this.getSystem(EntityManagerSystem)?.findComponent(componnetType)
     }
 
     /**

@@ -14,7 +14,9 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
 
     protected nameMap = MutiValueMap<string, Entity>()
 
-    protected componentEntityMap = new Map<AllComponentType, Entity[]>()
+    protected componentType2EntityIndex = new Map<AllComponentType, Entity[]>()
+
+    protected componentIndex = new Map<AllComponentType, ComponentInstance<AllComponentType>[]>()
 
     constructor(world: GE,config: AbstractSystemConfig){
         super(world, config);
@@ -58,25 +60,44 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     }
 
     findEntities(componnetType: AllComponentType ): Entity[] {
-        return this.componentEntityMap.get(componnetType)||[]
+        return this.componentType2EntityIndex.get(componnetType)||[]
     }
 
     findEntity(componnetType: AllComponentType ): Entity|undefined {
-        const entities = this.componentEntityMap.get(componnetType)
+        const entities = this.componentType2EntityIndex.get(componnetType)
         return entities? entities[0] : undefined
     }
+
+    findComponents<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>[] {
+        return this.componentIndex.get(componnetType)||[]
+    }
     
-    protected handleAddClassComp = (entity: Entity, component: ComponentInstance<ComponentType>) => {
+    findComponent<C extends AllComponentType>(componnetType: C ): ComponentInstance<C>|undefined  {
+        return this.findComponents(componnetType)[0]
+    }
+    protected handleAddClassComp = (entity: Entity, component: ComponentInstance<AllComponentType>) => {
         const componentTypes = getComponentTypeChain(component)
-        componentTypes.forEach( compType => this.addTypeEntity(compType, entity))
+        componentTypes.forEach( compType => {
+            this.addTypeEntity(compType, entity)
+            this.addComponentIndex(compType, component)
+        })
+    }
+
+    protected addComponentIndex(compType: AllComponentType, component: ComponentInstance<AllComponentType>) {
+        let componentList = this.componentIndex.get(compType)
+        if(!componentList) {
+            componentList = []
+            this.componentIndex.set(compType, componentList)
+        }
+        componentList.push(component)
     }
 
     protected addTypeEntity(compType: AllComponentType, entity: Entity) {
         if(!compType) this.world.logger.warn('compType', compType);
-        let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
+        let entities: undefined|Entity[] = this.componentType2EntityIndex.get(compType)
         if(!entities) {
             entities = []
-            this.componentEntityMap.set(compType, entities)
+            this.componentType2EntityIndex.set(compType, entities)
         }
         if(entities.indexOf(entity) < 0) {
             entities.push(entity)
@@ -85,12 +106,23 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
 
     protected handleRemoveClassComp = (entity: Entity, component: AbstractComponentInterface) => {
         const componentTypes = getComponentTypeChain(component as ComponentInstance<AllComponentType>)
-        componentTypes.forEach( compType => this.removeType(compType, entity))
+        componentTypes.forEach( compType => {
+            this.removeType(compType, entity)
+            this.removeComponentIndex(compType, component)
+        })
         
     }
 
+    protected removeComponentIndex(compType: AllComponentType, component: ComponentInstance<AllComponentType>) {
+        const componentList = this.componentIndex.get(compType)
+        if(componentList) {
+            const index = componentList.indexOf(component)
+            if(index > -1) componentList.splice(index, 1)
+        }
+    }
+
     protected removeType(compType: AllComponentType, entity: Entity) {
-        let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
+        let entities: undefined|Entity[] = this.componentType2EntityIndex.get(compType)
         // check wheather has more than one same type component.
         if(!entities|| entity.getComponent(compType)) return
         // rmove component.
@@ -100,6 +132,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
 
     protected handleAddFuncComp = (entity: Entity, component: ComponentInstance<FunComponent>) => {
         this.addTypeEntity(component.funcType, entity)
+        this.addComponentIndex(component.funcType, component)
     }
 
     protected handleRemoveFuncComp = (entity: Entity, component: ComponentInstance<ComponentType>) => {
