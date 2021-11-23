@@ -1,3 +1,4 @@
+import { LoggerInfer } from "src/core/interface/InitConfigInterface";
 import TaskFolwInterface, { TaskOptions } from "../interface/TaskFlowInterface";
 
 class TaskRecord {
@@ -13,9 +14,10 @@ class TaskRecord {
 export class TaskFlow implements TaskFolwInterface{
 
 
-    constructor(flowName: string){
+    constructor(flowName: string, logger: LoggerInfer){
 
         this.flowName = flowName;
+        this.logger = logger
     }
 
     private flowName: string = 'default';
@@ -29,6 +31,7 @@ export class TaskFlow implements TaskFolwInterface{
     private isRunning = false;
 
     private deadTempTaskIdArray = new Array<number>();
+    private logger: LoggerInfer
 
      /**
      * 
@@ -116,7 +119,7 @@ export class TaskFlow implements TaskFolwInterface{
               try{
                 taskArry[taskInd](time);
               } catch(e){
-                  console.error(e)
+                  this.logger.error(e)
               }
           }
       }
@@ -139,7 +142,7 @@ export class TaskFlow implements TaskFolwInterface{
             try{
                 task() 
             }catch(e){
-                console.error(e);
+                this.logger.error(e);
             }
         })
         this.isRunning = false;

@@ -1,4 +1,4 @@
-import  { InitConfigInterface,  SystemConfig} from "../interface/InitConfigInterface";
+import  { InitConfigInterface,  LoggerInfer,  SystemConfig} from "../interface/InitConfigInterface";
 import {AbstractSystemConstructor, AbstractSystemInterface} from "../interface/AbstractSystemInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
@@ -19,6 +19,8 @@ export  class GE {
 
     private  hasStarted = false;
 
+    logger: LoggerInfer = console
+
     isRunning = false
 
     stage: Entity
@@ -28,13 +30,12 @@ export  class GE {
      * @param initConfigs 
      */
      constructor( initConfigs: InitConfigInterface) {
-
+        const {systemConfig, logger} = initConfigs
         this.checkStarted( this.INIT_ERROR );
-
-        this.initSystemList(initConfigs.systemConfig);
-
+        this.initSystemList(systemConfig);
         this.stage = new Entity(this, {hadLoaded: true})
         this.stage.addComponent(Transform,{})
+        if(logger)  this.logger = logger
     };
 
     /**

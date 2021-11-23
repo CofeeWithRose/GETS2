@@ -72,7 +72,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
     }
 
     protected addTypeEntity(compType: AllComponentType, entity: Entity) {
-        if(!compType) console.warn('compType', compType);
+        if(!compType) this.world.logger.warn('compType', compType);
         let entities: undefined|Entity[] = this.componentEntityMap.get(compType)
         if(!entities) {
             entities = []

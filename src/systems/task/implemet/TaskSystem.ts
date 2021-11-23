@@ -13,27 +13,14 @@ import AbstractComponentLoader from "../../../core/implement/AbstractComponentLo
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
 
 export default class TaskSystem extends AbstractSystem implements TaskSystemInterface {
-    constructor(world: GE, config: TaskMnagerConfigInterface) {
-        super(world, config);
-        this.configParser = new ConfigParser(config);
-        this.addGEEvemtListener(GEEvents.ADD_SYSTEM, this.addInstanceTask)
-        this.addGEEvemtListener(GEEvents.START, this.onStart);
-        this.addGEEvemtListener(GEEvents.PAUSE, this.onPause);
-        this.addGEEvemtListener(GEEvents.ADD_CLASS_COMPONENT, this.onAddComponnet);
-        this.addGEEvemtListener(GEEvents.REMOVE_CLASS_COMPONENT, this.onRemoveComponent);
 
-        this.addGEEvemtListener(GEEvents.REGIST_TASK, this.onRegistTask)
+    private startFlow: TaskFlow
 
-        this.addGEEvemtListener(GEEvents.REMOVE_FUNC_COMPONENT, this.onRemoveFunComponent)
-    };
+    private loop: TaskFlow
+
+    private end: TaskFlow
 
     private configParser: ConfigParser;
-
-    private startFlow = new TaskFlow(TaskType.START);
-
-    private loop = new TaskFlow(TaskType.LOOP);
-
-    private end = new TaskFlow(TaskType.END);
 
     private instanceTaskId = new Map<number, MutiValueMapInfer<TaskType, number>>();
 
@@ -56,6 +43,23 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         this.addedTask.push({ cId:component.Id,  func: () => this.addInstanceTask(component)} )
         this.curRun = this.runAll
     };
+
+    constructor(world: GE, config: TaskMnagerConfigInterface) {
+        super(world, config);
+        this.configParser = new ConfigParser(config);
+        this.startFlow = new TaskFlow(TaskType.START, world.logger);
+        this.loop = new TaskFlow(TaskType.LOOP, world.logger);
+        this.end = new TaskFlow(TaskType.END, world.logger);
+        this.addGEEvemtListener(GEEvents.ADD_SYSTEM, this.addInstanceTask)
+        this.addGEEvemtListener(GEEvents.START, this.onStart);
+        this.addGEEvemtListener(GEEvents.PAUSE, this.onPause);
+        this.addGEEvemtListener(GEEvents.ADD_CLASS_COMPONENT, this.onAddComponnet);
+        this.addGEEvemtListener(GEEvents.REMOVE_CLASS_COMPONENT, this.onRemoveComponent);
+        this.addGEEvemtListener(GEEvents.REGIST_TASK, this.onRegistTask)
+        this.addGEEvemtListener(GEEvents.REMOVE_FUNC_COMPONENT, this.onRemoveFunComponent)
+    };
+
+   
 
     protected onRegistTask = (methodName: string, taskFun: Function, funCompId: number ) => {
         if(!funCompId) throw 'No comp Id'
