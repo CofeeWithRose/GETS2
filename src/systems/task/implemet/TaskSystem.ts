@@ -41,7 +41,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
     private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponent) => {
         this.hasNewComponent = true;
         this.addedTask.push({ cId:component.Id,  func: () => this.addInstanceTask(component)} )
-        this.curRun = this.runAll
+        if(this.isRunning) this.curRun = this.runAll
     };
 
     constructor(world: GE, config: TaskMnagerConfigInterface) {
@@ -69,7 +69,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
             if(taskInfo.taskNames === methodName){
                 if(taskInfo.taskType === TaskType.START) {
                     this.hasNewComponent = true
-                    this.curRun = this.runAll
+                    if(this.isRunning)  this.curRun = this.runAll
                     const startFun = () => {
                         const lastFunComponentId = this.curFunComponentId
                         this.curFunComponentId = funCompId
@@ -191,7 +191,6 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
             requestAnimationFrame(() => {
                 this.curRun()
             })
-
         }
        
     };
@@ -207,11 +206,13 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
     private emptyRun = () => {}
 
-    private curRun = this .emptyRun
+    private curRun = this.emptyRun
 
     protected runStatrtTask = (time: number) => {
         this.hasNewComponent = false
-        this.curRun = this.runLoop
+        if(this.isRunning) {
+            this.curRun = this.runLoop
+        }
         this.startFlow.runTask(time);
         this.startFlow.clearAll();
     }
