@@ -197,16 +197,13 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
     private onPause = () => {
         if(this.isRunning){
-            const tempRun = this.curRun;
-            this.curRun = this.emptyRun;
-            this.emptyRun = tempRun;
+            this.curRun = () => {}
             this.isRunning = false;
         }
     };
 
-    private emptyRun = () => {}
 
-    private curRun = this.emptyRun
+    private curRun = () => {}
 
     protected runStatrtTask = (time: number) => {
         this.hasNewComponent = false
