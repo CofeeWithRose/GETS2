@@ -12,4 +12,4 @@ export { Transform, Vec2, TransformInfer } from './components/Transform'
 export type { FunComponent } from './core/interface/AbstractComponentInterface'
 export { AbstractSystem } from './core/implement/AbstractSystem'
 export { AbstractComponentLoader, EntityManagerSystem }
-
+export { getComponentTypeChain } from './core/util'
