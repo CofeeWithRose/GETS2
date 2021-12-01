@@ -2,7 +2,7 @@ import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import { GE } from "../implement/GE";
 import { AbstractSystemConstructor } from "./AbstractSystemInterface";
 import AbstractComponentLoader from "../implement/AbstractComponentLoader";
-import EntityInterface from "src/systems/entity/interface/data/EntityInterface";
+import EntityInterface from "../../systems/entity/interface/data/EntityInterface";
 
 export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
