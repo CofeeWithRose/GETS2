@@ -2,9 +2,7 @@ import  { InitConfigInterface,  LoggerInfer,  SystemConfig} from "../interface/I
 import {AbstractSystemConstructor, AbstractSystemInterface} from "../interface/AbstractSystemInterface";
 import EventEmitor from "../../util/event/EventEmitor";
 import { GEEvents, GEEventsMap } from "../../util/enums/GEEvent";
-import { Entity, EntityOptions } from "../../systems/entity/implement/data/Entity";
-import { AbstractComponentLoaderInterface, AbstractComponentLoaderConstructor } from "../interface/AbstractComponentLoaderInterface";
-import { Transform, TransformProps } from "../../components/Transform";
+import { Entity, EntityConstructor, EntityOptions } from "../../systems/entity/implement/data/Entity";
 import { AllComponentType, ComponentInstance, ComponentType } from "../interface/AbstractComponentInterface";
 import EntityManagerSystem from "../../systems/entity/implement/EntityManagerSystem";
 
@@ -149,13 +147,12 @@ export  class GE {
      * 实例化组件容器.
      * @param componentLoader 
      */
-    instanceComponentLoader(componentLoader: AbstractComponentLoaderConstructor): AbstractComponentLoaderInterface {
+    instanceComponentLoader(componentLoader: EntityConstructor): Entity {
         return new componentLoader(this);
     } 
 
-    craeteObj(transformProps: Partial<TransformProps>, options?: Omit<EntityOptions, 'hadLoaded'>): Entity{
+    craeteObj(options?: Omit<EntityOptions, 'hadLoaded'>): Entity{
         const obj = new Entity(this, {hadLoaded: false, ...options})
-        obj.addComponent(Transform, transformProps)
         this.sendMessage( GEEvents.ADD_ENTITY, this.stage );
         return obj
     }

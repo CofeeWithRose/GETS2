@@ -1,16 +1,15 @@
 import AbstractGEObject from "./AbstractGEObject";
 import {AbstractComponentInterface} from "../interface/AbstractComponentInterface";
-import {AbstractComponentLoaderInterface} from "../interface/AbstractComponentLoaderInterface";
 import {GE} from "./GE";
 import { AbstractSystemConstructor } from "../interface/AbstractSystemInterface";
 import { EMPTY_TASK } from "../../systems/task/interface/TaskSystemInterface";
-import EntityInterface from "src/systems/entity/interface/data/EntityInterface";
+import { Entity } from "../../systems/entity/implement/data/Entity";
 
 
 export  class  AbstractComponent extends AbstractGEObject implements AbstractComponentInterface {
 
   
-    private componentLoader: EntityInterface;
+    private componentLoader: Entity;
 
     protected world: GE
 
@@ -23,7 +22,7 @@ export  class  AbstractComponent extends AbstractGEObject implements AbstractCom
         return this.componentLoader;
     };
 
-    set Entity(componentLoader: EntityInterface){
+    set Entity(componentLoader: Entity){
         this.componentLoader = componentLoader;
     }
 

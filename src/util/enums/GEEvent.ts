@@ -1,5 +1,4 @@
 import { Entity } from "../../systems/entity/implement/data/Entity";
-import AbstractComponentLoader from "../../core/implement/AbstractComponentLoader";
 import { AbstractComponentInterface, ComponentInstance, ComponentType, FunComponent } from "../../core/interface/AbstractComponentInterface";
 import { AbstractSystemInterface } from "../../core/interface/AbstractSystemInterface";
 
@@ -29,8 +28,8 @@ export interface GEEventsMap {
     [GEEvents.START]: () => void
     [GEEvents.PAUSE]: () => void
 
-    [GEEvents.ADD_CLASS_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>) => void
-    [GEEvents.REMOVE_CLASS_COMPONENT]: (entity:AbstractComponentLoader, component: AbstractComponentInterface) => void
+    [GEEvents.ADD_CLASS_COMPONENT]: (entity:Entity, component: ComponentInstance<ComponentType>) => void
+    [GEEvents.REMOVE_CLASS_COMPONENT]: (entity:Entity, component: AbstractComponentInterface) => void
 
     [GEEvents.ADD_ENTITY]: (entity:Entity) => void
     [GEEvents.REMOVE_Entity]: (entity:Entity) => void
@@ -39,7 +38,7 @@ export interface GEEventsMap {
 
     [GEEvents.REGIST_TASK]: (methodName: string, taskFun: Function, funCompId?: number) => void
 
-    [GEEvents.REMOVE_FUNC_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>) => void
-    [GEEvents.ADD_FUNC_COMPONENT]: (entity:AbstractComponentLoader, component: ComponentInstance<ComponentType>, componentClass: FunComponent) => void
+    [GEEvents.REMOVE_FUNC_COMPONENT]: (entity:Entity, component: ComponentInstance<ComponentType>) => void
+    [GEEvents.ADD_FUNC_COMPONENT]: (entity: Entity, component: ComponentInstance<ComponentType>, componentClass: FunComponent) => void
 
 }

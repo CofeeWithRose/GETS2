@@ -3,9 +3,8 @@ import {AbstractSystemConstructor, AbstractSystemInterface} from "../interface/A
 import AbstractSystemConfig from "../interface/AbstractSystemConfig";
 import { GEEventsMap } from "../../util/enums/GEEvent";
 import {GE} from "./GE";
-import { EMPTY_TASK } from "../../systems/task/interface/TaskSystemInterface";
 
-export abstract class AbstractSystem extends AbstractGEObject implements AbstractSystemInterface {
+export class AbstractSystem extends AbstractGEObject implements AbstractSystemInterface {
 
     protected world: GE
     

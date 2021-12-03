@@ -1,12 +1,11 @@
 import AbstractGEObjectInterface from "./AbstractGEObjectInterface";
 import { GE } from "../implement/GE";
 import { AbstractSystemConstructor } from "./AbstractSystemInterface";
-import AbstractComponentLoader from "../implement/AbstractComponentLoader";
-import EntityInterface from "../../systems/entity/interface/data/EntityInterface";
+import { Entity } from "../../systems/entity/implement/data/Entity";
 
 export interface AbstractComponentInterface extends AbstractGEObjectInterface {
     
-    Entity: EntityInterface;
+    Entity: Entity;
 
     getSystem<C extends AbstractSystemConstructor<any[]>>(systemConstructor: C ): undefined|InstanceType<C>
 
@@ -35,11 +34,11 @@ export interface AbstractComponentConstructor {
 
 type Constructor< T > = Function & { prototype: T }
 
-export type FunComponent<T extends {} = {}, Props extends {}=any> = (  ge: GE, obj: AbstractComponentLoader,  props: Props) => T
+export type FunComponent<T extends {} = {}, Props extends {}=any> = (  ge: GE, entity: Entity,  props: Props) => T
 
 export type ComponentType = AbstractComponentConstructor| FunComponent<any, any>
 // include astract class.
-export type AllComponentType = ComponentType | Constructor<EntityInterface>
+export type AllComponentType = ComponentType | Constructor<Entity>
 
 export type FuncCompProps<FunC>  = FunC extends  FunComponent<any, infer P>? P : never
 

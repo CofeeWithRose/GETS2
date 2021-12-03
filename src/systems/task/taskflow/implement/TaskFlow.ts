@@ -1,4 +1,4 @@
-import { LoggerInfer } from "src/core/interface/InitConfigInterface";
+import { LoggerInfer } from "../../../../core/interface/InitConfigInterface";
 import TaskFolwInterface, { TaskOptions } from "../interface/TaskFlowInterface";
 
 class TaskRecord {
@@ -120,6 +120,8 @@ export class TaskFlow implements TaskFolwInterface{
                 taskArry[taskInd](time);
               } catch(e){
                   this.logger.error(e)
+                  console.log(taskArry[taskInd]);
+                  
               }
           }
       }

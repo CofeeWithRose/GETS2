@@ -1,5 +1,5 @@
 import {AbstractSystem} from "../../../core/implement/AbstractSystem";
-import TaskSystemInterface, { EMPTY_TASK } from "../interface/TaskSystemInterface";
+import TaskSystemInterface from "../interface/TaskSystemInterface";
 import TaskMnagerConfigInterface from "../interface/config/TaskMnagerConfigInterface";
 import { GEEvents } from "../../../util/enums/GEEvent";
 import {AbstractComponentInterface, ComponentInstance, ComponentType} from "../../../core/interface/AbstractComponentInterface";
@@ -9,8 +9,8 @@ import { TaskFlow } from "../taskflow/implement/TaskFlow";
 import { TaskType } from "../interface/data/enum";
 import AbstractGEObjectInterface from "../../../core/interface/AbstractGEObjectInterface";
 import { GE } from "../../../core/implement/GE";
-import AbstractComponentLoader from "../../../core/implement/AbstractComponentLoader";
 import { AbstractComponent } from "../../../core/implement/AbstractComponent";
+import { Entity } from "src/systems/entity/implement/data/Entity";
 
 export default class TaskSystem extends AbstractSystem implements TaskSystemInterface {
 
@@ -38,7 +38,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
 
     private curFunComponentId: number
 
-    private onAddComponnet = ( gamObject:AbstractComponentLoader,  component: AbstractComponent) => {
+    private onAddComponnet = ( entity: Entity,  component: AbstractComponent) => {
         this.hasNewComponent = true;
         this.addedTask.push({ cId:component.Id,  func: () => this.addInstanceTask(component)} )
         if(this.isRunning) this.curRun = this.runAll
@@ -169,7 +169,7 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         };
     }
 
-    private onRemoveComponent = (_: AbstractComponentLoader, component: ComponentInstance<ComponentType>) => {
+    private onRemoveComponent = (_: Entity, component: ComponentInstance<ComponentType>) => {
       this.removingClassComponentList.push(component)
       this.handleRemoveComp(component.Id)
     };
