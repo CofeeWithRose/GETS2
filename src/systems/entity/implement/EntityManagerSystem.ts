@@ -137,6 +137,7 @@ export default class EntityManagerSystem extends AbstractSystem implements Entit
 
     protected handleRemoveFuncComp = (entity: Entity, component: ComponentInstance<ComponentType>) => {
         this.removeType(component.funcType, entity)
+        this.removeComponentIndex(component.funcType, component)
     }
 
 }
