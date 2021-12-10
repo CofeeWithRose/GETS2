@@ -13,9 +13,7 @@ const getTextTexture = ( text: string, font: string, lineHeight: number) => {
     if(!ctx) return
     ctx.font = font; 
     const textMetrics = ctx.measureText(text) as FixedTextMetrics
-    const { actualBoundingBoxAscent, fontBoundingBoxAscent, fontBoundingBoxDescent, width } = textMetrics
-    console.log(text,actualBoundingBoxAscent, fontBoundingBoxAscent);
-    
+    const { fontBoundingBoxAscent, fontBoundingBoxDescent, width } = textMetrics
     texture.height = lineHeight * devicePixelRatio
     texture.width = width * devicePixelRatio
 
@@ -53,17 +51,27 @@ export function Canvas2dText() {
     const canvasSize= {width: 500, height: 500}
     const canvasStyleSize = { width: canvasSize.width/devicePixelRatio , height: canvasSize.height/devicePixelRatio }
 
+
+    // fontSize: 16,
+    // color: 0xffffff,
+    // textAlign: TextAlign.LEFT,
+    // fontWeight: FontWeight.BOLDER,
+    // // fantasy
+    // // auto
+    // // Arial
+    // fontFamily: 'auto',
+    // lineHeight: '2',
     const textInfoList: FontStyle[] = [
         {
-            text: 'M',
+            text: '|',
             positioon: {x: 0, y: 0},
             fontFamily: 'auto',
             lineHeightStr: '2',
             fontSize: 16,
-            fontWeight: 'bold',
+            fontWeight: 'bolder',
         },
         {
-            text: '~!@#$%&*()_',
+            text: String.fromCharCode(0x0020),
             positioon: {x: 0, y: 0},
             fontFamily: 'auto',
             lineHeightStr: '2',
@@ -118,10 +126,12 @@ export function Canvas2dText() {
         />
 
             {
-                textInfoList.map( (info) => {
+                textInfoList.map( (info, ind) => {
                     const {positioon, text} = info
                     const {font} = getFont(info)
-                    return <span style={{ 
+                    return <span 
+                        key={ind}
+                        style={{ 
                         font, 
                         position: 'absolute', 
                         top: positioon.y, 
