@@ -2,6 +2,7 @@ import {
     GE, createConfig, EntityManagerSystem
   } from 'ge'
 import { useEffect, useRef, useState } from 'react'
+import { Test2ClassComponent } from './componnet/Test2ClassComponent'
 import { TestClassComponent } from './componnet/TestClassComponent'
 import { TestFunComponent } from './componnet/TestFunComponent'
 
@@ -19,10 +20,11 @@ export function GetComponent() {
 
     const testStart = function testStart(world:GE) {
         const startCreate= performance.now()
-        for(let i = 0; i< 10000; i++){
+        for(let i = 0; i< 5000; i++){
             const entity = world.craeteObj({name: i+''})
             entity.addComponent(TestFunComponent, {})
             entity.addComponent(TestClassComponent, {})
+            entity.addComponent(Test2ClassComponent, {})
             world.stage.addChildren(entity)
         }
         const endCreate = performance.now()

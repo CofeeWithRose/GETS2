@@ -1,5 +1,3 @@
-import { AbstractComponent } from "ge";
+import { TestBaseClassComponent } from "./TestBaseClassComponent";
 
-export class TestClassComponent extends AbstractComponent {
-    
-}
+export class TestClassComponent extends TestBaseClassComponent {}
