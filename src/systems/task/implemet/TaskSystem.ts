@@ -234,6 +234,8 @@ export default class TaskSystem extends AbstractSystem implements TaskSystemInte
         })
         this.removingFuncCompIdList = []
         this.removingClassComponentList = []
+       
+        
     }
 
     protected removeAddedTask(id: number) {

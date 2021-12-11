@@ -9,3 +9,5 @@ export type { FunComponent } from './core/interface/AbstractComponentInterface'
 export { AbstractSystem } from './core/implement/AbstractSystem'
 export { EntityManagerSystem }
 export { getComponentTypeChain } from './core/util'
+import TaskSystem  from './systems/task/implemet/TaskSystem'
+export { TaskSystem }

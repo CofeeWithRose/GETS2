@@ -1,5 +1,5 @@
 import { 
-    GE, createConfig, EntityManagerSystem
+    GE, createConfig, TaskSystem,
   } from 'ge'
 import { useEffect, useRef, useState } from 'react'
 import { TestClassComponent } from './componnet/TestClassComponent'
@@ -58,12 +58,13 @@ export function GetComponent() {
             create: endCreate - startCreate,
             get: endGet - startGet,
             destory: endDestroy - startDestroy
-        })
+        })        
     }
 
   
     useEffect(() => {
         worldRef.current = new GE(createConfig())
+        worldRef.current.start()
     }, [])
     return <div>
 
