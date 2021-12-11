@@ -20,7 +20,7 @@ export function GetComponent() {
 
     const testStart = function testStart(world:GE) {
         const startCreate= performance.now()
-        for(let i = 0; i< 5000; i++){
+        for(let i = 0; i< 8000; i++){
             const entity = world.craeteObj({name: i+''})
             entity.addComponent(TestFunComponent, {})
             entity.addComponent(TestClassComponent, {})
