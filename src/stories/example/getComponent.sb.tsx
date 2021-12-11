@@ -1,7 +1,7 @@
 import { 
     GE, createConfig, EntityManagerSystem
   } from 'ge'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TestClassComponent } from './componnet/TestClassComponent'
 import { TestFunComponent } from './componnet/TestFunComponent'
 
@@ -12,39 +12,66 @@ export default {
 
 
 export function GetComponent() {
-    useEffect(() => {
-        const world = new GE(createConfig())
 
-        console.time('create')
+    const worldRef = useRef<GE>()
+    const [ times, setTimes ] = useState({create: 0, get: 0, destory: 0})
+    const { create, get, destory  } = times
+
+    const testStart = function testStart(world:GE) {
+        const startCreate= performance.now()
         for(let i = 0; i< 10000; i++){
             const entity = world.craeteObj({name: i+''})
             entity.addComponent(TestFunComponent, {})
             entity.addComponent(TestClassComponent, {})
             world.stage.addChildren(entity)
         }
-        
-        console.timeEnd('create')
-        console.time('get component')
-        const ts = world.findComponents(TestFunComponent)
-        console.timeEnd('get component')
-        console.log(ts.length);
+        const endCreate = performance.now()
+        return {startCreate, endCreate}
+    }
 
+    const testGet = function testGet(world:GE) {
+        const startGet = performance.now()
+        const ts = world.findComponents(TestFunComponent)
+        const endGet = performance.now()
+        return {startGet, endGet}
+    }
+
+    const testDestroy = function testDestroy(world:GE) {
         const entities = world.findEntities(TestFunComponent) 
-        const l = entities.length
-        if(l !== 10000) {
-            throw 'error 1'
+        const startDestroy = performance.now()
+        for (let index = 0; index < entities.length; index++) {
+            const element = entities[index];
+            element.destroy()
+            index--
         }
-        console.time('destroy')
-        entities.forEach( ei => {
-            ei.destroy()
+        const endDestroy = performance.now()
+        return {startDestroy, endDestroy}
+    }
+
+    const testTime = () => {
+        const { current: world } = worldRef
+        if(!world) return
+        const {startCreate, endCreate} = testStart(world)
+        const { startGet, endGet } = testGet(world)
+        const { startDestroy, endDestroy} = testDestroy(world)
+        setTimes({
+            create: endCreate - startCreate,
+            get: endGet - startGet,
+            destory: endDestroy - startDestroy
         })
-        console.log(entities.length);
-        if(entities.length !== 0) {
-            throw 'error 2'
-        }
-        console.timeEnd('destroy')
+    }
+
+  
+    useEffect(() => {
+        worldRef.current = new GE(createConfig())
     }, [])
     return <div>
+
+        <h1>Test <button onClick={testTime} > test </button></h1>
+        <p> create: {create}ms</p>
+        <p>get component： {get}ms</p>
+        <p>destroy：{destory}ms</p>
+
 
         <h1>before</h1>
         <p> create: 162.6ms</p>
